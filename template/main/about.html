@@ -1,0 +1,703 @@
+{% extends "main/base.html" %}
+
+{% block 'title' %}About Us | Corporate Impact{% endblock 'title' %}
+
+{% block 'meta' %}
+<meta name="description" content="Corporate Impact is India's most trusted platform for where ambition meets accountability, and leadership meets human values. Discover our story, mission, and team.">
+{% endblock 'meta' %}
+
+{% block 'css' %}
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700;900&family=Source+Serif+4:ital,wght@0,300;0,400;0,600;1,400&family=DM+Sans:wght@300;400;500;600&display=swap');
+
+    :root {
+        --ci-red: #CC1B1B;
+        --ci-red-dark: #A01515;
+        --ci-black: #0F0F0F;
+        --ci-charcoal: #1E1E1E;
+        --ci-graphite: #3A3A3A;
+        --ci-slate: #6B6B6B;
+        --ci-mist: #E8E8E8;
+        --ci-paper: #F7F5F2;
+        --ci-white: #FFFFFF;
+        --ci-gold: #C9A227;
+        
+        --font-display: 'Playfair Display', Georgia, serif;
+        --font-serif: 'Source Serif 4', Georgia, serif;
+        --font-sans: 'DM Sans', system-ui, sans-serif;
+        
+        --transition-premium: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+        --spacing-cinematic: 120px;
+    }
+
+    body {
+        font-family: var(--font-sans);
+        background-color: var(--ci-paper);
+        color: var(--ci-black);
+        -webkit-font-smoothing: antialiased;
+        overflow-x: hidden;
+    }
+
+    /* =====================================
+       TYPOGRAPHY
+       ===================================== */
+    .font-display { font-family: var(--font-display); }
+    .font-serif { font-family: var(--font-serif); }
+    .font-sans { font-family: var(--font-sans); }
+
+    .text-red { color: var(--ci-red) !important; }
+    .text-gold { color: var(--ci-gold) !important; }
+    
+    .section-eyebrow {
+        font-family: var(--font-sans);
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+        color: var(--ci-red);
+        margin-bottom: 1rem;
+        display: block;
+    }
+
+    /* =====================================
+       PURE CSS ANIMATIONS (Fail-Safe)
+       ===================================== */
+    .fade-in-up {
+        animation: fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) both;
+    }
+    @keyframes fadeInUp {
+        0% { opacity: 0; transform: translateY(30px); }
+        100% { opacity: 1; transform: translateY(0); }
+    }
+    .delay-1 { animation-delay: 0.1s; }
+    .delay-2 { animation-delay: 0.2s; }
+    .delay-3 { animation-delay: 0.3s; }
+
+    /* =====================================
+       BUTTONS
+       ===================================== */
+    .btn-premium-primary {
+        background-color: var(--ci-red);
+        color: var(--ci-white);
+        font-family: var(--font-sans);
+        font-weight: 600;
+        letter-spacing: 0.05em;
+        padding: 14px 32px;
+        border-radius: 4px;
+        border: none;
+        transition: var(--transition-premium);
+        text-transform: uppercase;
+        font-size: 13px;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        text-decoration: none;
+    }
+    .btn-premium-primary:hover {
+        background-color: var(--ci-red-dark);
+        color: var(--ci-white);
+        transform: translateY(-2px);
+        box-shadow: 0 12px 24px rgba(204, 27, 27, 0.2);
+    }
+    .btn-premium-outline {
+        background-color: transparent;
+        color: var(--ci-white);
+        border: 1px solid rgba(255,255,255,0.3);
+        font-family: var(--font-sans);
+        font-weight: 600;
+        letter-spacing: 0.05em;
+        padding: 14px 32px;
+        border-radius: 4px;
+        transition: var(--transition-premium);
+        text-transform: uppercase;
+        font-size: 13px;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        text-decoration: none;
+    }
+    .btn-premium-outline:hover {
+        border-color: var(--ci-white);
+        background-color: rgba(255,255,255,0.1);
+        color: var(--ci-white);
+    }
+
+    /* =====================================
+       SECTION 1: HERO
+       ===================================== */
+    .about-hero {
+        position: relative;
+        height: 90vh;
+        min-height: 700px;
+        display: flex;
+        align-items: center;
+        background-color: var(--ci-black);
+        overflow: hidden;
+    }
+    .hero-bg {
+        position: absolute;
+        top: 0; left: 0; right: 0; bottom: 0;
+        background-image: url('https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&q=80&w=2000');
+        background-size: cover;
+        background-position: center;
+        opacity: 0.3;
+        transform: scale(1.05);
+        animation: subtleZoom 20s ease-out infinite alternate;
+    }
+    .hero-overlay {
+        position: absolute;
+        top: 0; left: 0; right: 0; bottom: 0;
+        background: linear-gradient(180deg, rgba(15,15,15,0.2) 0%, var(--ci-black) 100%);
+    }
+    @keyframes subtleZoom {
+        0% { transform: scale(1.05); }
+        100% { transform: scale(1.15); }
+    }
+    .hero-content {
+        position: relative;
+        z-index: 2;
+        color: var(--ci-white);
+    }
+    .hero-title {
+        font-family: var(--font-display);
+        font-size: clamp(3.5rem, 6vw, 6.5rem);
+        font-weight: 900;
+        line-height: 1.05;
+        letter-spacing: -2px;
+        margin-bottom: 1.5rem;
+    }
+    .hero-subtitle {
+        font-family: var(--font-serif);
+        font-size: clamp(1.25rem, 2vw, 1.75rem);
+        font-style: italic;
+        color: rgba(255,255,255,0.8);
+        max-width: 800px;
+        line-height: 1.5;
+        margin-bottom: 3rem;
+    }
+    .scroll-indicator {
+        position: absolute;
+        bottom: 40px;
+        left: 50%;
+        transform: translateX(-50%);
+        color: rgba(255,255,255,0.5);
+        font-size: 11px;
+        text-transform: uppercase;
+        letter-spacing: 0.2em;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 10px;
+        z-index: 2;
+        animation: bounce 2s infinite;
+    }
+    .scroll-indicator::after {
+        content: '';
+        width: 1px;
+        height: 40px;
+        background: linear-gradient(to bottom, rgba(255,255,255,0.5), transparent);
+    }
+    @keyframes bounce {
+        0%, 20%, 50%, 80%, 100% { transform: translateY(0) translateX(-50%); }
+        40% { transform: translateY(-10px) translateX(-50%); }
+        60% { transform: translateY(-5px) translateX(-50%); }
+    }
+
+    /* =====================================
+       SECTION 2: OUR STORY
+       ===================================== */
+    .story-section {
+        padding: var(--spacing-cinematic) 0;
+        background: var(--ci-white);
+    }
+    .story-lead {
+        font-family: var(--font-serif);
+        font-size: 2rem;
+        line-height: 1.4;
+        color: var(--ci-black);
+        margin-bottom: 2rem;
+    }
+    .story-text {
+        font-family: var(--font-sans);
+        font-size: 1.1rem;
+        line-height: 1.8;
+        color: var(--ci-graphite);
+        margin-bottom: 1.5rem;
+    }
+    .story-quote {
+        border-left: 4px solid var(--ci-red);
+        padding: 2rem 0 2rem 2.5rem;
+        margin: 3rem 0;
+        background: var(--ci-paper);
+    }
+    .story-quote p {
+        font-family: var(--font-display);
+        font-size: 2rem;
+        font-weight: 700;
+        line-height: 1.3;
+        color: var(--ci-black);
+        margin-bottom: 0;
+    }
+
+    /* =====================================
+       SECTION 3: VISION & MISSION
+       ===================================== */
+    .vm-section {
+        background: var(--ci-charcoal);
+        color: var(--ci-white);
+        padding: var(--spacing-cinematic) 0;
+        position: relative;
+        overflow: hidden;
+    }
+    .vm-glow {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 60vw;
+        height: 60vw;
+        background: radial-gradient(circle, rgba(204,27,27,0.08) 0%, transparent 70%);
+        border-radius: 50%;
+        pointer-events: none;
+    }
+    .vm-card {
+        background: rgba(255,255,255,0.03);
+        border: 1px solid rgba(255,255,255,0.08);
+        border-radius: 12px;
+        padding: 4rem;
+        height: 100%;
+        backdrop-filter: blur(10px);
+        transition: var(--transition-premium);
+    }
+    .vm-card:hover {
+        background: rgba(255,255,255,0.05);
+        border-color: rgba(255,255,255,0.15);
+        transform: translateY(-5px);
+    }
+    .vm-icon {
+        font-size: 2.5rem;
+        color: var(--ci-red);
+        margin-bottom: 2rem;
+    }
+    .vm-title {
+        font-family: var(--font-display);
+        font-size: 2.5rem;
+        font-weight: 700;
+        margin-bottom: 1.5rem;
+    }
+    .vm-text {
+        font-family: var(--font-serif);
+        font-size: 1.3rem;
+        line-height: 1.6;
+        color: rgba(255,255,255,0.8);
+        font-style: italic;
+    }
+
+    /* =====================================
+       SECTION 4: WHAT WE COVER
+       ===================================== */
+    .coverage-section {
+        padding: var(--spacing-cinematic) 0;
+        background: var(--ci-paper);
+    }
+    .category-card {
+        background: var(--ci-white);
+        border: 0.5px solid var(--ci-mist);
+        padding: 2.5rem 2rem;
+        border-radius: 8px;
+        text-align: center;
+        transition: var(--transition-premium);
+        position: relative;
+        overflow: hidden;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+    }
+    .category-card::after {
+        content: '';
+        position: absolute;
+        bottom: 0; left: 0; right: 0;
+        height: 3px;
+        background: var(--ci-red);
+        transform: scaleX(0);
+        transition: var(--transition-premium);
+        transform-origin: left;
+    }
+    .category-card:hover {
+        box-shadow: 0 20px 40px rgba(0,0,0,0.05);
+        transform: translateY(-5px);
+    }
+    .category-card:hover::after {
+        transform: scaleX(1);
+    }
+    .cat-icon {
+        font-size: 2rem;
+        color: var(--ci-graphite);
+        margin-bottom: 1rem;
+        transition: var(--transition-premium);
+    }
+    .category-card:hover .cat-icon {
+        color: var(--ci-red);
+    }
+    .cat-title {
+        font-family: var(--font-display);
+        font-size: 1.25rem;
+        font-weight: 700;
+        color: var(--ci-black);
+    }
+
+    /* =====================================
+       SECTION 5: OUR TEAM
+       ===================================== */
+    .team-section {
+        padding: var(--spacing-cinematic) 0;
+        background: var(--ci-white);
+        border-top: 1px solid var(--ci-mist);
+    }
+    .team-card {
+        text-align: center;
+        padding: 2rem;
+        transition: var(--transition-premium);
+    }
+    .team-card:hover {
+        transform: translateY(-10px);
+    }
+    .team-img-wrapper {
+        width: 180px;
+        height: 180px;
+        margin: 0 auto 1.5rem;
+        border-radius: 50%;
+        padding: 6px;
+        border: 1px solid var(--ci-mist);
+        position: relative;
+        transition: var(--transition-premium);
+    }
+    .team-card:hover .team-img-wrapper {
+        border-color: var(--ci-red);
+        box-shadow: 0 15px 30px rgba(204,27,27,0.1);
+    }
+    .team-img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        border-radius: 50%;
+        filter: grayscale(20%);
+        transition: var(--transition-premium);
+    }
+    .team-card:hover .team-img {
+        filter: grayscale(0%);
+    }
+    .team-name {
+        font-family: var(--font-display);
+        font-size: 1.5rem;
+        font-weight: 900;
+        color: var(--ci-black);
+        margin-bottom: 0.25rem;
+    }
+    .team-role {
+        font-family: var(--font-sans);
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: 0.15em;
+        text-transform: uppercase;
+        color: var(--ci-red);
+        margin-bottom: 1rem;
+    }
+    .team-desc {
+        font-size: 0.95rem;
+        color: var(--ci-slate);
+        line-height: 1.6;
+    }
+
+    /* =====================================
+       SECTION 6: WHY US & PARTNERSHIPS
+       ===================================== */
+    .why-section {
+        padding: var(--spacing-cinematic) 0;
+        background: var(--ci-black);
+        color: var(--ci-white);
+    }
+    .why-stat {
+        font-family: var(--font-display);
+        font-size: 4rem;
+        font-weight: 900;
+        color: var(--ci-gold);
+        line-height: 1;
+        margin-bottom: 0.5rem;
+    }
+    .why-stat-label {
+        font-family: var(--font-sans);
+        font-size: 12px;
+        font-weight: 700;
+        letter-spacing: 0.15em;
+        text-transform: uppercase;
+        color: rgba(255,255,255,0.6);
+    }
+
+    /* =====================================
+       SECTION 8: NEWSLETTER
+       ===================================== */
+    .newsletter-section {
+        padding: var(--spacing-cinematic) 0;
+        background: linear-gradient(135deg, var(--ci-charcoal) 0%, var(--ci-black) 100%);
+        color: var(--ci-white);
+        border-top: 1px solid rgba(255,255,255,0.1);
+        border-bottom: 1px solid rgba(255,255,255,0.1);
+    }
+    .nl-input {
+        background: rgba(255,255,255,0.05);
+        border: 1px solid rgba(255,255,255,0.2);
+        color: var(--ci-white);
+        padding: 1rem 1.5rem;
+        font-size: 1rem;
+        border-radius: 4px;
+        transition: var(--transition-premium);
+    }
+    .nl-input:focus {
+        background: rgba(255,255,255,0.1);
+        border-color: var(--ci-red);
+        box-shadow: 0 0 0 4px rgba(204,27,27,0.2);
+        color: var(--ci-white);
+        outline: none;
+    }
+    
+    /* =====================================
+       SECTION 9 & 10: SOCIAL & FINAL
+       ===================================== */
+    .final-section {
+        padding: var(--spacing-cinematic) 0;
+        background: var(--ci-white);
+        text-align: center;
+    }
+    .final-statement {
+        font-family: var(--font-display);
+        font-size: clamp(2.5rem, 4vw, 4rem);
+        font-weight: 900;
+        line-height: 1.2;
+        color: var(--ci-black);
+        max-width: 1000px;
+        margin: 0 auto 3rem;
+    }
+    .social-link-luxury {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 60px; height: 60px;
+        border-radius: 50%;
+        border: 1px solid var(--ci-mist);
+        color: var(--ci-black);
+        font-size: 1.5rem;
+        margin: 0 10px;
+        transition: var(--transition-premium);
+        text-decoration: none;
+    }
+    .social-link-luxury:hover {
+        background: var(--ci-black);
+        color: var(--ci-white);
+        border-color: var(--ci-black);
+        transform: translateY(-5px);
+    }
+
+    @media (max-width: 768px) {
+        :root { --spacing-cinematic: 80px; }
+        .vm-card { padding: 2rem; }
+        .story-quote p { font-size: 1.5rem; }
+    }
+</style>
+{% endblock 'css' %}
+
+{% block 'body' %}
+
+<header class="about-hero">
+    <div class="hero-bg"></div>
+    <div class="hero-overlay"></div>
+    <div class="container hero-content">
+        <div class="row">
+            <div class="col-lg-10 col-xl-9">
+                <span class="section-eyebrow fade-in-up">The Definitive Voice</span>
+                <h1 class="hero-title fade-in-up delay-1">Stories That Shape the Future of India.</h1>
+                <p class="hero-subtitle fade-in-up delay-2">We exist at the intersection of ambition and accountability. Corporate Impact delivers authoritative journalism that explores the people, policies, and ideas defining modern leadership.</p>
+                <div class="d-flex flex-wrap gap-3 fade-in-up delay-3">
+                    <a href="#our-story" class="btn-premium-primary">Read Our Story <i class="bi bi-arrow-down"></i></a>
+                    <a href="/contact" class="btn-premium-outline">Join the Network</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="scroll-indicator">
+        Scroll
+    </div>
+</header>
+
+<section id="our-story" class="story-section">
+    <div class="container">
+        <div class="row align-items-center g-5">
+            <div class="col-lg-5 fade-in-up">
+                <span class="section-eyebrow">Our Origins</span>
+                <h2 class="font-display fw-bold" style="font-size: 3rem; line-height: 1.1; margin-bottom: 2rem;">Beyond the Balance Sheet.</h2>
+                <div style="width: 60px; height: 3px; background: var(--ci-red); margin-bottom: 2rem;"></div>
+            </div>
+            <div class="col-lg-7 fade-in-up delay-1">
+                <p class="story-lead">In an era of endless noise and fragmented news, leadership requires clarity. Corporate Impact was founded to cut through the clutter and deliver journalism that actually matters to decision-makers.</p>
+                <p class="story-text">We recognized a gap in modern media: business reporting had become overly corporate and detached from the human element. We believe that behind every market shift, policy change, and disruptive startup, there is a human story. A story of ambition, struggle, and vision.</p>
+                
+                <div class="story-quote">
+                    <p>"We are not just covering the mechanics of business. We are chronicling the minds that are engineering India’s tomorrow."</p>
+                </div>
+                
+                <p class="story-text mb-0">Our platform bridges the gap between traditional enterprise reporting and the fast-paced world of new-age startups, creating a unified narrative for India Inc. We hold leaders accountable while celebrating genuine innovation.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="vm-section">
+    <div class="vm-glow"></div>
+    <div class="container position-relative z-2">
+        <div class="row g-4">
+            <div class="col-md-6 fade-in-up">
+                <div class="vm-card">
+                    <div class="vm-icon"><i class="bi bi-eye"></i></div>
+                    <h3 class="vm-title">Our Vision</h3>
+                    <p class="vm-text">"To be India's most trusted platform for where ambition meets accountability, and leadership meets human values."</p>
+                </div>
+            </div>
+            <div class="col-md-6 fade-in-up delay-1">
+                <div class="vm-card">
+                    <div class="vm-icon"><i class="bi bi-bullseye"></i></div>
+                    <h3 class="vm-title">Our Mission</h3>
+                    <p class="vm-text">"To amplify the voices of leaders, disruptors, and changemakers giving readers access to perspectives, ideas, and stories that shape the future of business and society."</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="coverage-section">
+    <div class="container">
+        <div class="text-center mb-5 fade-in-up">
+            <span class="section-eyebrow">Editorial Pillars</span>
+            <h2 class="font-display fw-bold" style="font-size: 3rem;">The Ecosystem We Map</h2>
+        </div>
+        <div class="row row-cols-2 row-cols-md-3 row-cols-lg-4 g-4">
+            <div class="col fade-in-up delay-1"><div class="category-card"><i class="bi bi-person-workspace cat-icon"></i><div class="cat-title">Leadership</div></div></div>
+            <div class="col fade-in-up delay-1"><div class="category-card"><i class="bi bi-rocket-takeoff cat-icon"></i><div class="cat-title">Startups</div></div></div>
+            <div class="col fade-in-up delay-1"><div class="category-card"><i class="bi bi-graph-up-arrow cat-icon"></i><div class="cat-title">Markets</div></div></div>
+            <div class="col fade-in-up delay-1"><div class="category-card"><i class="bi bi-lightbulb cat-icon"></i><div class="cat-title">Innovation</div></div></div>
+            <div class="col fade-in-up delay-2"><div class="category-card"><i class="bi bi-bank cat-icon"></i><div class="cat-title">Policy</div></div></div>
+            <div class="col fade-in-up delay-2"><div class="category-card"><i class="bi bi-cpu cat-icon"></i><div class="cat-title">Deep Tech</div></div></div>
+            <div class="col fade-in-up delay-2"><div class="category-card"><i class="bi bi-tree cat-icon"></i><div class="cat-title">Sustainability</div></div></div>
+            <div class="col fade-in-up delay-2"><div class="category-card"><i class="bi bi-buildings cat-icon"></i><div class="cat-title">Industry</div></div></div>
+        </div>
+    </div>
+</section>
+
+{% if teams %}
+<section class="team-section">
+    <div class="container">
+        <div class="text-center mb-5 fade-in-up">
+            <span class="section-eyebrow">The Masthead</span>
+            <h2 class="font-display fw-bold" style="font-size: 3rem;">Editorial & Leadership</h2>
+            <p class="text-muted mt-3 mx-auto" style="max-width: 700px;">A collective of veteran journalists, industry analysts, and digital strategists committed to maintaining the highest standards of publishing.</p>
+        </div>
+        <div class="row g-5 justify-content-center">
+            {% for i in teams %}
+            <div class="col-md-6 col-lg-4 fade-in-up delay-1">
+                <div class="team-card">
+                    <div class="team-img-wrapper">
+                        {% if i.image %}
+                            <img src="{{ i.image.url }}" alt="{{ i.name }}" class="team-img">
+                        {% else %}
+                            <div class="team-img d-flex align-items-center justify-content-center" style="background: var(--ci-mist); color: var(--ci-slate); font-family: var(--font-display); font-size: 3rem;">
+                                {{ i.name|make_list|first }}
+                            </div>
+                        {% endif %}
+                    </div>
+                    <h3 class="team-name">{{ i.name }}</h3>
+                    <div class="team-role">{{ i.designation }}</div>
+                    {% if i.description %}
+                    <p class="team-desc">{{ i.description }}</p>
+                    {% endif %}
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endif %}
+
+<section class="why-section">
+    <div class="container">
+        <div class="row g-5 align-items-center">
+            <div class="col-lg-6 fade-in-up">
+                <span class="section-eyebrow text-gold">The Standard</span>
+                <h2 class="font-display fw-bold mb-4" style="font-size: 3rem;">Why Leaders Trust Us</h2>
+                <p class="font-sans mb-4" style="color: rgba(255,255,255,0.7); font-size: 1.1rem; line-height: 1.8;">Corporate Impact operates on a strict foundation of editorial independence. We do not chase clickbait. We engage in deep, researched, and meaningful business storytelling that executives rely on.</p>
+                <div class="d-flex gap-5 mt-5">
+                    <div>
+                        <div class="why-stat">1M+</div>
+                        <div class="why-stat-label">Monthly Readers</div>
+                    </div>
+                    <div>
+                        <div class="why-stat">500+</div>
+                        <div class="why-stat-label">CXOs Interviewed</div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-5 offset-lg-1 fade-in-up delay-1">
+                <div style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); padding: 3rem; border-radius: 8px;">
+                    <h3 class="font-display fw-bold mb-3" style="font-size: 2rem;">Partner with Impact</h3>
+                    <p class="font-sans mb-4" style="color: rgba(255,255,255,0.7); line-height: 1.6;">We offer bespoke brand collaborations, sponsored features, and thought leadership opportunities for brands that shape industries.</p>
+                    <a href="/contact" class="btn-premium-outline w-100 justify-content-center">Explore Partnerships</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="newsletter-section">
+    <div class="container">
+        <div class="row justify-content-center text-center">
+            <div class="col-lg-8 fade-in-up">
+                <i class="bi bi-envelope-paper" style="font-size: 3rem; color: var(--ci-red); margin-bottom: 1.5rem; display: block;"></i>
+                <h2 class="font-display fw-bold mb-3" style="font-size: 3rem;">The Daily Briefing</h2>
+                <p class="font-sans mb-5" style="color: rgba(255,255,255,0.7); font-size: 1.15rem;">Join India's top decision-makers. Receive authoritative analysis and exclusive insights delivered directly to your inbox every morning.</p>
+                
+                <form action="/subscribe_form" method="POST" class="d-flex flex-column flex-sm-row gap-2 justify-content-center mx-auto" style="max-width: 600px;">
+                    {% csrf_token %}
+                    <input type="email" name="email" class="nl-input flex-grow-1" placeholder="Enter your business email address" required>
+                    <button type="submit" class="btn-premium-primary">Subscribe</button>
+                </form>
+                <div class="mt-4" style="font-size: 0.75rem; color: rgba(255,255,255,0.4); text-transform: uppercase; letter-spacing: 0.1em;">
+                    <i class="bi bi-shield-check me-1"></i> No spam. Unsubscribe anytime.
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="final-section">
+    <div class="container">
+        <div class="fade-in-up">
+            <h2 class="final-statement">
+                "Corporate Impact is not just reporting the future of India. <span class="text-red">We are documenting the people building it.</span>"
+            </h2>
+        </div>
+        
+        <div class="mt-5 pt-4 fade-in-up delay-1">
+            <span class="section-eyebrow mb-4">Join The Conversation</span>
+            <div class="d-flex justify-content-center flex-wrap">
+                <a href="#" class="social-link-luxury" aria-label="LinkedIn"><i class="bi bi-linkedin"></i></a>
+                <a href="#" class="social-link-luxury" aria-label="Twitter"><i class="bi bi-twitter-x"></i></a>
+                <a href="#" class="social-link-luxury" aria-label="Instagram"><i class="bi bi-instagram"></i></a>
+                <a href="#" class="social-link-luxury" aria-label="YouTube"><i class="bi bi-youtube"></i></a>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endblock 'body' %}

@@ -1,0 +1,691 @@
+{% extends "dash/base.html" %}
+{% block 'title' %}Edit {{data.title}}{% endblock 'title' %}
+{% block 'css' %}
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/choices.js/public/assets/styles/choices.min.css" />
+<script src="https://cdn.jsdelivr.net/npm/choices.js/public/assets/scripts/choices.min.js"></script>
+<link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+<style>
+  .ai-helper-card{
+    background:#f8fafc;
+    border:1px solid #e9ecef;
+    border-radius:16px;
+    padding:20px;
+}
+
+.prompt-box{
+    background:white;
+    border:1px dashed #ced4da;
+    border-radius:12px;
+    padding:16px;
+    font-size:14px;
+    line-height:1.7;
+    color:#495057;
+}
+
+.instruction-box{
+    background:#fff;
+    border:1px solid #e9ecef;
+    border-radius:16px;
+    padding:20px;
+}
+
+.instruction-list{
+    padding-left:18px;
+    margin-bottom:0;
+}
+
+.instruction-list li{
+    margin-bottom:10px;
+    color:#495057;
+    line-height:1.6;
+}
+.upload-instruction{
+    display:flex;
+    gap:12px;
+    background:#f8fafc;
+    border:1px solid #e9ecef;
+    padding:14px;
+    border-radius:14px;
+}
+
+.upload-instruction ul{
+    margin-bottom:0;
+    padding-left:18px;
+}
+
+.upload-instruction li{
+    font-size:13px;
+    color:#6c757d;
+    margin-bottom:4px;
+    line-height:1.5;
+}
+
+.instruction-icon{
+    width:18px;
+    height:18px;
+    color:#6c757d;
+    margin-top:3px;
+    flex-shrink:0;
+}
+
+.current-image-card{
+    background:#fff;
+    border:1px solid #e9ecef;
+    border-radius:16px;
+    padding:14px;
+}
+
+.current-image-title{
+    font-size:13px;
+    font-weight:600;
+    color:#6c757d;
+}
+
+.current-preview-image{
+    width:100%;
+    max-width:220px;
+    border-radius:14px;
+    border:1px solid #dee2e6;
+}
+</style>
+{% endblock 'css' %}
+{% block 'body' %}
+<div class="container-fluid">
+    <div class="py-3 d-flex align-items-sm-center flex-sm-row flex-column">
+        <div class="flex-grow-1">
+            <h4 class="fs-18 fw-semibold m-0">Create Article</h4> 
+        </div>
+    </div>
+    <div class="row">
+        <!-- User Account Creation Form -->
+        <div class="col-xl-6">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">Edit Article</h5>
+                </div>
+
+                <div class="card-body">
+                    <form class="row g-3" action="" method="POST" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <div class="col-12">
+                            <label for="articleTitle" class="form-label">Title</label>
+                            <input type="text" class="form-control" id="articleTitle" placeholder="Article Title" name="title" value="{{ data.title|default:'' }}" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="articleAuthor" class="form-label">Author</label>
+                            <select class="form-select" id="articleAuthor" name="author" required>
+                                <option value="" {% if not data.author_id %}selected{% endif %}>Select Author</option>
+                                {% for author in authors %}
+                                    <option value="{{ author.id }}" {% if data.author_id == author.id %}selected{% endif %}>{{ author.name }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="articleCategory" class="form-label">Category</label>
+                            <select class="form-select" id="articleCategory" name="category" required>
+                                <option value="" {% if not data.category_id %}selected{% endif %}>Select Category</option>
+                                {% for category in categories %}
+                                    <option value="{{ category.id }}" {% if data.category_id == category.id %}selected{% endif %}>{{ category.title }}</option>
+                                {% endfor %}
+                            </select>
+                          </div>
+                          
+                        <div class="col-12">
+                            <label for="articleDescription" class="form-label">Description</label>
+                            <textarea class="form-control" id="articleDescription" rows="3" placeholder="Article Description" name="description">{{ data.description|default:'' }}</textarea>
+                        </div>
+                        <div class="col-12">
+                            <label for="articleTdlrTitle" class="form-label">TLDR Title</label>
+                            <input type="text" class="form-control" id="articleTdlrTitle" placeholder="TLDR Title" name="tldr_title" value="{{ data.tldr_title|default:'' }}" required>
+                        </div>
+                        <div class="col-12">
+    <label class="form-label">TLDR</label>
+
+    <div id="tldr-toolbar">
+        <span class="ql-formats">
+            <select class="ql-header">
+                <option value="1">H1</option>
+                <option value="2">H2</option>
+                <option value="3">H3</option>
+                <option selected>Normal</option>
+            </select>
+
+            <button class="ql-bold"></button>
+            <button class="ql-italic"></button>
+            <button class="ql-underline"></button>
+        </span>
+
+        <span class="ql-formats">
+            <button class="ql-list" value="ordered"></button>
+            <button class="ql-list" value="bullet"></button>
+            <button class="ql-link"></button>
+        </span>
+    </div>
+
+    <div id="tldrEditor" style="height:200px;"></div>
+    <input type="hidden" name="tldr" id="hiddenTldrInput" value="{{ data.tldr|default:'' }}">
+</div>
+                        <div class="col-md-6">
+                            <label for="articleMetaTitle" class="form-label">Meta Title</label>
+                            <input type="text" class="form-control" id="articleMetaTitle" placeholder="Meta Title" name="meta_title" value="{{ data.meta_title|default:'' }}">
+                        </div>
+                        <div class="col-md-6">
+                            <label for="articleMetaDescription" class="form-label">Meta Description</label>
+                            <textarea class="form-control" id="articleMetaDescription" rows="2" placeholder="Meta Description" name="meta_description">{{ data.meta_description|default:'' }}</textarea>
+                        </div>
+                        <div class="col-12">
+                            <label for="articleMetaKeywords" class="form-label">Meta Keywords</label>
+                            <input type="text" class="form-control" id="articleMetaKeywords" placeholder="Comma-separated keywords" name="meta_keywords" value="{{ data.meta_keywords|default:'' }}">
+                        </div>
+                        <div class="col-12">
+                            <label for="titleColour" class="form-label">Title Colour</label>
+                            <input type="text" class="form-control" id="titleColour" placeholder="Title Colour" name="title_colour" value="{{ data.title_colour|default:'' }}">
+                        </div>
+                        <div class="col-12">
+                            <label for="remainingText" class="form-label">Remaining Text Colour</label>
+                            <input type="text" class="form-control" id="remainingText" placeholder="Remaining Text Cololur" name="remaining_text_colour" value="{{ data.remaining_text_colour|default:'' }}">
+                        </div>
+                        <div class="col-12">
+                            <label for="bannerBackgroundColour" class="form-label">Banner Background Colour</label>
+                            <input type="text" class="form-control" id="bannerBackgroundColour" placeholder="Banner Background Title" name="banner_background_colour" value="{{ data.banner_background_colour|default:'' }}">
+                        </div>
+                        <div class="col-md-6">
+
+    <label for="articleBannerImage" class="form-label fw-semibold">
+        Banner Image
+    </label>
+
+    <input 
+        type="file"
+        class="form-control article-image-input"
+        id="articleBannerImage"
+        name="banner_image"
+        accept=".webp"
+    >
+
+    <div class="upload-instruction mt-2">
+
+        <i data-feather="image" class="instruction-icon"></i>
+
+        <div>
+            <strong>Upload Requirements</strong>
+
+            <ul>
+                <li>Format must be <strong>WEBP</strong></li>
+                <li>Dimension must be exactly <strong>1200 × 900 px</strong></li>
+                <li>Use optimized high-quality visuals</li>
+            </ul>
+        </div>
+
+    </div>
+
+    {% if data.banner_image %}
+    <div class="current-image-card mt-3">
+
+        <p class="current-image-title mb-2">
+            Current Banner Image
+        </p>
+
+        <img 
+            src="{{ data.banner_image.url }}"
+            alt="Current Banner"
+            class="current-preview-image"
+        >
+
+    </div>
+    {% endif %}
+
+</div>
+
+
+
+<div class="col-md-6">
+
+    <label for="articleThumbnailImage" class="form-label fw-semibold">
+        Thumbnail Image
+    </label>
+
+    <input 
+        type="file"
+        class="form-control article-image-input"
+        id="articleThumbnailImage"
+        name="thumbnail_image"
+        accept=".webp"
+    >
+
+    <div class="upload-instruction mt-2">
+
+        <i data-feather="image" class="instruction-icon"></i>
+
+        <div>
+            <strong>Upload Requirements</strong>
+
+            <ul>
+                <li>Format must be <strong>WEBP</strong></li>
+                <li>Dimension must be exactly <strong>1200 × 900 px</strong></li>
+                <li>Keep visuals mobile friendly and readable</li>
+            </ul>
+        </div>
+
+    </div>
+
+    {% if data.thumbnail_image %}
+    <div class="current-image-card mt-3">
+
+        <p class="current-image-title mb-2">
+            Current Thumbnail Image
+        </p>
+
+        <img 
+            src="{{ data.thumbnail_image.url }}"
+            alt="Current Thumbnail"
+            class="current-preview-image"
+        >
+
+    </div>
+    {% endif %}
+
+</div>
+                        <div class="col-12">
+                            <label for="articleContent" class="form-label">Content</label>
+
+                            <!-- Quill Toolbar -->
+                            <div id="quill-toolbar">
+                                <span class="ql-formats">
+                                    <select class="ql-header">
+                                        <option value="1">H1</option>
+                                        <option value="2">H2</option>
+                                        <option value="3">H3</option>
+                                        <option value="4">H4</option>
+                                        <option value="5">H5</option>
+                                        <option value="">Normal</option>
+                                    </select>
+                                    <button class="ql-bold"></button>
+                                    <button class="ql-italic"></button>
+                                    <button class="ql-underline"></button>
+                                </span>
+                                <span class="ql-formats">
+                                    <button class="ql-list" value="ordered"></button>
+                                    <button class="ql-list" value="bullet"></button>
+                                    <button class="ql-link"></button>
+                                    <button class="ql-image"></button>
+                                </span>
+                            </div>
+
+                            <!-- Quill Editor -->
+                            <div id="editor" style="height: 300px;"> {{ data.content|default:"<p>Enter your article content here...</p>"|safe }}</div>
+
+                            <!-- Hidden input to submit content -->
+                            <input type="hidden" name="content" id="hiddenContentInput" value="{{ data.content|default:'' }}">
+                        </div>
+                            <br><br>
+                            <br><br>
+                        <!-- ========== EDIT EXISTING FAQS ========== -->
+<div class="col-12 mt-4">
+    <h5>FAQ Section</h5>
+
+    <div id="faqContainer">
+        {% for faq in data.faqs.all %}
+        <div class="faq-item border p-2 mt-2">
+            <label>Question</label>
+            <input type="text" class="form-control" name="faq_question_existing_{{faq.id}}" value="{{faq.question}}" required>
+
+            <label class="mt-2">Answer</label>
+            <textarea class="form-control" name="faq_answer_existing_{{faq.id}}" rows="2" required>{{faq.answer}}</textarea>
+
+            <label class="text-danger mt-2">
+                <input type="checkbox" name="faq_delete_{{faq.id}}"> Delete this FAQ
+            </label>
+        </div>
+        {% endfor %}
+    </div>
+
+    <!-- Add new FAQ input fields dynamically -->
+    <button type="button" class="btn btn-secondary mt-2" onclick="addFAQ()">+ Add FAQ</button>
+</div>
+<div class="col-12 mt-4">
+    <h5>How-To Steps</h5>
+
+    <div id="howtoContainer">
+        {% for step in data.howto_steps.all %}
+        <div class="howto-item border p-2 mt-2">
+            <label>Step Name</label>
+            <input type="text" class="form-control" name="howto_name_existing_{{step.id}}" value="{{step.step_name}}" required>
+
+            <label class="mt-2">Step Description</label>
+            <textarea class="form-control" name="howto_text_existing_{{step.id}}" rows="2" required>{{step.step_text}}</textarea>
+
+            <label class="text-danger mt-2">
+                <input type="checkbox" name="howto_delete_{{step.id}}"> Delete this step
+            </label>
+        </div>
+        {% endfor %}
+    </div>
+
+    <button type="button" class="btn btn-secondary mt-2" onclick="addHowTo()">+ Add Step</button>
+</div>
+
+                            <button class="btn btn-primary" type="submit">Save Article</button>
+                            </form>
+                </div>
+                    
+            </div> 
+        </div>
+        <!--FAQ Sections-->
+        <div class="col-xl-6">
+    <div class="card border-0 shadow-sm">
+
+        <div class="card-header bg-white border-0 pb-0">
+
+            <div class="d-flex align-items-center gemini-badge">
+                <img 
+                    src="https://upload.wikimedia.org/wikipedia/commons/8/8f/Google-gemini-icon.svg"
+                    width="20"
+                    class="me-2"
+                    alt="Gemini"
+                >
+
+                <span>
+                    Powered by <strong>Google Gemini AI</strong>
+                </span>
+            </div>
+
+        </div>
+
+        <div class="card-body">
+
+            <!-- Main Prompt Card -->
+            <div class="ai-helper-card mb-4">
+
+                
+                
+                <div class="prompt-box" id="articlePromptText">
+
+    <strong>STEP 1 — Target Keyword Research Prompt</strong><br>
+    Analyze this article topic and generate:
+    
+    <ul class="mt-2">
+        <li>Primary SEO keyword</li>
+        <li>Secondary keywords</li>
+        <li>Long-tail keywords</li>
+        <li>Question-based search queries</li>
+        <li>Trending search intent keywords</li>
+        <li>LSI keywords</li>
+        <li>High CTR title angles</li>
+    </ul>
+
+    Make the keyword strategy suitable for Google Search ranking, discoverability, and modern media publishing.
+
+    <hr>
+
+    <strong>STEP 2 — EEAT Rewrite Prompt</strong><br>
+    Rewrite this article in a highly professional editorial format following Google's EEAT principles:
+    
+    <ul class="mt-2">
+        <li>Experience</li>
+        <li>Expertise</li>
+        <li>Authoritativeness</li>
+        <li>Trustworthiness</li>
+    </ul>
+
+    Ensure the article:
+    
+    <ul class="mt-2">
+        <li>Feels written by an expert journalist or industry analyst</li>
+        <li>Uses strong editorial structure and readability</li>
+        <li>Includes proper headings and hierarchy</li>
+        <li>Maintains high factual confidence</li>
+        <li>Improves topical authority</li>
+        <li>Optimizes keyword placement naturally</li>
+        <li>Avoids keyword stuffing</li>
+        <li>Improves audience engagement and retention</li>
+        <li>Is optimized for SEO and Google Discover</li>
+    </ul>
+
+    <hr>
+
+    <strong>STEP 3 — SEO Metadata Prompt</strong><br>
+
+    Generate:
+    
+    <ul class="mt-2">
+        <li>SEO Meta Title under 60 characters</li>
+        <li>Meta Description under 160 characters</li>
+        <li>SEO Keywords separated by commas</li>
+        <li>Suggested article slug</li>
+        <li>Suggested category</li>
+    </ul>
+
+    <hr>
+
+    <strong>STEP 4 — TLDR Prompt</strong><br>
+
+    Generate a short TLDR summary explaining the article in a concise, engaging, and reader-friendly way.
+
+</div>
+
+                <!-- Buttons -->
+                <div class="row g-2 mt-3">
+
+                    <div class="col-md-6">
+                        <a target="_blank"
+                           href="https://gemini.google.com/app"
+                           class="btn btn-dark w-100">
+                            Open Gemini
+                        </a>
+                    </div>
+
+                    <div class="col-md-6">
+                        <button class="btn btn-outline-dark w-100"
+                                onclick="navigator.clipboard.writeText(document.getElementById('articlePromptText').innerText)">
+                            Copy Prompt
+                        </button>
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- Thumbnail Instructions -->
+            <div class="instruction-box">
+
+                <h6 class="fw-semibold mb-3">
+                    Thumbnail Image Instructions
+                </h6>
+
+                <ul class="instruction-list">
+                    <li>Thumbnail image must be exactly <strong>1200 × 900 pixels</strong>.</li>
+                    <li>Image format must be <strong>WEBP</strong>.</li>
+                    <li>Use high-quality cinematic visuals for better CTR.</li>
+                    <li>Ensure text remains readable on mobile devices.</li>
+                    <li>Avoid excessive clutter and maintain visual hierarchy.</li>
+                    <li>Use optimized images for faster loading performance.</li>
+                </ul>
+
+            </div>
+
+        </div>
+    </div>
+</div>
+    </div>
+</div>
+<script>
+
+document.querySelectorAll('.article-image-input').forEach(input => {
+
+    input.addEventListener('change', function(e) {
+
+        const file = e.target.files[0];
+
+        if (!file) return;
+
+        // WEBP Validation
+        if (file.type !== 'image/webp') {
+
+            alert('Only WEBP format images are allowed.');
+
+            e.target.value = '';
+
+            return;
+        }
+
+        // Dimension Validation
+        const img = new Image();
+
+        img.onload = function() {
+
+            if (img.width !== 1200 || img.height !== 900) {
+
+                alert('Image must be exactly 1200 × 900 pixels.');
+
+                e.target.value = '';
+            }
+        };
+
+        img.src = URL.createObjectURL(file);
+
+    });
+
+});
+
+</script>
+<script>
+var Header = Quill.import('formats/header');
+Header.whitelist = [1, 2, 3, 4, 5, false];
+Quill.register(Header, true);
+</script>
+<script>
+const tagSelect = document.getElementById('articleTags');
+const choices = new Choices(tagSelect, {
+    removeItemButton: true,
+    searchEnabled: true,
+    placeholder: true,
+    placeholderValue: 'Select tags',
+});
+</script>
+<script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
+<script>
+var csrfToken = "{{ csrf_token }}";
+
+// Initialize Quill
+var quill = new Quill('#editor', {
+    theme: 'snow',
+    placeholder: 'Enter your article content...',
+    modules: {
+        toolbar: {
+            container: '#quill-toolbar',
+            handlers: {
+                'image': function() {
+                    const input = document.createElement('input');
+                    input.setAttribute('type', 'file');
+                    input.setAttribute('accept', 'image/*');
+                    input.click();
+
+                    input.onchange = async () => {
+                        const file = input.files[0];
+                        if (file) {
+                            const formData = new FormData();
+                            formData.append('image', file);
+
+                            try {
+                                const res = await fetch('/upload_quill_image/', {
+                                    method: 'POST',
+                                    headers: { 'X-CSRFToken': csrfToken },
+                                    body: formData
+                                });
+                                const data = await res.json();
+                                if (data.url) {
+                                    const range = quill.getSelection(true);
+                                    quill.insertEmbed(range.index, 'image', data.url);
+                                    quill.setSelection(range.index + 1);
+                                } else {
+                                    alert('Image upload failed.');
+                                }
+                            } catch (err) {
+                                console.error('Upload error:', err);
+                                alert('Image upload error.');
+                            }
+                        }
+                    };
+                }
+            }
+        }
+    }
+});
+
+// Load existing content
+var initialContent = `{{ data.content|escapejs }}`;
+if (initialContent) {
+    quill.root.innerHTML = initialContent;
+}
+
+// Sync editor content on form submit
+document.querySelector('form').onsubmit = function () {
+    document.getElementById('hiddenContentInput').value = quill.root.innerHTML;
+};
+</script>
+<script>
+function addFAQ() {
+    const container = document.getElementById("faqContainer");
+    const index = container.querySelectorAll('.faq-item').length;
+
+    const faqHTML = `
+        <div class="faq-item border p-2 mt-3">
+            <h6>New FAQ</h6>
+            <label>Question</label>
+            <input type="text" class="form-control" name="faq_question_new_${index}" required>
+
+            <label class="mt-2">Answer</label>
+            <textarea class="form-control" name="faq_answer_new_${index}" rows="2" required></textarea>
+
+            <input type="hidden" name="faq_new_index" value="${index}">
+        </div>
+    `;
+
+    container.insertAdjacentHTML("beforeend", faqHTML);
+}
+</script>
+<script>
+function addHowTo() {
+    const container = document.getElementById("howtoContainer");
+    const index = container.querySelectorAll('.howto-item').length;
+
+    const howToHTML = `
+        <div class="howto-item border p-2 mt-3">
+            <h6>New Step</h6>
+            <label>Step Name</label>
+            <input type="text" class="form-control" name="howto_name_new_${index}" required>
+
+            <label class="mt-2">Step Description</label>
+            <textarea class="form-control" name="howto_text_new_${index}" rows="2" required></textarea>
+
+            <input type="hidden" name="howto_new_index" value="${index}">
+        </div>
+    `;
+
+    container.insertAdjacentHTML("beforeend", howToHTML);
+}
+</script>
+<script>
+var tldrQuill = new Quill('#tldrEditor', {
+    theme: 'snow',
+    placeholder: 'Write TLDR...',
+    modules: {
+        toolbar: '#tldr-toolbar'
+    }
+});
+
+// Load existing TLDR in edit mode
+var initialTldr = `{{ data.tldr|escapejs }}`;
+if (initialTldr) {
+    tldrQuill.root.innerHTML = initialTldr;
+}
+
+// Sync TLDR on submit
+document.querySelector('form').addEventListener('submit', function () {
+    document.getElementById('hiddenTldrInput').value = tldrQuill.root.innerHTML;
+});
+</script>
+{% endblock 'body' %}
+{% block 'script' %}{% endblock 'script' %}

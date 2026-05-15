@@ -1,0 +1,365 @@
+/* =========================================
+       1. BRAND TOKENS & BASE
+       ========================================= */
+    :root {
+      --ci-red: #CC1B1B;
+      --ci-red-dark: #A01515;
+      --ci-red-light: #E63030;
+      --ci-red-pale: #FDEAEA;
+      --ci-black: #0F0F0F;
+      --ci-charcoal: #1E1E1E;
+      --ci-graphite: #3A3A3A;
+      --ci-slate: #6B6B6B;
+      --ci-silver: #B0B0B0;
+      --ci-mist: #E8E8E8;
+      --ci-paper: #F7F5F2;
+      --ci-white: #FFFFFF;
+      --ci-gold: #C9A227;
+      --ci-ink: #1A1A2E;
+      
+      --font-display: 'Playfair Display', Georgia, serif;
+      --font-serif: 'Source Serif 4', Georgia, serif;
+      --font-sans: 'DM Sans', system-ui, sans-serif;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    
+    body {
+      font-family: var(--font-sans);
+      background: var(--ci-paper);
+      color: var(--ci-black);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    a { text-decoration: none; color: inherit; }
+    ul { list-style: none; }
+
+    /* =========================================
+       2. HEADER & NAVIGATION
+       ========================================= */
+    .ci-masthead {
+      background: var(--ci-black);
+      position: relative;
+      z-index: 100;
+    }
+
+    /* Top Bar */
+    .ci-topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 8px 40px;
+      border-bottom: 0.5px solid rgba(255,255,255,0.08);
+      font-size: 11px;
+      color: rgba(255,255,255,0.5);
+      letter-spacing: 0.05em;
+    }
+
+    .ci-top-actions { display: flex; gap: 24px; align-items: center; }
+    .ci-btn-subscribe {
+      background: var(--ci-red);
+      color: var(--ci-white);
+      font-weight: 600;
+      padding: 5px 12px;
+      border-radius: 3px;
+      letter-spacing: 0.04em;
+      transition: background 0.15s;
+    }
+    .ci-btn-subscribe:hover { background: var(--ci-red-dark); }
+
+    /* Centered Big Logo */
+    .ci-logo-container {
+      display: flex;
+      justify-content: center;
+      padding: 32px 40px;
+      border-bottom: 0.5px solid rgba(255,255,255,0.08);
+    }
+    
+    .ci-logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-family: var(--font-display);
+      font-weight: 900;
+      font-size: 42px;
+      color: var(--ci-white);
+      letter-spacing: -0.5px;
+    }
+    .ci-logo-mark {
+      width: 40px; height: 40px;
+      border-radius: 50%;
+      border: 3px solid currentColor;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+
+    /* Scrollable Category Nav */
+    .ci-nav-scroll-wrapper {
+      padding: 0 40px;
+      position: relative;
+    }
+    .ci-nav-links {
+      display: flex;
+      gap: 32px;
+      overflow-x: auto;
+      scrollbar-width: none; /* Firefox */
+      -ms-overflow-style: none;  /* IE and Edge */
+      white-space: nowrap;
+      padding: 16px 0;
+    }
+    .ci-nav-links::-webkit-scrollbar { display: none; } /* Chrome/Safari */
+    
+    .ci-nav-links li { position: relative; }
+    
+    .ci-nav-link {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.6);
+      padding: 8px 0;
+      display: inline-block;
+      transition: color 0.15s;
+      cursor: pointer;
+    }
+    .ci-nav-link:hover, .ci-nav-link.active {
+      color: var(--ci-white);
+    }
+    .ci-nav-link.active::after {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      height: 2px;
+      background: var(--ci-red);
+    }
+
+    /* =========================================
+       3. MEGA MENU DROPDOWN
+       ========================================= */
+    .ci-megamenu-global {
+      position: absolute;
+      top: 100%;
+      left: 0;
+      width: 100%;
+      background: var(--ci-white);
+      border-top: 2px solid var(--ci-red);
+      box-shadow: 0 16px 40px rgba(0,0,0,0.12);
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(-5px);
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+      z-index: 200;
+      pointer-events: none;
+    }
+    .ci-megamenu-global.is-visible {
+      opacity: 1;
+      visibility: visible;
+      transform: translateY(0);
+      pointer-events: auto;
+    }
+
+    .ci-megamenu-panel {
+      display: none;
+      padding: 32px 40px;
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+    .ci-megamenu-panel.is-active { display: block; }
+
+    /* 4-Column strict grid: Empty items naturally leave blank space */
+    .ci-menu-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 24px;
+    }
+
+    /* Menu Cards */
+    .ci-menu-card {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      cursor: pointer;
+    }
+    .ci-menu-card:hover .ci-menu-card-title { color: var(--ci-red); }
+    
+    .ci-menu-card-img {
+      aspect-ratio: 16/9;
+      background: var(--ci-mist);
+      border-radius: 6px;
+      overflow: hidden;
+      border: 0.5px solid var(--ci-mist);
+    }
+    .ci-menu-card-img img {
+      width: 100%; height: 100%; object-fit: cover;
+    }
+    
+    .ci-menu-card-cat {
+      font-size: 10px;
+      font-weight: 700;
+      color: var(--ci-red);
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+    .ci-menu-card-title {
+      font-family: var(--font-display);
+      font-size: 16px;
+      font-weight: 700;
+      line-height: 1.3;
+      color: var(--ci-black);
+      transition: color 0.15s;
+    }
+
+    /* =========================================
+       4. BREAKING TICKER
+       ========================================= */
+    .ci-ticker {
+      display: flex;
+      align-items: center;
+      background: var(--ci-red);
+      height: 36px;
+      padding: 0 40px;
+      overflow: hidden;
+    }
+    .ci-ticker-label {
+      font-size: 10px;
+      font-weight: 700;
+      color: var(--ci-white);
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      white-space: nowrap;
+      border-right: 1px solid rgba(255,255,255,0.35);
+      padding-right: 16px;
+      margin-right: 16px;
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+    }
+    .ci-ticker-label::before {
+      content: '';
+      display: inline-block;
+      width: 6px; height: 6px;
+      background: #FFFFFF;
+      border-radius: 50%;
+      margin-right: 8px;
+      animation: live-pulse 1.4s ease-in-out infinite;
+    }
+    @keyframes live-pulse {
+      0%, 100% { opacity: 1; } 50% { opacity: 0.4; }
+    }
+    
+    .ci-ticker-track { overflow: hidden; flex: 1; }
+    .ci-ticker-content {
+      display: inline-block;
+      font-size: 12px;
+      color: rgba(255,255,255,0.95);
+      white-space: nowrap;
+      animation: ticker-scroll 35s linear infinite;
+    }
+    @keyframes ticker-scroll {
+      0%   { transform: translateX(100%); }
+      100% { transform: translateX(-100%); }
+    }
+    .ci-ticker-track { 
+  overflow: hidden; 
+  flex: 1; 
+}
+
+.ci-ticker-mover {
+  display: flex;
+  width: max-content;
+  animation: ticker-scroll 40s linear infinite;
+}
+
+.ci-ticker-mover:hover {
+  /* Optional: Pauses the ticker when the user hovers over it to read */
+  animation-play-state: paused; 
+}
+
+.ci-ticker-content {
+  font-size: 12px;
+  color: rgba(255,255,255,0.95);
+  white-space: nowrap;
+  padding-right: 10px; /* Ensures consistent spacing between the loops */
+}
+
+@keyframes ticker-scroll {
+  0%   { transform: translateX(0); }
+  /* Translating exactly -50% shifts the container by the width of one span */
+  100% { transform: translateX(-50%); } 
+}
+    /* =========================================
+       5. MAIN CONTENT FILLER
+       ========================================= */
+    .ci-main-content {
+      flex: 1;
+      padding: 64px 40px;
+      max-width: 1240px;
+      margin: 0 auto;
+      width: 100%;
+    }
+
+    /* =========================================
+       6. FOOTER
+       ========================================= */
+    .ci-footer {
+      background: var(--ci-charcoal);
+      color: rgba(255,255,255,0.6);
+      padding: 64px 40px 24px;
+      font-size: 13px;
+      margin-top: auto;
+    }
+    .ci-footer-grid {
+      max-width: 1240px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1.5fr repeat(4, 1fr);
+      gap: 48px;
+    }
+    .ci-footer-brand .ci-logo {
+      font-size: 24px;
+      margin-bottom: 16px;
+    }
+    .ci-footer-brand .ci-logo-mark {
+      width: 24px; height: 24px; font-size: 12px; border-width: 2px;
+    }
+    .ci-footer-tagline {
+      color: rgba(255,255,255,0.4);
+      font-size: 12px;
+      line-height: 1.6;
+      max-width: 250px;
+    }
+    
+    .ci-footer-col-title {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.35);
+      margin-bottom: 20px;
+    }
+    .ci-footer-link {
+      display: block;
+      color: rgba(255,255,255,0.65);
+      margin-bottom: 12px;
+      transition: color 0.15s;
+    }
+    .ci-footer-link:hover { color: var(--ci-white); }
+    
+    .ci-footer-bottom {
+      max-width: 1240px;
+      margin: 48px auto 0;
+      padding-top: 24px;
+      border-top: 0.5px solid rgba(255,255,255,0.08);
+      display: flex;
+      justify-content: space-between;
+      font-size: 11px;
+      color: rgba(255,255,255,0.3);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }

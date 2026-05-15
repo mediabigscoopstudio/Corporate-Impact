@@ -1,0 +1,267 @@
+{% extends "dash/base.html" %}
+{% block 'title' %}Create BSTV Content{% endblock 'title' %}
+{% block 'css' %}
+<style>
+  .ai-helper-card{
+    background:#f8fafc;
+    border:1px solid #e9ecef;
+    border-radius:16px;
+    padding:20px;
+}
+
+.prompt-box{
+    background:white;
+    border:1px dashed #ced4da;
+    border-radius:12px;
+    padding:16px;
+    font-size:14px;
+    line-height:1.7;
+    color:#495057;
+}
+
+.instruction-box{
+    background:#fff;
+    border:1px solid #e9ecef;
+    border-radius:16px;
+    padding:20px;
+}
+
+.instruction-list{
+    padding-left:18px;
+    margin-bottom:0;
+}
+
+.instruction-list li{
+    margin-bottom:10px;
+    color:#495057;
+    line-height:1.6;
+}
+.upload-instruction{
+    display:flex;
+    gap:12px;
+    background:#f8fafc;
+    border:1px solid #e9ecef;
+    padding:14px;
+    border-radius:14px;
+}
+
+.upload-instruction ul{
+    margin-bottom:0;
+    padding-left:18px;
+}
+
+.upload-instruction li{
+    font-size:13px;
+    color:#6c757d;
+    margin-bottom:4px;
+    line-height:1.5;
+}
+
+.instruction-icon{
+    width:18px;
+    height:18px;
+    color:#6c757d;
+    margin-top:3px;
+    flex-shrink:0;
+}
+
+.current-image-card{
+    background:#fff;
+    border:1px solid #e9ecef;
+    border-radius:16px;
+    padding:14px;
+}
+
+.current-image-title{
+    font-size:13px;
+    font-weight:600;
+    color:#6c757d;
+}
+
+.current-preview-image{
+    width:100%;
+    max-width:220px;
+    border-radius:14px;
+    border:1px solid #dee2e6;
+}
+</style>
+{% endblock 'css' %}
+{% block 'body' %}
+<div class="container-fluid">
+    <div class="py-3 d-flex align-items-sm-center flex-sm-row flex-column">
+        <div class="flex-grow-1">
+            <h4 class="fs-18 fw-semibold m-0">Create BSTV Content</h4> 
+        </div>
+    </div>
+    <div class="row">
+        <!-- User Account Creation Form -->
+        <div class="col-xl-6">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">Create BSTV Content</h5>
+                </div>
+
+                <div class="card-body">
+  <form class="row g-3" method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+
+    <div class="col-12">
+      <label for="tvTitle" class="form-label">Title</label>
+      <input type="text" class="form-control" id="tvTitle" name="title" placeholder="Enter title" required>
+    </div>
+    <div class="col-md-6">
+                            <label for="articleCategory" class="form-label">Category</label>
+                            <select class="form-select" id="articleCategory" name="category" required>
+                                {% for category in categories %}
+                                    <option value="{{ category.id }}">{{ category.title }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+    <div class="col-md-6">
+                            <label for="type" class="form-label">Type</label>
+                            <select class="form-select" id="type" name="type" required>
+                                <option value="Reel">Reel</option>
+            <option value="Youtube">Youtube Full Lenth Video</option>
+                            </select>
+                        </div>
+    <div class="col-12">
+      <label for="tvLink" class="form-label">Video Link</label>
+      <input type="url" class="form-control" id="tvLink" name="link" placeholder="https://..." required>
+    </div>
+    
+    
+    
+
+    <div class="col-12">
+      <label for="tvDescription" class="form-label">Description</label>
+      <textarea class="form-control" id="tvDescription" name="description" rows="3" placeholder="Brief description" required></textarea>
+    </div>
+
+    <div class="col-md-6">
+                          <label for="articleThumbnailImage" class="form-label">Thumbnail Image</label>
+                          <input type="file" class="form-control" id="articleThumbnailImage" name="thumbnail_image" accept=".webp">
+                        </div>
+    <br>
+    <div class="col-12">
+        <button class="btn btn-primary" type="submit">Save BSTV Content</button>
+    </div>
+  </form>
+</div>
+
+            </div>
+        </div> 
+        <!--FAQ Sections-->
+        <!-- AI YouTube Assistant -->
+<div class="col-xl-6">
+
+    <!-- AI YouTube Assistant Modal Section -->
+
+<div class="card border-0 shadow-sm mb-4">
+
+    <div class="card-header bg-white border-0">
+
+        <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
+
+            <div>
+
+                <h5 class="mb-1 fw-bold">
+                    AI YouTube Description Assistant
+                </h5>
+
+                <div class="d-flex align-items-center gemini-badge mt-2">
+
+                    <img 
+                        src="https://upload.wikimedia.org/wikipedia/commons/8/8f/Google-gemini-icon.svg"
+                        width="20"
+                        class="me-2"
+                        alt="Gemini"
+                    >
+
+                    <span>
+                        Powered by <strong>Google Gemini AI</strong>
+                    </span>
+
+                </div>
+
+            </div>
+
+            <a target="_blank"
+               href="https://gemini.google.com/app"
+               class="btn btn-dark">
+                Open Gemini
+            </a>
+
+        </div>
+
+    </div>
+
+    <div class="card-body">
+
+        <!-- Prompt Box -->
+        <div class="prompt-box" id="youtubePromptText">
+
+            <strong>Paste the YouTube video link first.</strong>
+
+            <hr>
+
+            Analyze the YouTube video from the pasted link and generate:
+
+            <ul class="mt-3">
+                <li>SEO optimized YouTube title</li>
+                <li>Professional EEAT-based video description</li>
+                <li>Primary SEO keyword</li>
+                <li>Secondary keywords</li>
+                <li>Long-tail keywords</li>
+                <li>Trending YouTube search tags</li>
+                <li>Suggested hashtags</li>
+                <li>CTR optimized title angles</li>
+            </ul>
+
+            <hr>
+
+            Rewrite the description in a modern editorial tone suitable for a professional digital media platform.
+
+            Ensure:
+            
+            <ul class="mt-3">
+                <li>High engagement and readability</li>
+                <li>Natural keyword placement</li>
+                <li>SEO optimization for YouTube discoverability</li>
+                <li>Google EEAT compliance</li>
+                <li>Strong audience retention tone</li>
+                <li>Modern and authoritative writing style</li>
+            </ul>
+
+        </div>
+
+        <!-- Copy Button -->
+        <button 
+            class="btn btn-outline-dark w-100 mt-3"
+            onclick="navigator.clipboard.writeText(document.getElementById('youtubePromptText').innerText)">
+            Copy Prompt
+        </button>
+
+    </div>
+
+</div>
+
+</div>
+    </div>
+</div>
+<link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+<script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
+<script>
+    var quill = new Quill('#editor', {
+        theme: 'snow'
+    });
+
+    var form = document.querySelector('form');
+    var hiddenContentInput = document.getElementById('hiddenContentInput');
+
+    form.onsubmit = function() {
+        var contentHTML = quill.root.innerHTML;
+        hiddenContentInput.value = contentHTML;
+    };
+</script>
+{% endblock 'body' %}
+{% block 'script' %}{% endblock 'script' %}

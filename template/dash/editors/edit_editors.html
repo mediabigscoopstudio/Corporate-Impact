@@ -1,0 +1,186 @@
+{% extends "dash/base.html" %}
+{% block 'title' %}Edit {{data.name}}{% endblock 'title' %}
+{% block 'css' %}
+<style>
+  .ai-helper-card{
+    background:#f8fafc;
+    border:1px solid #e9ecef;
+    border-radius:16px;
+    padding:20px;
+}
+
+.prompt-box{
+    background:white;
+    border:1px dashed #ced4da;
+    border-radius:12px;
+    padding:16px;
+    font-size:14px;
+    line-height:1.7;
+    color:#495057;
+}
+
+.instruction-box{
+    background:#fff;
+    border:1px solid #e9ecef;
+    border-radius:16px;
+    padding:20px;
+}
+
+.instruction-list{
+    padding-left:18px;
+    margin-bottom:0;
+}
+
+.instruction-list li{
+    margin-bottom:10px;
+    color:#495057;
+    line-height:1.6;
+}
+</style>
+{% endblock 'css' %}
+{% block 'body' %}
+<div class="container-fluid">
+    <div class="py-3 d-flex align-items-sm-center flex-sm-row flex-column">
+        <div class="flex-grow-1">
+            <h4 class="fs-18 fw-semibold m-0">Edit Editor Profile</h4> 
+        </div>
+    </div>
+    <div class="row">
+        <!-- User Account Creation Form -->
+        <div class="col-xl-6">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">Edit {{data.name}}</h5>
+                </div>
+
+                <div class="card-body">
+                  <form class="row g-3" action="" method="POST" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="col-md-6">
+                        <label for="authorName" class="form-label">Name</label>
+                        <input type="text" class="form-control" id="authorName" placeholder="Author's Full Name" name="name" value="{{data.name}}" required>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="authorDesignation" class="form-label">Designation</label>
+                        <input type="text" class="form-control" id="authorDesignation" placeholder="e.g., Senior Editor, Columnist" value="{{data.designation}}" name="designation" required>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="authorDescription" class="form-label">email</label>
+                        <input type="email" class="form-control" id="authorName" placeholder="Author's email id" name="email" value="{{data.email}}" required>
+                    </div>
+                    <div class="col-md-6">
+                      <label for="authorDescription" class="form-label">Date of Birth</label>
+                      <input type="date" class="form-control" id="authorName" placeholder="Author's date of birth" name="DOB" value="{{data.DOB}}" required>
+                  </div>
+                  <div class="col-12">
+                    <label for="authorDescription" class="form-label">Description</label>
+                    <textarea class="form-control" id="authorDescription" rows="3" placeholder="A brief description about the author" name="description">{{data.description}}</textarea>
+                  </div>
+                  <div class="col-12">
+                    <label for="authorDescription" class="form-label">Location</label>
+                    <textarea class="form-control" id="authorDescription" rows="2" placeholder="Just the state and city of the editor" name="location">{{data.location}}</textarea>
+                  </div>
+                    <div class="col-md-6">
+                        <label for="authorImage" class="form-label">Image</label>
+                        <img src="/media/{{data.image}}" alt="{{data.name}}" style="height: 50px; border-radius: 50%;" >
+                        <br><br>
+                        <input type="file" class="form-control" id="authorImage" accept="image/png, image/webp, image/jpeg, image/jpg" name="image" >
+                        <div class="form-text">Recommended image dimensions is 500*500 px and format is .webp</div>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="authorFacebook" class="form-label">Facebook URL (Optional)</label>
+                        <input type="url" class="form-control" id="authorFacebook" placeholder="https://www.facebook.com/profile" name="facebook_url" value="{{data.facebook_url}}" >
+                    </div>
+                    <div class="col-md-6">
+                        <label for="authorInstagram" class="form-label">Instagram URL (Optional)</label>
+                        <input type="url" class="form-control" id="authorInstagram" placeholder="https://www.instagram.com/username" name="instagram_url" value="{{data.instagram_url}}">
+                    </div>
+                    <div class="col-md-6">
+                        <label for="authorLinkedIn" class="form-label">LinkedIn URL (Optional)</label>
+                        <input type="url" class="form-control" id="authorLinkedIn" placeholder="https://www.linkedin.com/in/username" name="linkedin_url" value="{{data.linkedin_url}}">
+                    </div>
+                    <div class="col-md-6">
+                        <label for="authorTwitter" class="form-label">Twitter URL (Optional)</label>
+                        <input type="url" class="form-control" id="authorTwitter" placeholder="https://twitter.com/username" name="twitter_url" value="{{data.twitter_url}}">
+                    </div>
+                    <div class="col-12">
+                        <button class="btn btn-primary" type="submit">Add Author</button>
+                    </div>
+                </form>
+                </div> 
+            </div>
+        </div> 
+        <!--FAQ Sections-->
+        <div class="col-xl-6">
+    <div class="card border-0 shadow-sm">
+        <div class="card-header bg-white border-0 pb-0">
+          <div class="d-flex align-items-center mt-3 gemini-badge">
+    <img 
+        src="https://upload.wikimedia.org/wikipedia/commons/8/8f/Google-gemini-icon.svg"
+        width="20"
+        class="me-2"
+        alt="Gemini"
+    >
+
+    <span>
+        Powered by <strong>Google Gemini AI</strong>
+    </span>
+</div>
+            
+        </div>
+
+        <div class="card-body">
+
+            <!-- Gemini Prompt Card -->
+            <div class="ai-helper-card mb-4">
+
+                <div class="d-flex align-items-center mb-3">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/8/8f/Google-gemini-icon.svg"
+                         width="42"
+                         class="me-3"
+                         alt="Gemini Logo">
+
+                    <div>
+                        <h6 class="mb-1 fw-semibold">Generate Author Description</h6>
+                        <p class="text-muted small mb-0">
+                            Opens Gemini with a ready-to-use prompt.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="prompt-box">
+                    Write a professional one-paragraph author bio describing the editor’s expertise, experience, industry focus, achievements, and writing style in a confident, modern, and credible tone suitable for a digital media publication profile.
+                </div>
+
+                <a target="_blank"
+                   href="https://gemini.google.com/app"
+                   class="btn btn-dark mt-3 w-100">
+                    Open Gemini
+                </a>
+            </div>
+
+
+            <!-- Instructions -->
+            <div class="instruction-box">
+
+                <h6 class="fw-semibold mb-3">
+                    Profile Image Instructions
+                </h6>
+
+                <ul class="instruction-list">
+                    <li>Upload a professional headshot image.</li>
+                    <li>Image size must be exactly <strong>500 × 500 pixels</strong>.</li>
+                    <li>Use <strong>WEBP format</strong> for optimized loading speed.</li>
+                    <li>Keep the background clean and professional.</li>
+                    <li>Ensure the face is properly centered and visible.</li>
+                </ul>
+
+            </div>
+
+        </div>
+    </div>
+</div>
+    </div>
+</div>
+{% endblock 'body' %}
+{% block 'scripts' %}{% endblock 'scripts' %}

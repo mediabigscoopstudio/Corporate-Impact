@@ -1,0 +1,155 @@
+{% extends "dash/base.html" %}
+{% block 'title' %}Add Category{% endblock 'title' %}
+{% block 'css' %}
+<style>
+  .ai-helper-card{
+    background:#f8fafc;
+    border:1px solid #e9ecef;
+    border-radius:16px;
+    padding:20px;
+}
+
+.prompt-box{
+    background:white;
+    border:1px dashed #ced4da;
+    border-radius:12px;
+    padding:16px;
+    font-size:14px;
+    line-height:1.7;
+    color:#495057;
+}
+
+.instruction-box{
+    background:#fff;
+    border:1px solid #e9ecef;
+    border-radius:16px;
+    padding:20px;
+}
+
+.instruction-list{
+    padding-left:18px;
+    margin-bottom:0;
+}
+
+.instruction-list li{
+    margin-bottom:10px;
+    color:#495057;
+    line-height:1.6;
+}
+</style>
+{% endblock 'css' %}
+{% block 'body' %}
+<div class="container-fluid">
+    <div class="py-3 d-flex align-items-sm-center flex-sm-row flex-column">
+        <div class="flex-grow-1">
+            <h4 class="fs-18 fw-semibold m-0">Create Category</h4> 
+        </div>
+    </div>
+    <div class="row">
+        <!-- User Account Creation Form -->
+        <div class="col-xl-6">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">Create Category</h5>
+                </div>
+
+                <div class="card-body">
+                    <form class="row g-3" action="" method="POST">
+                        {% csrf_token %}
+                        <div class="col-12">
+                            <label for="categoryTitle" class="form-label">Title</label>
+                            <input type="text" class="form-control" id="categoryTitle" placeholder="Category Title" name="title" required>
+                        </div>
+                        <div class="col-12">
+                            <label for="categoryDescription" class="form-label">Description</label>
+                            <textarea class="form-control" id="categoryDescription" rows="3" placeholder="Category Description" name="description"></textarea>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="categoryMetaTitle" class="form-label">Meta Title</label>
+                            <input type="text" class="form-control" id="categoryMetaTitle" placeholder="Meta Title" name="meta_title">
+                        </div>
+                        <div class="col-md-6">
+                            <label for="categoryMetaDescription" class="form-label">Meta Description</label>
+                            <textarea class="form-control" id="categoryMetaDescription" rows="2" placeholder="Meta Description" name="meta_description"></textarea>
+                        </div>
+                        <div class="col-12">
+                            <label for="categoryMetaKeywords" class="form-label">Meta Keywords</label>
+                            <input type="text" class="form-control" id="categoryMetaKeywords" placeholder="Comma-separated keywords" name="meta_keywords">
+                        </div>
+                        <div class="col-12">
+                            <button class="btn btn-primary" type="submit">Create Category</button>
+                        </div>
+                    </form>
+                </div> 
+            </div>
+        </div> 
+        <!--FAQ Sections-->
+        <div class="col-xl-6">
+            <!-- AI Category Assistant -->
+<div class="ai-helper-card mb-4">
+
+   <div class="d-flex align-items-center mt-3 gemini-badge">
+    <img 
+        src="https://upload.wikimedia.org/wikipedia/commons/8/8f/Google-gemini-icon.svg"
+        width="20"
+        class="me-2"
+        alt="Gemini"
+    >
+
+    <span>
+        Powered by <strong>Google Gemini AI</strong>
+    </span>
+</div>
+<br>
+    <div class="prompt-box">
+
+        <strong>Category Name Prompt</strong><br>
+        Suggest a modern, engaging, SEO-friendly media content category name suitable for a digital news and media platform targeting young and global audiences.
+
+        <hr>
+
+        <strong>Category Description Prompt</strong><br>
+        Write a professional category description explaining what type of content this section covers, its purpose, and why readers should explore it.
+
+        <hr>
+
+        <strong>Meta Title Prompt</strong><br>
+        Generate an SEO-optimized meta title under 60 characters for this media category.
+
+        <hr>
+
+        <strong>Meta Description Prompt</strong><br>
+        Generate an SEO-friendly meta description under 160 characters that improves search engine visibility and click-through rate.
+
+        <hr>
+
+        <strong>Meta Keywords Prompt</strong><br>
+        Generate highly relevant SEO keywords separated by commas for this category based on digital publishing, media discoverability, and search intent.
+
+    </div>
+
+    <div class="row g-2 mt-3">
+
+        <div class="col-md-6">
+            <a target="_blank"
+               href="https://gemini.google.com/app"
+               class="btn btn-dark w-100">
+                Open Gemini
+            </a>
+        </div>
+
+        <div class="col-md-6">
+            <button class="btn btn-outline-dark w-100"
+                    onclick="navigator.clipboard.writeText(document.getElementById('categoryPromptText').innerText)">
+                Copy Prompt
+            </button>
+        </div>
+
+    </div>
+
+</div>
+        </div>
+    </div>
+</div>
+{% endblock 'body' %}
+{% block 'scripts' %}{% endblock 'scripts' %}

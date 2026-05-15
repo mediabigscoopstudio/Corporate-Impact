@@ -1,0 +1,273 @@
+{% extends "main/base.html" %}
+
+{% block 'title' %}Share Your Story | Homemaker's Chronicles{% endblock 'title' %}
+
+{% block 'css' %}
+<style>
+  /* =============================================
+     HOMEMAKER LANDING PAGE STYLES (DARK THEME)
+  ============================================= */
+  .hm-page-wrapper {
+    background: var(--ci-charcoal, #141414);
+    padding: 80px 0 120px;
+    min-height: 100vh;
+    color: #fff;
+    position: relative;
+    overflow: hidden;
+  }
+  
+  /* Subtle background accent */
+  .hm-page-wrapper::before {
+    content: ''; position: absolute; top: 0; right: 0; width: 50%; height: 100%;
+    background: linear-gradient(135deg, transparent 0%, rgba(204,27,27,0.05) 100%);
+    pointer-events: none;
+  }
+
+  /* Left Side: Persuasive Content */
+  .hm-content-side {
+    position: sticky;
+    top: 120px;
+    padding-right: 40px;
+    z-index: 2;
+  }
+  .hm-eyebrow {
+    font-family: var(--font-sans); font-size: 12px; font-weight: 700;
+    letter-spacing: 0.15em; text-transform: uppercase; color: var(--ci-red);
+    margin-bottom: 16px; display: flex; align-items: center; gap: 12px;
+  }
+  .hm-eyebrow::before {
+    content: ''; width: 32px; height: 1px; background: var(--ci-red);
+  }
+  .hm-title {
+    font-family: var(--font-display); font-size: clamp(36px, 4vw, 52px);
+    font-weight: 900; color: #fff; line-height: 1.08;
+    letter-spacing: -1px; margin-bottom: 24px;
+  }
+  .hm-title em {
+    font-style: italic; color: var(--ci-red);
+  }
+  .hm-desc {
+    font-family: var(--font-sans); font-size: 16px; color: rgba(255,255,255,0.7);
+    line-height: 1.75; margin-bottom: 32px;
+  }
+  
+  .hm-hindi-quote {
+    font-family: var(--font-serif); font-style: italic; font-size: 16px; 
+    color: rgba(204,27,27,0.9); border-left: 2px solid var(--ci-red); 
+    padding-left: 16px; margin: 40px 0; line-height: 1.65;
+  }
+  .hm-hindi-quote span {
+    display: block; font-size: 13px; opacity: 0.6; font-style: normal; 
+    font-family: var(--font-sans); margin-top: 8px; color: #fff;
+  }
+
+  /* Right Side: The Form Card */
+  .hm-form-card {
+    background: rgba(255,255,255,0.02);
+    border: 1px solid rgba(255,255,255,0.08);
+    backdrop-filter: blur(10px);
+    border-radius: 6px;
+    padding: 48px;
+    position: relative;
+    z-index: 2;
+  }
+  .hm-section-title {
+    font-family: var(--font-display); font-size: 20px; font-weight: 700;
+    color: #fff; margin-bottom: 20px; border-bottom: 1px solid rgba(255,255,255,0.1);
+    padding-bottom: 10px;
+  }
+
+  /* Form Elements */
+  .hm-form-grid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 32px;
+  }
+  .hm-input-group {
+    display: flex; flex-direction: column;
+  }
+  .hm-input-group.full-width {
+    grid-column: span 2;
+  }
+  .hm-input-group label {
+    font-family: var(--font-sans); font-size: 11px; font-weight: 700;
+    color: rgba(255,255,255,0.85); margin-bottom: 8px; text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+  .hm-input, .hm-select, .hm-textarea {
+    width: 100%; padding: 14px 16px; background: rgba(0,0,0,0.2);
+    border: 1px solid rgba(255,255,255,0.15); border-radius: 3px;
+    font-family: var(--font-sans); font-size: 14px; color: #fff;
+    outline: none; transition: all 0.2s;
+  }
+  .hm-input::placeholder, .hm-textarea::placeholder {
+    color: rgba(255,255,255,0.3);
+  }
+  .hm-input:focus, .hm-select:focus, .hm-textarea:focus {
+    border-color: var(--ci-red); background: rgba(0,0,0,0.4); 
+    box-shadow: 0 0 0 3px rgba(204,27,27,0.1);
+  }
+  
+  /* Select styling specifically for dark mode */
+  .hm-select { color: #fff; }
+  .hm-select option { background: var(--ci-charcoal); color: #fff; }
+
+  .hm-textarea {
+    resize: vertical; min-height: 140px;
+  }
+  .hm-helper-text {
+    font-family: var(--font-sans); font-size: 11px; color: rgba(255,255,255,0.4);
+    margin-top: 6px;
+  }
+
+  /* Checkboxes */
+  .hm-checkbox-wrapper {
+    display: flex; align-items: flex-start; gap: 12px; margin-bottom: 24px;
+    padding: 16px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 4px; transition: border-color 0.2s;
+  }
+  .hm-checkbox-wrapper:hover { border-color: rgba(255,255,255,0.2); }
+  .hm-checkbox-wrapper input[type="checkbox"] {
+    margin-top: 4px; accent-color: var(--ci-red); width: 16px; height: 16px;
+  }
+  .hm-checkbox-wrapper label {
+    font-family: var(--font-sans); font-size: 13px; color: rgba(255,255,255,0.8);
+    line-height: 1.5; cursor: pointer; margin: 0;
+  }
+  .hm-checkbox-wrapper.consent-box {
+    background: rgba(204,27,27,0.05); border-color: rgba(204,27,27,0.2); margin-top: 32px;
+  }
+
+  /* Button */
+  .hm-submit-btn {
+    background: var(--ci-red); color: #fff; border: none; padding: 18px 32px;
+    font-family: var(--font-sans); font-size: 13px; font-weight: 700;
+    letter-spacing: 0.12em; text-transform: uppercase; cursor: pointer;
+    border-radius: 3px; transition: background 0.2s, transform 0.2s; width: 100%;
+  }
+  .hm-submit-btn:hover {
+    background: var(--ci-red-dark, #a81616); transform: translateY(-2px);
+  }
+
+  /* Responsive */
+  @media (max-width: 991px) {
+    .hm-content-side { position: relative; top: 0; padding-right: 0; margin-bottom: 48px; }
+  }
+  @media (max-width: 768px) {
+    .hm-form-card { padding: 32px 24px; }
+    .hm-form-grid { grid-template-columns: 1fr; }
+    .hm-input-group.full-width { grid-column: span 1; }
+  }
+</style>
+{% endblock 'css' %}
+
+{% block 'body' %}
+<div class="hm-page-wrapper">
+  <div class="container">
+    <div class="row">
+      
+      <!-- =============================================
+           LEFT: PERSUASIVE CONTENT
+      ============================================= -->
+      <div class="col-lg-5">
+        <div class="hm-content-side">
+          <div class="hm-eyebrow">Homemaker's Chronicles</div>
+          <h1 class="hm-title">She Ran a Home.<br>Now She Runs <em>Everything.</em></h1>
+          <p class="hm-desc">
+            The homemaker's story has never been told the way it deserves. We believe that managing a family, raising children, and holding a household together is leadership — and we're here to recognize it.
+          </p>
+          <p class="hm-desc">
+            Whether you built your strength entirely within your home, or took that strength and walked out the door to build a business, your journey matters.
+          </p>
+
+          <div class="hm-hindi-quote">
+            "Ghar sambhalna bhi ek kala hai. Aur har kala ko pehchan milni chahiye."
+            <span>Managing a home is also an art. And every art deserves recognition.</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- =============================================
+           RIGHT: THE COMPLETE 11-FIELD FORM
+      ============================================= -->
+      <div class="col-lg-7">
+        <div class="hm-form-card">
+          <form action="{% url 'homemaker_form' %}" method="POST">
+            {% csrf_token %}
+
+            <!-- SECTION: Contact Information -->
+            <div class="hm-section-title">Who are you?</div>
+            <div class="hm-form-grid">
+              <div class="hm-input-group">
+                <label>Full Name *</label>
+                <input type="text" name="name" class="hm-input" required>
+              </div>
+              <div class="hm-input-group">
+                <label>Email Address *</label>
+                <input type="email" name="email" class="hm-input" required>
+              </div>
+              <div class="hm-input-group">
+                <label>Phone Number</label>
+                <input type="tel" name="phone" class="hm-input" placeholder="+91">
+              </div>
+              <div class="hm-input-group">
+                <label>City *</label>
+                <input type="text" name="city" class="hm-input" required>
+              </div>
+            </div>
+
+            <!-- SECTION: Program Details -->
+            <div class="hm-section-title">How can we feature you?</div>
+            <div class="hm-form-grid">
+              <div class="hm-input-group">
+                <label>Feature Type *</label>
+                <select name="spotlight_type" class="hm-select" required>
+                  <option value="story">Share My Story</option>
+                  <option value="interview">Request an Interview</option>
+                  <option value="otm">Homemaker of the Month</option>
+                  <option value="write">Write for the Column</option>
+                </select>
+              </div>
+              <div class="hm-input-group">
+                <label>Instagram Handle</label>
+                <input type="text" name="instagram_handle" class="hm-input" placeholder="@handle (Optional)">
+              </div>
+              
+              <!-- Experience & Entrepreneurship -->
+              <div class="hm-input-group">
+                <label>Years as a Homemaker</label>
+                <input type="number" name="years_as_homemaker" class="hm-input" min="0" placeholder="e.g., 10">
+              </div>
+              <div class="hm-input-group">
+                <label>Business / Venture Name</label>
+                <input type="text" name="business_name" class="hm-input" placeholder="Leave blank if N/A">
+                <div class="hm-helper-text">If you run a side venture.</div>
+              </div>
+            </div>
+
+            <div class="hm-checkbox-wrapper">
+              <input type="checkbox" name="is_entrepreneur" id="hm_entrepreneur">
+              <label for="hm_entrepreneur">I run a business, home enterprise, or side venture alongside managing my home.</label>
+            </div>
+
+            <!-- SECTION: The Story -->
+            <div class="hm-section-title">Your Journey</div>
+            <div class="hm-input-group">
+              <label>Your Story *</label>
+              <textarea name="story_summary" class="hm-textarea" required placeholder="Tell us about yourself — your journey, the challenges you manage, and what makes your story worth telling. Don't worry about perfect writing; just be honest..."></textarea>
+            </div>
+
+            <!-- SECTION: Consent & Submit -->
+            <div class="hm-checkbox-wrapper consent-box">
+              <input type="checkbox" name="consent_publish" id="hm_consent" required>
+              <label for="hm_consent">I agree that Corporate Impact may publish my story across print, digital, and social media platforms.</label>
+            </div>
+
+            <button type="submit" class="hm-submit-btn">Submit Story</button>
+
+          </form>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+{% endblock 'body' %}

@@ -1,0 +1,384 @@
+{% extends "dash/base.html" %}
+
+{% block 'title' %}Gallery - Corporate Impact{% endblock 'title' %}
+
+{% block 'css' %}
+
+<style>
+
+.gallery-card{
+    border:none;
+    border-radius:20px;
+    overflow:hidden;
+    transition:0.3s;
+    background:#fff;
+    box-shadow:0 2px 12px rgba(0,0,0,0.05);
+}
+
+.gallery-card:hover{
+    transform:translateY(-5px);
+}
+
+.gallery-image{
+    width:100%;
+    height:220px;
+    object-fit:cover;
+}
+
+.gallery-content{
+    padding:16px;
+}
+
+.gallery-title{
+    font-size:16px;
+    font-weight:600;
+    margin-bottom:6px;
+}
+
+.gallery-alt{
+    font-size:13px;
+    color:#6c757d;
+}
+
+.upload-instruction{
+    background:#f8fafc;
+    border:1px solid #e9ecef;
+    border-radius:14px;
+    padding:14px;
+    margin-top:14px;
+}
+
+.upload-instruction ul{
+    margin-bottom:0;
+    padding-left:18px;
+}
+
+.upload-instruction li{
+    font-size:13px;
+    margin-bottom:5px;
+    color:#6c757d;
+}
+
+</style>
+
+{% endblock 'css' %}
+
+
+{% block 'body' %}
+
+<div class="container-fluid">
+
+    <!-- Header -->
+    <div class="py-3 d-flex justify-content-between align-items-center">
+
+        <div>
+            <h4 class="fs-18 fw-semibold m-0">
+                Gallery
+            </h4>
+        </div>
+
+        <button class="btn btn-dark"
+                data-bs-toggle="modal"
+                data-bs-target="#addGalleryModal">
+
+            Add Image
+
+        </button>
+
+    </div>
+
+    <!-- Gallery Grid -->
+    <div class="row">
+
+        {% for i in images %}
+
+        <div class="col-xl-4 col-lg-6 mb-4">
+
+            <div class="gallery-card">
+
+                <img src="{{i.image.url}}"
+                     class="gallery-image"
+                     alt="{{i.alt_text}}">
+
+                <div class="gallery-content">
+
+                    <h5 class="gallery-title">
+                        {{i.title}}
+                    </h5>
+
+                    <p class="gallery-alt">
+                        {{i.alt_text}}
+                    </p>
+
+                    <div class="d-flex gap-2 mt-3">
+
+                        <button class="btn btn-sm btn-dark"
+                                data-bs-toggle="modal"
+                                data-bs-target="#editModal{{i.id}}">
+                            Edit
+                        </button>
+
+                        <a href="{% url 'delete_gallery' i.id %}"
+                           class="btn btn-sm btn-danger">
+                            Delete
+                        </a>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- Edit Modal -->
+        <div class="modal fade" id="editModal{{i.id}}" tabindex="-1">
+
+            <div class="modal-dialog modal-lg modal-dialog-centered">
+
+                <div class="modal-content">
+
+                    <form method="POST"
+                          enctype="multipart/form-data"
+                          action="{% url 'edit_gallery' i.id %}">
+
+                        {% csrf_token %}
+
+                        <div class="modal-header">
+
+                            <h5 class="modal-title">
+                                Edit Image
+                            </h5>
+
+                            <button type="button"
+                                    class="btn-close"
+                                    data-bs-dismiss="modal"></button>
+
+                        </div>
+
+                        <div class="modal-body">
+
+                            <div class="mb-3">
+
+                                <label class="form-label">
+                                    Title
+                                </label>
+
+                                <input type="text"
+                                       class="form-control"
+                                       name="title"
+                                       value="{{i.title}}"
+                                       required>
+
+                            </div>
+
+                            <div class="mb-3">
+
+                                <label class="form-label">
+                                    Alt Text
+                                </label>
+
+                                <input type="text"
+                                       class="form-control"
+                                       name="alt_text"
+                                       value="{{i.alt_text}}"
+                                       required>
+
+                            </div>
+
+                            <div class="mb-3">
+
+                                <label class="form-label">
+                                    Image
+                                </label>
+
+                                <input type="file"
+                                       class="form-control gallery-image-input"
+                                       name="image"
+                                       accept=".webp">
+
+                            </div>
+
+                            <div class="upload-instruction">
+
+                                <strong>Upload Requirements</strong>
+
+                                <ul>
+                                    <li>Image must be WEBP format</li>
+                                    <li>Dimension must be exactly 900 × 400 px</li>
+                                    <li>Optimized high-quality image recommended</li>
+                                </ul>
+
+                            </div>
+
+                        </div>
+
+                        <div class="modal-footer">
+
+                            <button type="submit"
+                                    class="btn btn-dark">
+                                Save Changes
+                            </button>
+
+                        </div>
+
+                    </form>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        {% endfor %}
+
+    </div>
+
+</div>
+
+
+<!-- Add Modal -->
+<div class="modal fade" id="addGalleryModal" tabindex="-1">
+
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+
+        <div class="modal-content">
+
+            <form method="POST"
+                  enctype="multipart/form-data">
+
+                {% csrf_token %}
+
+                <div class="modal-header">
+
+                    <h5 class="modal-title">
+                        Add Gallery Image
+                    </h5>
+
+                    <button type="button"
+                            class="btn-close"
+                            data-bs-dismiss="modal"></button>
+
+                </div>
+
+                <div class="modal-body">
+
+                    <div class="mb-3">
+
+                        <label class="form-label">
+                            Title
+                        </label>
+
+                        <input type="text"
+                               class="form-control"
+                               name="title"
+                               required>
+
+                    </div>
+
+                    <div class="mb-3">
+
+                        <label class="form-label">
+                            Alt Text
+                        </label>
+
+                        <input type="text"
+                               class="form-control"
+                               name="alt_text"
+                               required>
+
+                    </div>
+
+                    <div class="mb-3">
+
+                        <label class="form-label">
+                            Image
+                        </label>
+
+                        <input type="file"
+                               class="form-control gallery-image-input"
+                               name="image"
+                               accept=".webp"
+                               required>
+
+                    </div>
+
+                    <div class="upload-instruction">
+
+                        <strong>Upload Requirements</strong>
+
+                        <ul>
+                            <li>Image must be WEBP format</li>
+                            <li>Dimension must be exactly 900 × 400 px</li>
+                            <li>Optimized high-quality image recommended</li>
+                        </ul>
+
+                    </div>
+
+                </div>
+
+                <div class="modal-footer">
+
+                    <button type="submit"
+                            class="btn btn-dark">
+                        Upload Image
+                    </button>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock 'body' %}
+
+
+{% block 'script' %}
+
+<script>
+
+document.querySelectorAll('.gallery-image-input').forEach(input => {
+
+    input.addEventListener('change', function(e){
+
+        const file = e.target.files[0];
+
+        if(!file) return;
+
+        // WEBP Validation
+        if(file.type !== 'image/webp'){
+
+            alert('Only WEBP images are allowed.');
+
+            e.target.value = '';
+
+            return;
+        }
+
+        // Dimension Validation
+        const img = new Image();
+
+        img.onload = function(){
+
+            if(img.width !== 900 || img.height !== 400){
+
+                alert('Image must be exactly 900 × 400 pixels.');
+
+                e.target.value = '';
+            }
+        };
+
+        img.src = URL.createObjectURL(file);
+
+    });
+
+});
+
+</script>
+
+{% endblock 'script' %}

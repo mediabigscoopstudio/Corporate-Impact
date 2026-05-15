@@ -1,0 +1,138 @@
+{% extends "dash/base.html" %}
+
+{% block 'title' %}
+Leads - Corporate Impact
+{% endblock 'title' %}
+
+
+{% block 'body' %}
+
+<div class="container-fluid">
+
+    <div class="py-3">
+
+        <h4 class="fw-semibold">
+            All Leads
+        </h4>
+
+    </div>
+
+    <div class="card border-0 shadow-sm">
+
+        <div class="card-body">
+
+            <div class="table-responsive">
+
+                <table class="table align-middle">
+
+                    <thead>
+
+                        <tr>
+
+                            <th>Name</th>
+
+                            <th>Email</th>
+
+                            <th>Phone</th>
+
+                            <th>Lead Type</th>
+
+                            <th>Status</th>
+
+                            <th>Created</th>
+
+                            <th>Action</th>
+
+                        </tr>
+
+                    </thead>
+
+                    <tbody>
+
+                        {% for i in leads %}
+
+                        <tr>
+
+                            <td>
+                                {{i.name}}
+                            </td>
+
+                            <td>
+                                {{i.email}}
+                            </td>
+
+                            <td>
+                                {{i.phone}}
+                            </td>
+
+                            <td>
+
+                                {% if i.spotlight_type %}
+
+                                <span class="badge bg-primary-subtle text-dark">
+
+                                    Homemaker
+
+                                </span>
+
+                                {% else %}
+
+                                <span class="badge bg-success-subtle text-dark">
+
+                                    Byline
+
+                                </span>
+
+                                {% endif %}
+
+                            </td>
+
+                            <td>
+                                {{i.status}}
+                            </td>
+
+                            <td>
+                                {{i.created_at}}
+                            </td>
+
+                            <td>
+
+                                {% if i.spotlight_type %}
+
+                                <a href="/view_lead/homemaker/{{i.id}}/"
+                                   class="btn btn-sm btn-dark">
+
+                                    View Lead
+
+                                </a>
+
+                                {% else %}
+
+                                <a href="/view_lead/byline/{{i.id}}/"
+                                   class="btn btn-sm btn-dark">
+
+                                    View Lead
+
+                                </a>
+
+                                {% endif %}
+
+                            </td>
+
+                        </tr>
+
+                        {% endfor %}
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock 'body' %}

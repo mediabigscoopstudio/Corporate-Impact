@@ -1,0 +1,1135 @@
+{% extends "main/base.html" %}
+
+{% block 'title' %}Corporate Impact | Where Every Story Changes Something{% endblock 'title' %}
+
+{% block 'css' %}
+<style>
+
+  /* =============================================
+     SECTION UTILITIES
+  ============================================= */
+  .ci-section-label {
+    display: flex; align-items: center; gap: 14px;
+    margin-bottom: 40px; padding-bottom: 14px;
+    border-bottom: 2px solid var(--ci-black);
+  }
+  .ci-section-label__bar { width: 5px; height: 26px; background: var(--ci-red); border-radius: 2px; flex-shrink: 0; }
+  .ci-section-label__title { font-family: var(--font-display); font-size: 26px; font-weight: 900; color: var(--ci-black); letter-spacing: -0.3px; margin: 0; }
+  .ci-section-label__link { margin-left: auto; font-family: var(--font-sans); font-size: 11px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ci-red); }
+  .ci-eyebrow { font-family: var(--font-sans); font-size: 11px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: var(--ci-red); display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
+  .ci-eyebrow::before { content: ''; width: 28px; height: 1px; background: var(--ci-red); flex-shrink: 0; }
+
+  /* =============================================
+     1. HERO CAROUSEL
+  ============================================= */
+  .hero-carousel-wrapper { width: 100vw; position: relative; left: 50%; right: 50%; margin-left: -50vw; margin-right: -50vw; background: var(--ci-black); }
+  .ci-carousel-item { height: 78vh; min-height: 520px; max-height: 820px; position: relative; display: block; text-decoration: none; overflow: hidden; }
+  .ci-carousel-img { width: 100%; height: 100%; object-fit: cover; transform: scale(1.02); transition: transform 7s cubic-bezier(0.25,1,0.5,1); }
+  .ci-carousel-item:hover .ci-carousel-img { transform: scale(1.06); }
+  .ci-carousel-overlay { position: absolute; inset: 0; background: linear-gradient(180deg,rgba(15,15,15,0) 0%,rgba(15,15,15,0.35) 45%,rgba(15,15,15,0.95) 100%); z-index: 1; }
+  .ci-carousel-content { position: absolute; bottom: 0; left: 0; right: 0; z-index: 2; padding-bottom: 64px; }
+  .ci-hero-badge { font-family: var(--font-sans); background: var(--ci-red); color: #fff; font-size: 10px; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; padding: 5px 12px; border-radius: 2px; display: inline-block; margin-bottom: 18px; }
+  .ci-hero-title { font-family: var(--font-display); font-size: clamp(2.2rem,5.5vw,4.8rem); font-weight: 900; line-height: 1.05; letter-spacing: -1.5px; color: #fff; margin-bottom: 18px; max-width: 880px; text-shadow: 0 4px 16px rgba(0,0,0,0.5); }
+  .ci-hero-meta { font-family: var(--font-sans); font-size: 13px; font-weight: 500; color: rgba(255,255,255,0.75); display: flex; align-items: center; gap: 10px; }
+  .carousel-indicators { margin-bottom: 20px; gap: 6px; }
+  .carousel-indicators [data-bs-target] { width: 28px; height: 3px; background: rgba(255,255,255,0.35); border: none; border-radius: 2px; transition: background 0.3s; }
+  .carousel-indicators .active { background: var(--ci-red); }
+  .carousel-control-prev, .carousel-control-next { width: 5%; opacity: 0; transition: opacity 0.3s; z-index: 5; }
+  .hero-carousel-wrapper:hover .carousel-control-prev, .hero-carousel-wrapper:hover .carousel-control-next { opacity: 1; }
+  @media (max-width:768px) {
+    .ci-carousel-item { height: 62vh; min-height: 380px; max-height: 520px; }
+    .ci-carousel-content { padding-bottom: 40px; }
+    .carousel-control-prev, .carousel-control-next { opacity: 0.5; width: 10%; }
+  }
+
+  /* =============================================
+     2. LIVE WIRE MARQUEE
+  ============================================= */
+  .ci-marquee-section { background: var(--ci-charcoal); padding: 28px 0 36px; overflow: hidden; border-bottom: 3px solid var(--ci-red); }
+  .ci-marquee-header { display: flex; align-items: center; gap: 12px; margin-bottom: 20px; padding: 0 24px; }
+  .ci-marquee-label { font-family: var(--font-sans); font-size: 11px; font-weight: 700; color: #fff; letter-spacing: 0.15em; text-transform: uppercase; display: flex; align-items: center; }
+  .ci-marquee-label::before { content: ''; display: inline-block; width: 7px; height: 7px; background: var(--ci-red); border-radius: 50%; margin-right: 10px; animation: live-pulse 1.5s ease-in-out infinite; }
+  @keyframes live-pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
+  .ci-marquee-track { display: flex; width: max-content; animation: marquee-scroll 55s linear infinite; }
+  .ci-marquee-section:hover .ci-marquee-track { animation-play-state: paused; }
+  @keyframes marquee-scroll { 0%{transform:translateX(0)} 100%{transform:translateX(-50%)} }
+  .ci-marquee-group { display: flex; }
+  .ci-marquee-card { display: flex; align-items: center; gap: 14px; width: 360px; padding: 0 28px; border-right: 1px solid rgba(255,255,255,0.1); text-decoration: none; color: #fff; transition: opacity 0.2s; }
+  .ci-marquee-card:hover { opacity: 0.75; }
+  .ci-marquee-img { width: 76px; height: 76px; object-fit: cover; border-radius: 4px; flex-shrink: 0; background: var(--ci-graphite); border: 1px solid rgba(255,255,255,0.08); }
+  .ci-marquee-title { font-family: var(--font-display); font-size: 15px; font-weight: 700; line-height: 1.3; margin: 0; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+  @media (max-width:768px) { .ci-marquee-card { width: 290px; padding: 0 18px; } .ci-marquee-img { width: 60px; height: 60px; } .ci-marquee-title { font-size: 13px; } }
+
+  /* =============================================
+     3. SIMPLY TWO
+  ============================================= */
+  .simply-two-section { padding: 72px 0; background: var(--ci-black); }
+  .st-eyebrow { font-family: var(--font-sans); font-size: 11px; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: var(--ci-gold); display: flex; align-items: center; gap: 12px; margin-bottom: 10px; }
+  .st-eyebrow::before { content: ''; width: 32px; height: 1px; background: var(--ci-gold); }
+  .st-section-title { font-family: var(--font-display); font-size: clamp(32px,4vw,52px); font-weight: 900; color: #fff; letter-spacing: -1px; margin-bottom: 8px; }
+  .st-section-subtitle { font-family: var(--font-serif); font-size: 16px; font-style: italic; color: rgba(255,255,255,0.45); margin-bottom: 48px; max-width: 480px; }
+  .st-featured { position: relative; border-radius: 4px; overflow: hidden; height: 100%; min-height: 540px; background: var(--ci-charcoal); display: flex; flex-direction: column; justify-content: flex-end; cursor: pointer; text-decoration: none; }
+  .st-featured-bg { position: absolute; inset: 0; background: linear-gradient(160deg,#1a0a0a 0%,var(--ci-charcoal) 100%); }
+  .st-featured-initial { position: absolute; top: -20px; right: -10px; font-family: var(--font-display); font-size: 220px; font-weight: 900; color: rgba(201,162,39,0.07); line-height: 1; pointer-events: none; user-select: none; }
+  .st-featured::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: var(--ci-gold); z-index: 3; }
+  .st-featured-body { position: relative; z-index: 2; padding: 40px; border-top: 1px solid rgba(255,255,255,0.06); }
+  .st-issue-tag { font-family: var(--font-sans); font-size: 10px; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; color: var(--ci-gold); margin-bottom: 16px; }
+  .st-featured-name { font-family: var(--font-display); font-size: 40px; font-weight: 900; color: #fff; letter-spacing: -0.5px; margin-bottom: 4px; }
+  .st-featured-role { font-family: var(--font-serif); font-size: 14px; font-style: italic; color: rgba(255,255,255,0.45); margin-bottom: 20px; }
+  .st-featured-quote { font-family: var(--font-serif); font-size: 18px; font-style: italic; color: rgba(255,255,255,0.72); line-height: 1.55; border-left: 2px solid var(--ci-gold); padding-left: 16px; margin-bottom: 24px; }
+  .st-read-link { display: inline-flex; align-items: center; gap: 8px; font-family: var(--font-sans); font-size: 11px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ci-gold); text-decoration: none; transition: gap 0.2s; }
+  .st-read-link:hover { gap: 14px; color: var(--ci-gold); }
+  .st-read-link::after { content: '→'; }
+  .st-card { background: rgba(255,255,255,0.03); border: 0.5px solid rgba(255,255,255,0.07); border-radius: 4px; padding: 28px; text-decoration: none; color: #fff; display: flex; flex-direction: column; position: relative; overflow: hidden; transition: background 0.25s,border-color 0.25s,transform 0.25s; height: 100%; }
+  .st-card:hover { background: rgba(255,255,255,0.06); border-color: rgba(201,162,39,0.3); transform: translateY(-3px); }
+  .st-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: var(--ci-gold); transform: scaleX(0); transform-origin: left; transition: transform 0.35s cubic-bezier(0.16,1,0.3,1); }
+  .st-card:hover::before { transform: scaleX(1); }
+  .st-card-initial { font-family: var(--font-display); font-size: 80px; font-weight: 900; color: rgba(201,162,39,0.1); line-height: 1; position: absolute; top: 8px; right: 12px; pointer-events: none; }
+  .st-card-label { font-family: var(--font-sans); font-size: 10px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ci-gold); margin-bottom: 12px; }
+  .st-card-name { font-family: var(--font-display); font-size: 22px; font-weight: 700; color: #fff; margin-bottom: 4px; letter-spacing: -0.3px; position: relative; z-index: 1; }
+  .st-card-role { font-family: var(--font-serif); font-size: 13px; font-style: italic; color: rgba(255,255,255,0.38); margin-bottom: 14px; }
+  .st-card-quote { font-family: var(--font-serif); font-size: 14px; font-style: italic; color: rgba(255,255,255,0.55); line-height: 1.55; flex-grow: 1; margin-bottom: 16px; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+
+  /* =============================================
+     4. ECOSYSTEM
+  ============================================= */
+  .ecosystem-section { background: var(--ci-black); padding: 96px 0; overflow: hidden; position: relative; }
+  .ecosystem-section::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: linear-gradient(90deg,var(--ci-red) 0%,transparent 60%); }
+  .ecosystem-intro { max-width: 680px; margin-bottom: 64px; }
+  .ecosystem-title { font-family: var(--font-display); font-size: clamp(40px,5vw,64px); font-weight: 900; color: #fff; letter-spacing: -1.5px; line-height: 1.05; margin-bottom: 16px; }
+  .ecosystem-title em { font-style: italic; color: var(--ci-red); }
+  .ecosystem-subtitle { font-family: var(--font-serif); font-size: 17px; font-style: italic; color: rgba(255,255,255,0.45); line-height: 1.6; }
+  .pillar-card { background: rgba(255,255,255,0.03); border: 0.5px solid rgba(255,255,255,0.07); padding: 36px 28px; height: 100%; display: flex; flex-direction: column; position: relative; overflow: hidden; text-decoration: none; color: #fff; transition: background 0.3s,border-color 0.3s,transform 0.35s cubic-bezier(0.16,1,0.3,1); }
+  .pillar-card::after { content: attr(data-num); font-family: var(--font-display); font-size: 110px; font-weight: 900; color: rgba(255,255,255,0.03); position: absolute; bottom: -16px; right: 10px; line-height: 1; pointer-events: none; transition: color 0.3s; }
+  .pillar-card:hover { background: rgba(204,27,27,0.08); border-color: rgba(204,27,27,0.35); transform: translateY(-6px); color: #fff; }
+  .pillar-card:hover::after { color: rgba(204,27,27,0.07); }
+  .pillar-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: var(--ci-red); transform: scaleX(0); transform-origin: left; transition: transform 0.4s cubic-bezier(0.16,1,0.3,1); }
+  .pillar-card:hover::before { transform: scaleX(1); }
+  .pillar-num { font-family: var(--font-sans); font-size: 11px; font-weight: 700; letter-spacing: 0.15em; color: rgba(255,255,255,0.25); margin-bottom: 20px; transition: color 0.3s; }
+  .pillar-card:hover .pillar-num { color: var(--ci-red); }
+  .pillar-icon-wrap { font-size: 32px; margin-bottom: 20px; transition: transform 0.3s; display: block; }
+  .pillar-card:hover .pillar-icon-wrap { transform: scale(1.15); }
+  .pillar-name { font-family: var(--font-display); font-size: 22px; font-weight: 700; color: #fff; margin-bottom: 12px; }
+  .pillar-desc { font-family: var(--font-sans); font-size: 13px; color: rgba(255,255,255,0.4); line-height: 1.65; flex-grow: 1; }
+  .pillar-explore { margin-top: 20px; font-family: var(--font-sans); font-size: 11px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ci-red); opacity: 0; transform: translateY(6px); transition: opacity 0.3s,transform 0.3s; }
+  .pillar-card:hover .pillar-explore { opacity: 1; transform: translateY(0); }
+
+  /* =============================================
+     5. BYLINE PROGRAM
+  ============================================= */
+  .byline-section { background: var(--ci-paper); padding: 96px 0; border-top: 1px solid var(--ci-mist); border-bottom: 1px solid var(--ci-mist); }
+  .byline-intro { max-width: 760px; margin-bottom: 64px; }
+  .byline-main-title { font-family: var(--font-display); font-size: clamp(36px,4.5vw,56px); font-weight: 900; color: var(--ci-black); letter-spacing: -1px; line-height: 1.05; margin-bottom: 16px; }
+  .byline-main-desc { font-family: var(--font-sans); font-size: 16px; color: var(--ci-graphite); line-height: 1.75; margin-bottom: 12px; max-width: 640px; }
+  .byline-hindi { font-family: var(--font-serif); font-style: italic; font-size: 15px; color: var(--ci-red); border-left: 2px solid var(--ci-red); padding-left: 16px; margin-top: 20px; line-height: 1.6; }
+  .byline-card { background: var(--ci-white); border: 0.5px solid var(--ci-mist); border-radius: 4px; padding: 40px 32px; height: 100%; display: flex; flex-direction: column; position: relative; transition: box-shadow 0.25s,transform 0.25s; }
+  .byline-card:hover { transform: translateY(-4px); box-shadow: 0 16px 32px rgba(0,0,0,0.06); }
+  .byline-card--highlight { border: 2px solid var(--ci-red); box-shadow: 0 8px 24px rgba(204,27,27,0.1); }
+  .byline-card--highlight:hover { box-shadow: 0 20px 40px rgba(204,27,27,0.15); }
+  .byline-rec-badge { position: absolute; top: -13px; left: 50%; transform: translateX(-50%); background: var(--ci-red); color: #fff; font-family: var(--font-sans); font-size: 10px; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; padding: 4px 18px; white-space: nowrap; border-radius: 2px; }
+  .byline-tier-name { font-family: var(--font-display); font-size: 26px; font-weight: 900; color: var(--ci-black); margin-bottom: 6px; }
+  .byline-tier-desc { font-family: var(--font-sans); font-size: 13px; color: var(--ci-slate); line-height: 1.55; margin-bottom: 24px; min-height: 40px; }
+  .byline-price { font-family: var(--font-display); font-size: 42px; font-weight: 900; color: var(--ci-black); line-height: 1; padding-bottom: 24px; margin-bottom: 24px; border-bottom: 1px solid var(--ci-mist); }
+  .byline-price span { font-family: var(--font-sans); font-size: 14px; font-weight: 400; color: var(--ci-slate); }
+  .byline-list { list-style: none; padding: 0; margin: 0 0 32px; flex-grow: 1; }
+  .byline-list li { font-family: var(--font-sans); font-size: 14px; color: var(--ci-graphite); margin-bottom: 14px; display: flex; align-items: flex-start; gap: 10px; line-height: 1.5; }
+  .byline-list li::before { content: '✓'; color: var(--ci-red); font-weight: 700; flex-shrink: 0; margin-top: 1px; }
+  .byline-cta { display: block; width: 100%; padding: 14px; font-family: var(--font-sans); font-size: 12px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; text-align: center; text-decoration: none; border-radius: 3px; transition: all 0.2s; }
+  .byline-cta--outline { background: transparent; color: var(--ci-black); border: 1.5px solid var(--ci-black); }
+  .byline-cta--outline:hover { background: var(--ci-black); color: #fff; }
+  .byline-cta--solid { background: var(--ci-red); color: #fff; border: 1.5px solid var(--ci-red); }
+  .byline-cta--solid:hover { background: var(--ci-red-dark); border-color: var(--ci-red-dark); }
+
+  /* =============================================
+     6. HOMEMAKERS
+  ============================================= */
+  .homemakers-section { background: var(--ci-charcoal); padding: 96px 0; position: relative; overflow: hidden; }
+  .homemakers-section::before { content: ''; position: absolute; top: 0; right: 0; width: 45%; height: 100%; background: linear-gradient(135deg,transparent 0%,rgba(204,27,27,0.04) 100%); pointer-events: none; }
+  .hm-split { display: grid; grid-template-columns: 1fr 1.1fr; gap: 80px; align-items: center; }
+  .hm-main-title { font-family: var(--font-display); font-size: clamp(36px,4.5vw,54px); font-weight: 900; color: #fff; letter-spacing: -1px; line-height: 1.08; margin-bottom: 20px; }
+  .hm-main-title em { font-style: italic; color: var(--ci-red); }
+  .hm-body-text { font-family: var(--font-sans); font-size: 15px; color: rgba(255,255,255,0.6); line-height: 1.75; margin-bottom: 14px; }
+  .hm-hindi { font-family: var(--font-serif); font-style: italic; font-size: 14px; color: rgba(204,27,27,0.85); border-left: 2px solid var(--ci-red); padding-left: 16px; margin: 20px 0 32px; line-height: 1.65; }
+  .hm-cta { display: inline-block; background: var(--ci-red); color: #fff; font-family: var(--font-sans); font-size: 12px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; padding: 14px 32px; text-decoration: none; border-radius: 3px; transition: background 0.2s,transform 0.2s; }
+  .hm-cta:hover { background: var(--ci-red-dark); transform: translateY(-2px); color: #fff; }
+  .hm-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  .hm-card { background: rgba(255,255,255,0.04); border: 0.5px solid rgba(255,255,255,0.08); border-radius: 4px; padding: 28px 24px; position: relative; overflow: hidden; transition: border-color 0.25s,background 0.25s,transform 0.25s; cursor: pointer; }
+  .hm-card:hover { border-color: rgba(204,27,27,0.4); background: rgba(255,255,255,0.06); transform: translateY(-3px); }
+  .hm-card::before { content: ''; position: absolute; top: 0; left: 0; width: 3px; height: 100%; background: var(--ci-red); transform: scaleY(0); transform-origin: top; transition: transform 0.3s; }
+  .hm-card:hover::before { transform: scaleY(1); }
+  .hm-card--tall { grid-row: span 2; background: var(--ci-black); border-color: rgba(255,255,255,0.05); display: flex; flex-direction: column; justify-content: flex-end; min-height: 300px; }
+  .hm-card--tall:hover { border-color: rgba(201,162,39,0.4); }
+  .hm-card--tall::before { background: var(--ci-gold); }
+  .hm-card-icon { font-size: 30px; margin-bottom: 14px; }
+  .hm-card-title { font-family: var(--font-display); font-size: 18px; font-weight: 700; color: rgba(255,255,255,0.9); margin-bottom: 8px; line-height: 1.3; }
+  .hm-card-desc { font-family: var(--font-sans); font-size: 12px; color: rgba(255,255,255,0.35); line-height: 1.65; }
+  @media (max-width:991px) { .hm-split { grid-template-columns: 1fr; gap: 48px; } }
+
+  /* =============================================
+     7. WORK WITH US
+  ============================================= */
+  .workwithus-section { background: var(--ci-black); padding: 96px 0; border-top: 1px solid rgba(255,255,255,0.05); }
+  .wwu-intro { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: end; margin-bottom: 56px; }
+  .wwu-title { font-family: var(--font-display); font-size: clamp(40px,5vw,60px); font-weight: 900; color: #fff; letter-spacing: -1.5px; line-height: 1.05; }
+  .wwu-title em { font-style: italic; color: var(--ci-red); }
+  .wwu-desc { font-family: var(--font-sans); font-size: 15px; color: rgba(255,255,255,0.5); line-height: 1.75; margin-bottom: 28px; }
+  .wwu-mediakit-btn { display: inline-flex; align-items: center; gap: 10px; background: var(--ci-red); color: #fff; font-family: var(--font-sans); font-size: 12px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; padding: 14px 28px; border-radius: 3px; text-decoration: none; transition: background 0.2s; }
+  .wwu-mediakit-btn:hover { background: var(--ci-red-dark); color: #fff; }
+  .wwu-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 1px; background: rgba(255,255,255,0.05); }
+  .wwu-card { background: #0f0f0f; padding: 36px 28px; position: relative; overflow: hidden; transition: background 0.25s; cursor: pointer; }
+  .wwu-card:hover { background: #1a1a1a; }
+  .wwu-card::after { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 2px; background: var(--ci-red); transform: scaleX(0); transform-origin: left; transition: transform 0.4s; }
+  .wwu-card:hover::after { transform: scaleX(1); }
+  .wwu-num { font-family: var(--font-display); font-size: 52px; font-weight: 900; color: rgba(204,27,27,0.1); line-height: 1; margin-bottom: 14px; }
+  .wwu-name { font-family: var(--font-display); font-size: 20px; font-weight: 700; color: rgba(255,255,255,0.9); margin-bottom: 10px; }
+  .wwu-desc-text { font-family: var(--font-sans); font-size: 13px; color: rgba(255,255,255,0.3); line-height: 1.7; }
+  .wwu-link { display: inline-flex; align-items: center; gap: 6px; margin-top: 18px; font-family: var(--font-sans); font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ci-red); text-decoration: none; opacity: 0; transition: opacity 0.3s; font-weight: 700; }
+  .wwu-card:hover .wwu-link { opacity: 1; }
+  @media (max-width:991px) { .wwu-intro { grid-template-columns: 1fr; gap: 40px; } .wwu-grid { grid-template-columns: 1fr 1fr; } }
+  @media (max-width:576px) { .wwu-grid { grid-template-columns: 1fr; } }
+
+  /* =============================================
+     8. TEAM
+  ============================================= */
+  .team-section { padding: 96px 0; background: var(--ci-paper); border-top: 1px solid var(--ci-mist); }
+  .team-grid { display: grid; grid-template-columns: repeat(5,1fr); gap: 24px; }
+  .team-card { background: var(--ci-white); border: 0.5px solid var(--ci-mist); border-radius: 6px; overflow: hidden; text-align: center; transition: transform 0.25s,box-shadow 0.25s; }
+  .team-card:hover { transform: translateY(-5px); box-shadow: 0 12px 28px rgba(0,0,0,0.07); }
+  .team-card__img-wrap { aspect-ratio: 1/1; overflow: hidden; background: var(--ci-mist); position: relative; }
+  .team-card__img-wrap img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.4s; }
+  .team-card:hover .team-card__img-wrap img { transform: scale(1.05); }
+  .team-card__img-wrap::after { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 40%; background: linear-gradient(to top,rgba(15,15,15,0.4),transparent); }
+  .team-card__body { padding: 20px 16px; }
+  .team-card__name { font-family: var(--font-display); font-size: 17px; font-weight: 700; color: var(--ci-black); margin-bottom: 4px; }
+  .team-card__role { font-family: var(--font-sans); font-size: 11px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ci-red); }
+  @media (max-width:991px) { .team-grid { grid-template-columns: repeat(3,1fr); } }
+  @media (max-width:576px) { .team-grid { grid-template-columns: repeat(2,1fr); } }
+
+  /* =============================================
+     9. GALLERY
+  ============================================= */
+  .gallery-section { padding: 96px 0; background: var(--ci-black); }
+  .gallery-grid { columns: 3; column-gap: 14px; }
+  .gallery-item { break-inside: avoid; margin-bottom: 14px; overflow: hidden; border-radius: 4px; position: relative; cursor: pointer; }
+  .gallery-item img { width: 100%; display: block; transition: transform 0.5s cubic-bezier(0.16,1,0.3,1); }
+  .gallery-item:hover img { transform: scale(1.04); }
+  .gallery-item__overlay { position: absolute; inset: 0; background: rgba(15,15,15,0); display: flex; align-items: flex-end; padding: 16px; transition: background 0.3s; }
+  .gallery-item:hover .gallery-item__overlay { background: rgba(15,15,15,0.55); }
+  .gallery-item__title { font-family: var(--font-sans); font-size: 12px; font-weight: 600; color: #fff; letter-spacing: 0.04em; opacity: 0; transform: translateY(6px); transition: opacity 0.3s,transform 0.3s; }
+  .gallery-item:hover .gallery-item__title { opacity: 1; transform: translateY(0); }
+  @media (max-width:768px) { .gallery-grid { columns: 2; } }
+  @media (max-width:480px) { .gallery-grid { columns: 1; } }
+
+  /* =============================================
+     10. LATEST ARTICLES
+  ============================================= */
+  .latest-section { padding: 72px 0; background: var(--ci-paper); border-top: 1px solid var(--ci-mist); }
+  .article-grid-card { background: var(--ci-white); border: 0.5px solid var(--ci-mist); border-radius: 6px; overflow: hidden; display: flex; flex-direction: column; height: 100%; transition: transform 0.3s cubic-bezier(0.16,1,0.3,1),box-shadow 0.3s; }
+  .article-grid-card:hover { transform: translateY(-5px); box-shadow: 0 14px 28px rgba(0,0,0,0.07); }
+  .agc-img-wrap { aspect-ratio: 16/10; width: 100%; overflow: hidden; background: var(--ci-mist); position: relative; }
+  .agc-img-wrap img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s; }
+  .article-grid-card:hover .agc-img-wrap img { transform: scale(1.06); }
+  .agc-body { padding: 20px; display: flex; flex-direction: column; flex-grow: 1; }
+  .agc-cat { font-family: var(--font-sans); font-size: 10px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ci-red); margin-bottom: 8px; }
+  .agc-title { font-family: var(--font-display); font-size: 19px; font-weight: 700; line-height: 1.25; color: var(--ci-black); margin-bottom: 10px; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+  .agc-desc { font-family: var(--font-sans); font-size: 13px; color: var(--ci-graphite); line-height: 1.55; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; margin-bottom: 16px; }
+  .agc-meta { margin-top: auto; display: flex; align-items: center; gap: 8px; font-family: var(--font-sans); font-size: 11px; color: var(--ci-slate); font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; }
+
+  /* =============================================
+     11. NEWSLETTER INLINE
+  ============================================= */
+  .newsletter-section { background: var(--ci-charcoal); padding: 96px 0; }
+  .nl-inner { display: grid; grid-template-columns: 1.2fr 1fr; gap: 80px; align-items: center; }
+  .nl-headline { font-family: var(--font-display); font-size: clamp(38px,4.5vw,58px); font-weight: 900; color: #fff; line-height: 1.05; letter-spacing: -1px; margin-bottom: 16px; }
+  .nl-headline em { font-style: italic; color: var(--ci-red); }
+  .nl-sub { font-family: var(--font-sans); font-size: 15px; color: rgba(255,255,255,0.5); line-height: 1.75; margin-bottom: 36px; max-width: 480px; }
+  .nl-input-row { display: flex; overflow: hidden; border: 1px solid rgba(255,255,255,0.12); border-radius: 3px; margin-bottom: 12px; }
+  .nl-input-row input { flex: 1; background: rgba(255,255,255,0.06); border: none; padding: 15px 18px; font-family: var(--font-sans); font-size: 14px; color: #fff; outline: none; }
+  .nl-input-row input::placeholder { color: rgba(255,255,255,0.3); }
+  .nl-input-row button { background: var(--ci-red); color: #fff; border: none; padding: 15px 24px; font-family: var(--font-sans); font-size: 11px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; cursor: pointer; transition: background 0.2s; white-space: nowrap; }
+  .nl-input-row button:hover { background: var(--ci-red-dark); }
+  .nl-disclaimer { font-family: var(--font-sans); font-size: 11px; color: rgba(255,255,255,0.25); line-height: 1.5; }
+  .nl-disclaimer a { color: rgba(255,255,255,0.4); text-decoration: underline; }
+  .nl-tiers { display: flex; flex-direction: column; gap: 12px; }
+  .nl-tier { border: 0.5px solid rgba(255,255,255,0.08); border-radius: 4px; padding: 20px 24px; display: flex; justify-content: space-between; align-items: center; background: rgba(255,255,255,0.03); transition: border-color 0.2s,background 0.2s; cursor: pointer; }
+  .nl-tier:hover { border-color: rgba(204,27,27,0.35); background: rgba(204,27,27,0.05); }
+  .nl-tier__name { font-family: var(--font-sans); font-size: 10px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(255,255,255,0.35); margin-bottom: 4px; }
+  .nl-tier__desc { font-family: var(--font-serif); font-size: 14px; font-style: italic; color: rgba(255,255,255,0.75); }
+  .nl-tier__tag { font-family: var(--font-display); font-size: 20px; font-weight: 700; color: var(--ci-gold); white-space: nowrap; flex-shrink: 0; margin-left: 16px; }
+  @media (max-width:991px) { .nl-inner { grid-template-columns: 1fr; gap: 48px; } }
+  /* =============================================
+     MODAL EXTENSIONS FOR LARGE FORMS
+  ============================================= */
+  /* Ensures the overlay handles centering and background blur */
+  .ci-modal-overlay {
+    position: fixed; inset: 0; background: rgba(15, 15, 15, 0.85);
+    backdrop-filter: blur(4px); z-index: 9999;
+    display: flex; align-items: center; justify-content: center;
+    opacity: 0; visibility: hidden; transition: all 0.3s ease;
+  }
+  .ci-modal-overlay.active { opacity: 1; visibility: visible; }
+  
+  /* The Modal Container */
+  .ci-modal {
+    background: var(--ci-white, #ffffff); width: 90%; max-width: 900px;
+    max-height: 90vh; border-radius: 4px; display: flex; flex-direction: row;
+    position: relative; overflow: hidden; transform: translateY(20px);
+    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    box-shadow: 0 24px 48px rgba(0,0,0,0.2);
+  }
+  .ci-modal-overlay.active .ci-modal { transform: translateY(0); }
+  
+  .ci-modal-close {
+    position: absolute; top: 16px; right: 20px; background: none; border: none;
+    font-size: 28px; color: var(--ci-black, #0f0f0f); cursor: pointer; z-index: 10;
+    line-height: 1; opacity: 0.5; transition: opacity 0.2s;
+  }
+  .ci-modal-close:hover { opacity: 1; }
+
+  /* Image Section */
+  .ci-modal-image { width: 40%; background-size: cover; background-position: center; }
+  .hm-modal-image { background-image: url('https://images.unsplash.com/photo-1573164574572-cb89e39749b4?auto=format&fit=crop&q=80&w=800'); }
+  .byline-modal-image { background-image: url('https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&q=80&w=800'); }
+
+  /* Scrollable Content Area */
+  .ci-modal-content {
+    width: 60%; padding: 48px 40px; display: flex; flex-direction: column;
+    overflow-y: auto; /* Allows scrolling for long forms */
+  }
+
+  /* Form Elements */
+  .ci-modal-eyebrow { font-family: var(--font-sans); font-size: 11px; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; color: var(--ci-red); margin-bottom: 8px; }
+  .ci-modal-title { font-family: var(--font-display); font-size: 32px; font-weight: 900; color: var(--ci-black); margin-bottom: 12px; line-height: 1.1; letter-spacing: -0.5px; }
+  .ci-modal-desc { font-family: var(--font-sans); font-size: 14px; color: var(--ci-graphite); line-height: 1.6; margin-bottom: 32px; }
+  
+  .ci-form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .ci-input-group { display: flex; flex-direction: column; margin-bottom: 16px; }
+  .ci-input-group label { font-family: var(--font-sans); font-size: 11px; font-weight: 700; color: var(--ci-black); margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.05em; }
+  
+  .ci-modal-input, .ci-modal-select, .ci-modal-textarea {
+    width: 100%; padding: 12px 14px; background: var(--ci-paper, #f9f9f9); border: 1px solid var(--ci-mist, #e0e0e0);
+    border-radius: 3px; font-family: var(--font-sans); font-size: 14px; color: var(--ci-black); outline: none; transition: border-color 0.2s;
+  }
+  .ci-modal-input:focus, .ci-modal-select:focus, .ci-modal-textarea:focus { border-color: var(--ci-red); background: #fff; }
+  .ci-modal-textarea { resize: vertical; min-height: 80px; }
+  
+  .ci-form-checkbox { display: flex; align-items: flex-start; gap: 10px; margin-top: 8px; }
+  .ci-form-checkbox input[type="checkbox"] { margin-top: 3px; accent-color: var(--ci-red); }
+  .ci-form-checkbox label { font-family: var(--font-sans); font-size: 12px; color: var(--ci-graphite); line-height: 1.5; cursor: pointer; }
+
+  .ci-modal-submit {
+    background: var(--ci-red); color: #fff; border: none; padding: 16px 24px; font-family: var(--font-sans);
+    font-size: 12px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; cursor: pointer;
+    border-radius: 3px; transition: background 0.2s; width: 100%; margin-top: 24px;
+  }
+  .ci-modal-submit:hover { background: var(--ci-red-dark, #a81616); }
+
+  @media (max-width: 768px) {
+    .ci-modal { flex-direction: column; width: 95%; max-height: 95vh; }
+    .ci-modal-image { width: 100%; height: 180px; }
+    .ci-modal-content { width: 100%; padding: 32px 24px; }
+    .ci-form-grid { grid-template-columns: 1fr; gap: 0; }
+  }
+</style>
+{% endblock 'css' %}
+
+
+{% block 'body' %}
+
+<!-- =============================================
+     1. HERO CAROUSEL
+============================================= -->
+<div class="hero-carousel-wrapper">
+  <div id="corporateHeroCarousel" class="carousel slide carousel-fade" data-bs-ride="carousel" data-bs-interval="6000">
+
+    <div class="carousel-indicators">
+      {% for banner in hero_banners %}
+        <button type="button" data-bs-target="#corporateHeroCarousel" data-bs-slide-to="{{ forloop.counter0 }}" {% if forloop.first %}class="active"{% endif %} aria-label="Slide {{ forloop.counter }}"></button>
+      {% endfor %}
+    </div>
+
+    <div class="carousel-inner">
+      {% for banner in hero_banners %}
+      <div class="carousel-item {% if forloop.first %}active{% endif %}">
+        <a href="/article/{{ banner.slug }}/" class="ci-carousel-item">
+          {% if banner.image %}
+            <img src="{{ banner.image.url }}" class="ci-carousel-img" alt="{{ banner.title }}">
+          {% else %}
+            <img src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&q=80&w=2000" class="ci-carousel-img" alt="{{ banner.title }}">
+          {% endif %}
+          <div class="ci-carousel-overlay"></div>
+          <div class="ci-carousel-content">
+            <div class="container">
+              <span class="ci-hero-badge">{{ banner.category.title|default:"Exclusive Story" }}</span>
+              <h2 class="ci-hero-title">{{ banner.title }}</h2>
+              <div class="ci-hero-meta">
+                <span>By {{ banner.author.name|default:"Editorial Board" }}</span>
+                <span>&bull;</span>
+                <span>{{ banner.created_at|date:"F d, Y" }}</span>
+              </div>
+            </div>
+          </div>
+        </a>
+      </div>
+      {% empty %}
+      <!-- Fallback slide when no hero banners are published -->
+      <div class="carousel-item active">
+        <a href="#" class="ci-carousel-item">
+          <img src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&q=80&w=2000" class="ci-carousel-img" alt="Corporate Impact">
+          <div class="ci-carousel-overlay"></div>
+          <div class="ci-carousel-content">
+            <div class="container">
+              <span class="ci-hero-badge">Cover Story</span>
+              <h2 class="ci-hero-title">The Future of India Inc: A New Era of Global Ambition</h2>
+              <div class="ci-hero-meta"><span>By Editorial Board</span><span>&bull;</span><span>May 2026</span></div>
+            </div>
+          </div>
+        </a>
+      </div>
+      {% endfor %}
+    </div>
+
+    <button class="carousel-control-prev" type="button" data-bs-target="#corporateHeroCarousel" data-bs-slide="prev">
+      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Previous</span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#corporateHeroCarousel" data-bs-slide="next">
+      <span class="carousel-control-next-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Next</span>
+    </button>
+
+  </div>
+</div>
+
+
+<!-- =============================================
+     2. LIVE WIRE MARQUEE
+============================================= -->
+<section class="ci-marquee-section">
+  <div class="container p-0">
+    <div class="ci-marquee-header">
+      <span class="ci-marquee-label">The Live Wire</span>
+    </div>
+  </div>
+  <div class="ci-marquee-track">
+    <!-- Group 1 -->
+    <div class="ci-marquee-group">
+      {% for article in latest_articles|slice:":12" %}
+      <a href="/article/{{ article.slug }}/" class="ci-marquee-card">
+        {% if article.thumbnail_image %}
+          <img src="{{ article.thumbnail_image.url }}" class="ci-marquee-img" alt="{{ article.title }}">
+        {% else %}
+          <div class="ci-marquee-img"></div>
+        {% endif %}
+        <h4 class="ci-marquee-title">{{ article.title }}</h4>
+      </a>
+      {% empty %}
+      <a href="#" class="ci-marquee-card"><div class="ci-marquee-img"></div><h4 class="ci-marquee-title">Sensex crosses 85,000 — what it means for retail investors</h4></a>
+      <a href="#" class="ci-marquee-card"><div class="ci-marquee-img"></div><h4 class="ci-marquee-title">Top D2C startups secure late-stage funding this quarter</h4></a>
+      <a href="#" class="ci-marquee-card"><div class="ci-marquee-img"></div><h4 class="ci-marquee-title">India's EV sector attracts ₹4,200 crore in FDI in April alone</h4></a>
+      <a href="#" class="ci-marquee-card"><div class="ci-marquee-img"></div><h4 class="ci-marquee-title">SEBI tightens SME IPO norms — market reacts with caution</h4></a>
+      {% endfor %}
+    </div>
+    <!-- Group 2 — exact duplicate for seamless loop -->
+    <div class="ci-marquee-group" aria-hidden="true">
+      {% for article in latest_articles|slice:":12" %}
+      <a href="/article/{{ article.slug }}/" class="ci-marquee-card" tabindex="-1">
+        {% if article.thumbnail_image %}
+          <img src="{{ article.thumbnail_image.url }}" class="ci-marquee-img" alt="{{ article.title }}">
+        {% else %}
+          <div class="ci-marquee-img"></div>
+        {% endif %}
+        <h4 class="ci-marquee-title">{{ article.title }}</h4>
+      </a>
+      {% empty %}
+      <a href="#" class="ci-marquee-card" tabindex="-1"><div class="ci-marquee-img"></div><h4 class="ci-marquee-title">Sensex crosses 85,000 — what it means for retail investors</h4></a>
+      <a href="#" class="ci-marquee-card" tabindex="-1"><div class="ci-marquee-img"></div><h4 class="ci-marquee-title">Top D2C startups secure late-stage funding this quarter</h4></a>
+      <a href="#" class="ci-marquee-card" tabindex="-1"><div class="ci-marquee-img"></div><h4 class="ci-marquee-title">India's EV sector attracts ₹4,200 crore in FDI in April alone</h4></a>
+      <a href="#" class="ci-marquee-card" tabindex="-1"><div class="ci-marquee-img"></div><h4 class="ci-marquee-title">SEBI tightens SME IPO norms — market reacts with caution</h4></a>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+
+<!-- =============================================
+     3. SIMPLY TWO — INTERVIEW SECTION
+============================================= -->
+<section class="simply-two-section">
+
+  <div class="container">
+
+    <div class="st-eyebrow">
+      {{simply_two_category.title}}
+    </div>
+
+    <h2 class="st-section-title">
+      India's Most Compelling Conversations.
+    </h2>
+
+    <p class="st-section-subtitle">
+      Two questions. No filter. The interview format that gets to the truth faster than any other.
+    </p>
+
+    <div class="row g-3">
+
+      <!-- FEATURED -->
+      <div class="col-lg-5">
+
+        {% if simply_two_main_grid.featured_article %}
+
+        <div class="st-featured"
+     style="min-height:520px;
+            position:relative;
+            overflow:hidden;">
+
+    <img src="{{simply_two_main_grid.featured_article.thumbnail_image.url}}"
+         alt="{{simply_two_main_grid.featured_article.title}}"
+         style="
+            position:absolute;
+            inset:0;
+            width:100%;
+            height:100%;
+            object-fit:cover;
+            z-index:0;
+         ">
+
+          
+
+          <div class="st-featured-body"
+               style="position:relative;z-index:2;">
+
+            <div class="st-issue-tag">
+
+              {{simply_two_main_grid.featured_article.category.title}}
+
+              ·
+
+              {{simply_two_main_grid.featured_article.created_at|date:"M Y"}}
+
+            </div>
+
+            <div class="st-featured-name">
+
+              {{simply_two_main_grid.featured_article.title}}
+
+            </div>
+
+            <div class="st-featured-role">
+
+              {{simply_two_main_grid.featured_article.author.name}}
+
+            </div>
+
+            <blockquote class="st-featured-quote">
+
+              "{{simply_two_main_grid.featured_article.description}}"
+
+            </blockquote>
+
+            <a href="/article/{{simply_two_main_grid.featured_article.slug}}"
+               class="st-read-link">
+
+              Read the Interview
+
+            </a>
+
+          </div>
+
+        </div>
+
+        {% endif %}
+
+      </div>
+
+
+
+      <!-- SIDE CARDS -->
+      <div class="col-lg-7">
+
+        <div class="row g-3 h-100">
+
+          <!-- CARD 1 -->
+          {% if simply_two_main_grid.editor_choice_1 %}
+
+          <div class="col-md-6">
+
+            <a href="/article/{{simply_two_main_grid.editor_choice_1.slug}}"
+               class="st-card"
+               style="min-height:250px;">
+
+              <div class="st-card-initial">
+
+                {{simply_two_main_grid.editor_choice_1.title|slice:":1"}}
+
+              </div>
+
+              <div class="st-card-label">
+
+                {{simply_two_main_grid.editor_choice_1.category.title}}
+
+              </div>
+
+              <div class="st-card-name">
+
+                {{simply_two_main_grid.editor_choice_1.title}}
+
+              </div>
+
+              <div class="st-card-role">
+
+                {{simply_two_main_grid.editor_choice_1.author.name}}
+
+              </div>
+
+              <div class="st-card-quote">
+
+                {{simply_two_main_grid.editor_choice_1.description|truncatechars:120}}
+
+              </div>
+
+              <span class="st-read-link mt-auto">
+
+                Read Interview
+
+              </span>
+
+            </a>
+
+          </div>
+
+          {% endif %}
+
+
+
+          <!-- CARD 2 -->
+          {% if simply_two_main_grid.editor_choice_2 %}
+
+          <div class="col-md-6">
+
+            <a href="/article/{{simply_two_main_grid.editor_choice_2.slug}}"
+               class="st-card"
+               style="min-height:250px;">
+
+              <div class="st-card-initial">
+
+                {{simply_two_main_grid.editor_choice_2.title|slice:":1"}}
+
+              </div>
+
+              <div class="st-card-label">
+
+                {{simply_two_main_grid.editor_choice_2.category.title}}
+
+              </div>
+
+              <div class="st-card-name">
+
+                {{simply_two_main_grid.editor_choice_2.title}}
+
+              </div>
+
+              <div class="st-card-role">
+
+                {{simply_two_main_grid.editor_choice_2.author.name}}
+
+              </div>
+
+              <div class="st-card-quote">
+
+                {{simply_two_main_grid.editor_choice_2.description|truncatechars:120}}
+
+              </div>
+
+              <span class="st-read-link mt-auto">
+
+                Read Interview
+
+              </span>
+
+            </a>
+
+          </div>
+
+          {% endif %}
+
+
+
+          <!-- CARD 3 -->
+          {% if simply_two_main_grid.editor_choice_3 %}
+
+          <div class="col-md-6">
+
+            <a href="/article/{{simply_two_main_grid.editor_choice_3.slug}}"
+               class="st-card"
+               style="min-height:250px;">
+
+              <div class="st-card-initial">
+
+                {{simply_two_main_grid.editor_choice_3.title|slice:":1"}}
+
+              </div>
+
+              <div class="st-card-label">
+
+                {{simply_two_main_grid.editor_choice_3.category.title}}
+
+              </div>
+
+              <div class="st-card-name">
+
+                {{simply_two_main_grid.editor_choice_3.title}}
+
+              </div>
+
+              <div class="st-card-role">
+
+                {{simply_two_main_grid.editor_choice_3.author.name}}
+
+              </div>
+
+              <div class="st-card-quote">
+
+                {{simply_two_main_grid.editor_choice_3.description|truncatechars:120}}
+
+              </div>
+
+              <span class="st-read-link mt-auto">
+
+                Read Interview
+
+              </span>
+
+            </a>
+
+          </div>
+
+          {% endif %}
+
+
+
+          <!-- CARD 4 -->
+          {% if simply_two_main_grid.editor_choice_4 %}
+
+          <div class="col-md-6">
+
+            <a href="/article/{{simply_two_main_grid.editor_choice_4.slug}}"
+               class="st-card"
+               style="min-height:250px;">
+
+              <div class="st-card-initial">
+
+                {{simply_two_main_grid.editor_choice_4.title|slice:":1"}}
+
+              </div>
+
+              <div class="st-card-label">
+
+                {{simply_two_main_grid.editor_choice_4.category.title}}
+
+              </div>
+
+              <div class="st-card-name">
+
+                {{simply_two_main_grid.editor_choice_4.title}}
+
+              </div>
+
+              <div class="st-card-role">
+
+                {{simply_two_main_grid.editor_choice_4.author.name}}
+
+              </div>
+
+              <div class="st-card-quote">
+
+                {{simply_two_main_grid.editor_choice_4.description|truncatechars:120}}
+
+              </div>
+
+              <span class="st-read-link mt-auto">
+
+                Read Interview
+
+              </span>
+
+            </a>
+
+          </div>
+
+          {% endif %}
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</section>
+
+
+<!-- =============================================
+     4. THE ECOSYSTEM WE MAP
+============================================= -->
+<section class="ecosystem-section">
+  <div class="container">
+    <div class="ecosystem-intro">
+      <div class="ci-eyebrow" style="color:var(--ci-red);">Editorial Pillars</div>
+      <h2 class="ecosystem-title">The Ecosystem<br/><em>We Map.</em></h2>
+      <p class="ecosystem-subtitle">Eight sectors. Authoritative coverage. The complete picture of the forces reshaping India Inc.</p>
+    </div>
+    <div class="row g-3">
+      <div class="col-6 col-md-4 col-lg-3"><a href="#" class="pillar-card" data-num="01"><div class="pillar-num">01</div><span class="pillar-icon-wrap">🎤</span><div class="pillar-name">Leadership</div><div class="pillar-desc">CXO insights, executive strategies, and the psychology behind India's most consequential corporate decisions.</div><div class="pillar-explore">Explore →</div></a></div>
+      <div class="col-6 col-md-4 col-lg-3"><a href="#" class="pillar-card" data-num="02"><div class="pillar-num">02</div><span class="pillar-icon-wrap">🚀</span><div class="pillar-name">Startups</div><div class="pillar-desc">Venture capital movements, visionary founders, and the disruptive models shifting paradigms across India.</div><div class="pillar-explore">Explore →</div></a></div>
+      <div class="col-6 col-md-4 col-lg-3"><a href="#" class="pillar-card" data-num="03"><div class="pillar-num">03</div><span class="pillar-icon-wrap">📈</span><div class="pillar-name">Markets</div><div class="pillar-desc">Authoritative equity analysis, macroeconomics, and global investment trends impacting Indian portfolios.</div><div class="pillar-explore">Explore →</div></a></div>
+      <div class="col-6 col-md-4 col-lg-3"><a href="#" class="pillar-card" data-num="04"><div class="pillar-num">04</div><span class="pillar-icon-wrap">💡</span><div class="pillar-name">Innovation</div><div class="pillar-desc">Next-generation shifts, R&amp;D breakthroughs, and digital transformations defining tomorrow's economy.</div><div class="pillar-explore">Explore →</div></a></div>
+      <div class="col-6 col-md-4 col-lg-3"><a href="#" class="pillar-card" data-num="05"><div class="pillar-num">05</div><span class="pillar-icon-wrap">🏛️</span><div class="pillar-name">Policy</div><div class="pillar-desc">Deep dives into regulatory frameworks, government initiatives, and the economic governance shaping business.</div><div class="pillar-explore">Explore →</div></a></div>
+      <div class="col-6 col-md-4 col-lg-3"><a href="#" class="pillar-card" data-num="06"><div class="pillar-num">06</div><span class="pillar-icon-wrap">⚙️</span><div class="pillar-name">Deep Tech</div><div class="pillar-desc">AI architecture, space technology, and the absolute bleeding edge of advanced engineering from India.</div><div class="pillar-explore">Explore →</div></a></div>
+      <div class="col-6 col-md-4 col-lg-3"><a href="#" class="pillar-card" data-num="07"><div class="pillar-num">07</div><span class="pillar-icon-wrap">🌱</span><div class="pillar-name">Sustainability</div><div class="pillar-desc">ESG mandates, green energy transitions, and the rise of commercial climate technology as a business imperative.</div><div class="pillar-explore">Explore →</div></a></div>
+      <div class="col-6 col-md-4 col-lg-3"><a href="#" class="pillar-card" data-num="08"><div class="pillar-num">08</div><span class="pillar-icon-wrap">🏗️</span><div class="pillar-name">Industry</div><div class="pillar-desc">Manufacturing evolution, supply chain resilience, and the modernization of India's legacy sectors.</div><div class="pillar-explore">Explore →</div></a></div>
+    </div>
+  </div>
+</section>
+
+
+<!-- =============================================
+     5. THE BYLINE PROGRAM
+============================================= -->
+<section class="byline-section" id="byline-program">
+  <div class="container">
+    <div class="byline-intro">
+      <div class="ci-eyebrow">Publisher Portal</div>
+      <h2 class="byline-main-title">Your First Byline.<br/>In a Real Magazine.</h2>
+      <p class="byline-main-desc">You have something to say. Corporate Impact gives you the platform to say it — with your name on it, in a real published magazine that real people read. From executives building thought leadership to students earning their first byline, we have a place for every voice that matters.</p>
+      <p class="byline-main-desc">Open to executives, entrepreneurs, journalists, and students across India. Hindi and English. Print and digital.</p>
+      <div class="byline-hindi">
+        "Apni pehli byline — sirf ek step door hai."<br>
+        <span style="font-size:12px; opacity:0.7; font-style:normal;">Your first byline is just one step away.</span>
+      </div>
+    </div>
+    <div class="row g-4">
+      <div class="col-lg-4">
+        <div class="byline-card">
+          <div class="byline-tier-name">Guest Op-Ed</div>
+          <div class="byline-tier-desc">For executives publishing a single, high-impact thought leadership piece.</div>
+          <div class="byline-price">Free <span>/ standard</span></div>
+          <ul class="byline-list">
+            <li>Publish 1 editorial piece</li>
+            <li>Standard editorial review</li>
+            <li>Author profile page</li>
+            <li>Standard platform visibility</li>
+          </ul>
+          <button type="button" onclick="location.href='/byline'" class="byline-cta byline-cta--outline">Apply to Contribute</button>
+        </div>
+      </div>
+      <div class="col-lg-4">
+        <div class="byline-card byline-card--highlight">
+          <div class="byline-rec-badge">Recommended</div>
+          <div class="byline-tier-name">Resident Columnist</div>
+          <div class="byline-tier-desc">For experts building sustained authority and a loyal readership over time.</div>
+          <div class="byline-price">Pro <span>/ monthly</span></div>
+          <ul class="byline-list">
+            <li>Up to 3 articles per month</li>
+            <li>Fast-track priority editorial review</li>
+            <li>Social media amplification</li>
+            <li>Homepage featuring opportunities</li>
+            <li>Anchor backlink to your website</li>
+          </ul>
+          <button type="button" onclick="location.href='/byline'" class="byline-cta  byline-cta--solid">Apply to Contribute</button>
+        </div>
+      </div>
+      <div class="col-lg-4">
+        <div class="byline-card">
+          <div class="byline-tier-name">Brand Collab</div>
+          <div class="byline-tier-desc">For PR agencies and enterprises syndicating corporate communications at scale.</div>
+          <div class="byline-price">Custom <span>/ enterprise</span></div>
+          <ul class="byline-list">
+            <li>Unlimited publishing volume</li>
+            <li>"Sponsored By" visual tagging</li>
+            <li>Dedicated content manager</li>
+            <li>Detailed readership analytics</li>
+          </ul>
+          <button type="button" onclick="location.href='/byline'" class="byline-cta byline-cta--outline">Apply to Contribute</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- =============================================
+     6. HOMEMAKER'S CHRONICLES
+============================================= -->
+<section class="homemakers-section">
+  <div class="container">
+    <div class="hm-split">
+      <div class="hm-left">
+        <div class="ci-eyebrow" style="color:var(--ci-red); margin-bottom:16px;">New Column</div>
+        <h2 class="hm-main-title">She Ran a Home.<br/>Now She Runs <em>Everything.</em></h2>
+        <p class="hm-body-text">The homemaker's story has never been told the way it deserves. Corporate Impact is changing that. We believe that managing a family, raising children, and holding a household together is leadership — and we're here to recognize it.</p>
+        <p class="hm-body-text">The <strong style="color:rgba(255,255,255,0.85);">Homemaker Spotlight</strong> celebrates women who built something extraordinary inside their homes — and the ones who took that strength and walked out the door with it.</p>
+        <div class="hm-hindi">
+          "Ghar sambhalna bhi ek kala hai. Aur har kala ko pehchan milni chahiye."<br>
+          <span style="font-size:12px; opacity:0.6; font-style:normal;">Managing a home is also an art. And every art deserves recognition.</span>
+        </div>
+        <button type="button" onclick="location.href='/homemaker'" class="hm-cta">Share Your Story →</button>
+      </div>
+      <div class="hm-cards">
+        <div class="hm-card hm-card--tall">
+          <div class="hm-card-icon">🌸</div>
+          <div class="hm-card-title">Homemaker Spotlight</div>
+          <div class="hm-card-desc">Featured profiles of women whose strength, creativity, and leadership began at home — and grew far beyond it.</div>
+        </div>
+        <div class="hm-card">
+          <div class="hm-card-icon">✍️</div>
+          <div class="hm-card-title">Write Your Story</div>
+          <div class="hm-card-desc">Submit your journey. We'll help you tell it beautifully.</div>
+        </div>
+        <div class="hm-card">
+          <div class="hm-card-icon">🏅</div>
+          <div class="hm-card-title">Homemaker of the Month</div>
+          <div class="hm-card-desc">One extraordinary woman. Featured across print, digital, and social every month.</div>
+        </div>
+        <div class="hm-card">
+          <div class="hm-card-icon">🎙️</div>
+          <div class="hm-card-title">In Conversation</div>
+          <div class="hm-card-desc">Long-form interviews with women who redefined what "running something" means.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- =============================================
+     7. WORK WITH US / MEDIA KIT
+============================================= -->
+<section class="workwithus-section">
+  <div class="container">
+    <div class="wwu-intro">
+      <div>
+        <div class="ci-eyebrow" style="color:var(--ci-red); margin-bottom:20px;">Work With Us</div>
+        <h2 class="wwu-title">Your story,<br/><em>told right.</em></h2>
+      </div>
+      <div>
+        <p class="wwu-desc">We don't do banners that nobody clicks. We do stories that people actually read, share, and remember. If your brand has something worth saying, we'll find the best way to say it — editorially, honestly, in a way that stays with people.</p>
+        <a href="/static/main/media-kit/Corporate_Impact_MediaKit.pdf" download class="wwu-mediakit-btn">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 1v9M4 7l4 4 4-4M2 13h12" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          Download Media Kit
+        </a>
+      </div>
+    </div>
+    <div class="wwu-grid">
+      <div class="wwu-card"><div class="wwu-num">01</div><div class="wwu-name">PR Features &amp; Interviews</div><div class="wwu-desc-text">Get your client or brand featured in our iconic Simply Two format or as a long-form editorial profile. Real reach, real credibility.</div><a href="/contact" class="wwu-link">Enquire →</a></div>
+      <div class="wwu-card"><div class="wwu-num">02</div><div class="wwu-name">Brand Spotlight Stories</div><div class="wwu-desc-text">A sponsored article written in our editorial voice. It informs, engages, and lives on your audience's feed long after publishing.</div><a href="/contact" class="wwu-link">Enquire →</a></div>
+      <div class="wwu-card"><div class="wwu-num">03</div><div class="wwu-name">Display Advertising</div><div class="wwu-desc-text">Sidebar, category, and homepage placements. Limited slots. Exclusive positioning. Your brand where our readers are looking.</div><a href="/contact" class="wwu-link">Enquire →</a></div>
+      <div class="wwu-card"><div class="wwu-num">04</div><div class="wwu-name">Monthly Content Partner</div><div class="wwu-desc-text">A recurring relationship — articles, mentions, social amplification, newsletter features. Best ROI for brands thinking long-term.</div><a href="/contact" class="wwu-link">Enquire →</a></div>
+    </div>
+  </div>
+</section>
+
+
+<!-- =============================================
+     8. OUR TEAM
+============================================= -->
+<section class="team-section">
+  <div class="container">
+    <div class="ci-section-label">
+      <div class="ci-section-label__bar"></div>
+      <h2 class="ci-section-label__title">The People Behind the Stories</h2>
+    </div>
+    <div class="team-grid">
+      {% for member in teams %}
+      <div class="team-card">
+        <div class="team-card__img-wrap">
+          {% if member.image %}
+            <img src="{{ member.image.url }}" alt="{{ member.name }}">
+          {% else %}
+            <img src="https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&q=80&w=400" alt="{{ member.name }}">
+          {% endif %}
+        </div>
+        <div class="team-card__body">
+          <div class="team-card__name">{{ member.name }}</div>
+          <div class="team-card__role">{{ member.designation }}</div>
+        </div>
+      </div>
+      {% empty %}
+      <!-- Fallback team cards — replace with your actual team model data -->
+      <div class="team-card"><div class="team-card__img-wrap"><img src="https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&q=80&w=400" alt="Rajiv Menon"></div><div class="team-card__body"><div class="team-card__name">Rajiv Menon</div><div class="team-card__role">Editor in Chief</div></div></div>
+      <div class="team-card"><div class="team-card__img-wrap"><img src="https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?auto=format&fit=crop&q=80&w=400" alt="Priya Sharma"></div><div class="team-card__body"><div class="team-card__name">Priya Sharma</div><div class="team-card__role">Managing Editor</div></div></div>
+      <div class="team-card"><div class="team-card__img-wrap"><img src="https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?auto=format&fit=crop&q=80&w=400" alt="Arjun Kapoor"></div><div class="team-card__body"><div class="team-card__name">Arjun Kapoor</div><div class="team-card__role">Senior Correspondent</div></div></div>
+      <div class="team-card"><div class="team-card__img-wrap"><img src="https://images.unsplash.com/photo-1580489944761-15a19d654956?auto=format&fit=crop&q=80&w=400" alt="Kavya Nair"></div><div class="team-card__body"><div class="team-card__name">Kavya Nair</div><div class="team-card__role">Head of Design</div></div></div>
+      <div class="team-card"><div class="team-card__img-wrap"><img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=400" alt="Suresh Pillai"></div><div class="team-card__body"><div class="team-card__name">Suresh Pillai</div><div class="team-card__role">Digital Director</div></div></div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+
+<!-- =============================================
+     9. GALLERY
+============================================= -->
+<section class="gallery-section">
+  <div class="container">
+    <div class="ci-section-label" style="border-color:rgba(255,255,255,0.12);">
+      <div class="ci-section-label__bar"></div>
+      <h2 class="ci-section-label__title" style="color:#fff;">In the Frame</h2>
+    </div>
+    <div class="gallery-grid">
+      {% for item in gallery_images %}
+      <div class="gallery-item">
+        <img src="{{ item.image.url }}" alt="{{ item.alt_text }}" loading="lazy">
+        <div class="gallery-item__overlay">
+          <span class="gallery-item__title">{{ item.title }}</span>
+        </div>
+      </div>
+      {% empty %}
+      <!-- Fallback gallery — replace once Gallery model has data -->
+      <div class="gallery-item"><img src="https://images.unsplash.com/photo-1504711434969-e33886168f5c?auto=format&fit=crop&q=80&w=600" alt="Annual Summit" loading="lazy"><div class="gallery-item__overlay"><span class="gallery-item__title">Annual Summit 2026</span></div></div>
+      <div class="gallery-item"><img src="https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?auto=format&fit=crop&q=80&w=600&h=800" alt="CEO Roundtable" loading="lazy"><div class="gallery-item__overlay"><span class="gallery-item__title">CEO Roundtable, Mumbai</span></div></div>
+      <div class="gallery-item"><img src="https://images.unsplash.com/photo-1521737604893-d14cc237f11d?auto=format&fit=crop&q=80&w=600" alt="Startup Pitch" loading="lazy"><div class="gallery-item__overlay"><span class="gallery-item__title">Startup Pitch Night</span></div></div>
+      <div class="gallery-item"><img src="https://images.unsplash.com/photo-1556761175-4b46a572b786?auto=format&fit=crop&q=80&w=600&h=900" alt="Women in Leadership" loading="lazy"><div class="gallery-item__overlay"><span class="gallery-item__title">Women in Leadership Forum</span></div></div>
+      <div class="gallery-item"><img src="https://images.unsplash.com/photo-1542744094-3a31f272c490?auto=format&fit=crop&q=80&w=600" alt="Cover Shoot" loading="lazy"><div class="gallery-item__overlay"><span class="gallery-item__title">Cover Shoot — May 2026</span></div></div>
+      <div class="gallery-item"><img src="https://images.unsplash.com/photo-1559136555-9303baea8ebd?auto=format&fit=crop&q=80&w=600&h=700" alt="Brand Awards" loading="lazy"><div class="gallery-item__overlay"><span class="gallery-item__title">Brand Awards Night</span></div></div>
+      <div class="gallery-item"><img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=600" alt="Simply Two" loading="lazy"><div class="gallery-item__overlay"><span class="gallery-item__title">Simply Two — Behind the Lens</span></div></div>
+      <div class="gallery-item"><img src="https://images.unsplash.com/photo-1573164574572-cb89e39749b4?auto=format&fit=crop&q=80&w=600&h=800" alt="Homemaker Spotlight" loading="lazy"><div class="gallery-item__overlay"><span class="gallery-item__title">Homemaker Spotlight Shoot</span></div></div>
+      <div class="gallery-item"><img src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&q=80&w=600" alt="Markets Edition" loading="lazy"><div class="gallery-item__overlay"><span class="gallery-item__title">Markets Special Edition</span></div></div>
+      <div class="gallery-item"><img src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&q=80&w=600&h=500" alt="Editorial Team" loading="lazy"><div class="gallery-item__overlay"><span class="gallery-item__title">Editorial Team 2026</span></div></div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+
+<!-- =============================================
+     10. LATEST STORIES
+============================================= -->
+<section class="latest-section">
+  <div class="container">
+    <div class="ci-section-label">
+      <div class="ci-section-label__bar"></div>
+      <h2 class="ci-section-label__title">Latest Stories</h2>
+      <a href="/articles/" class="ci-section-label__link">View All →</a>
+    </div>
+    <div class="row g-4">
+      {% for article in latest_articles|slice:":6" %}
+      <div class="col-sm-6 col-lg-4">
+        <a href="/article/{{ article.slug }}/" class="article-grid-card d-block text-decoration-none">
+          <div class="agc-img-wrap">
+            {% if article.thumbnail_image %}
+              <img src="{{ article.thumbnail_image.url }}" alt="{{ article.title }}" loading="lazy">
+            {% else %}
+              <div style="width:100%;height:100%;background:var(--ci-mist);"></div>
+            {% endif %}
+          </div>
+          <div class="agc-body">
+            <div class="agc-cat">{{ article.category.title }}</div>
+            <div class="agc-title">{{ article.title }}</div>
+            <div class="agc-desc">{{ article.description }}</div>
+            <div class="agc-meta">
+              <span>{{ article.author.name|default:"Editorial" }}</span>
+              <span style="color:var(--ci-silver);">&bull;</span>
+              <span>{{ article.created_at|date:"M d, Y" }}</span>
+            </div>
+          </div>
+        </a>
+      </div>
+      {% empty %}
+      <!-- Fallback article cards — shows until articles are published -->
+      <div class="col-sm-6 col-lg-4"><a href="#" class="article-grid-card d-block text-decoration-none"><div class="agc-img-wrap"><img src="https://images.unsplash.com/photo-1504711434969-e33886168f5c?auto=format&fit=crop&q=80&w=600" alt="" loading="lazy"></div><div class="agc-body"><div class="agc-cat">Markets</div><div class="agc-title">Why the Sensex Rally Isn't the Whole Story — and What Investors Are Missing</div><div class="agc-desc">Behind the headline numbers lies a more complex picture of sectoral divergence and foreign capital behaviour.</div><div class="agc-meta"><span>Priya Sharma</span><span style="color:var(--ci-silver);">&bull;</span><span>May 14, 2026</span></div></div></a></div>
+      <div class="col-sm-6 col-lg-4"><a href="#" class="article-grid-card d-block text-decoration-none"><div class="agc-img-wrap"><img src="https://images.unsplash.com/photo-1559136555-9303baea8ebd?auto=format&fit=crop&q=80&w=600" alt="" loading="lazy"></div><div class="agc-body"><div class="agc-cat">Startups</div><div class="agc-title">Inside the ₹500 Crore Bet That Could Make India's Agri-Tech Sector Unrecognisable</div><div class="agc-desc">Three founders, one thesis, and a supply chain challenge that's defeated everyone who tried before them.</div><div class="agc-meta"><span>Arjun Kapoor</span><span style="color:var(--ci-silver);">&bull;</span><span>May 13, 2026</span></div></div></a></div>
+      <div class="col-sm-6 col-lg-4"><a href="#" class="article-grid-card d-block text-decoration-none"><div class="agc-img-wrap"><img src="https://images.unsplash.com/photo-1542744094-3a31f272c490?auto=format&fit=crop&q=80&w=600" alt="" loading="lazy"></div><div class="agc-body"><div class="agc-cat">Policy</div><div class="agc-title">The PLI Scheme at Year Three: What Worked, What Failed, and What Comes Next</div><div class="agc-desc">A sector-by-sector audit of India's most ambitious industrial policy in a generation.</div><div class="agc-meta"><span>Editorial Board</span><span style="color:var(--ci-silver);">&bull;</span><span>May 12, 2026</span></div></div></a></div>
+      <div class="col-sm-6 col-lg-4"><a href="#" class="article-grid-card d-block text-decoration-none"><div class="agc-img-wrap"><img src="https://images.unsplash.com/photo-1573164574572-cb89e39749b4?auto=format&fit=crop&q=80&w=600" alt="" loading="lazy"></div><div class="agc-body"><div class="agc-cat">Leadership</div><div class="agc-title">The CEO Who Turned a ₹30 Crore Loss into a ₹400 Crore Turnaround in 18 Months</div><div class="agc-desc">Nidhi Agarwal on radical transparency, letting go of legacy systems, and why she almost quit six times.</div><div class="agc-meta"><span>Rajiv Menon</span><span style="color:var(--ci-silver);">&bull;</span><span>May 11, 2026</span></div></div></a></div>
+      <div class="col-sm-6 col-lg-4"><a href="#" class="article-grid-card d-block text-decoration-none"><div class="agc-img-wrap"><img src="https://images.unsplash.com/photo-1521737604893-d14cc237f11d?auto=format&fit=crop&q=80&w=600" alt="" loading="lazy"></div><div class="agc-body"><div class="agc-cat">Deep Tech</div><div class="agc-title">India's AI Talent Pipeline Has a Gap. Here's Exactly Where It Breaks Down</div><div class="agc-desc">Despite 1.4 million engineering graduates annually, enterprise AI adoption is stalling at the implementation layer.</div><div class="agc-meta"><span>Suresh Pillai</span><span style="color:var(--ci-silver);">&bull;</span><span>May 10, 2026</span></div></div></a></div>
+      <div class="col-sm-6 col-lg-4"><a href="#" class="article-grid-card d-block text-decoration-none"><div class="agc-img-wrap"><img src="https://images.unsplash.com/photo-1556761175-4b46a572b786?auto=format&fit=crop&q=80&w=600" alt="" loading="lazy"></div><div class="agc-body"><div class="agc-cat">Sustainability</div><div class="agc-title">Green Bonds Are Booming. But Is India's ESG Reporting Ready to Back Them Up?</div><div class="agc-desc">The gap between what companies claim and what they can prove is India's next big governance crisis.</div><div class="agc-meta"><span>Kavya Nair</span><span style="color:var(--ci-silver);">&bull;</span><span>May 9, 2026</span></div></div></a></div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+
+<!-- =============================================
+     11. STORIES IN YOUR INBOX
+============================================= -->
+<section class="newsletter-section">
+  <div class="container">
+    <div class="nl-inner">
+      <div>
+        <div class="ci-eyebrow" style="color:var(--ci-red); margin-bottom:20px;">Newsletter</div>
+        <h2 class="nl-headline">Stories in your inbox.<br/><em>Every week.</em></h2>
+        <p class="nl-sub">The Corporate Impact Weekly — India's only bilingual business newsletter. Hindi. English. One sharp insight, one personality, one story you won't find anywhere else. Trusted by 50,000+ industry leaders.</p>
+        <form action="/subscribe_form" method="POST" class="nl-input-row">
+          {% csrf_token %}
+          <input type="email" name="email" placeholder="Your email address" required autocomplete="email">
+          <button type="submit">Subscribe Free</button>
+        </form>
+        <p class="nl-disclaimer">
+          By subscribing you agree to our <a href="/terms">Terms of Service</a> and <a href="/privacy">Privacy Policy</a>. Unsubscribe at any time.
+        </p>
+      </div>
+      <div class="nl-tiers">
+        <div class="nl-tier">
+          <div><div class="nl-tier__name">Free Edition</div><div class="nl-tier__desc">Weekly digest — Hindi &amp; English stories</div></div>
+          <div class="nl-tier__tag">Free</div>
+        </div>
+        <div class="nl-tier">
+          <div><div class="nl-tier__name">Premium Edition</div><div class="nl-tier__desc">Exclusive interviews, early access, bonus features</div></div>
+          <div class="nl-tier__tag">₹99/mo</div>
+        </div>
+        <div class="nl-tier">
+          <div><div class="nl-tier__name">Newsletter Sponsor</div><div class="nl-tier__desc">Your brand featured in our weekly issue</div></div>
+          <div class="nl-tier__tag">Enquire</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% endblock 'body' %}
+
+{% block 'script' %}
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const observer = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) {
+          entry.target.style.opacity = '1';
+          entry.target.style.transform = 'translateY(0)';
+        }
+      });
+    }, { threshold: 0.08 });
+
+    document.querySelectorAll(
+      '.pillar-card, .byline-card, .hm-card, .wwu-card, .team-card, .article-grid-card'
+    ).forEach(function (el, i) {
+      el.style.opacity = '0';
+      el.style.transform = 'translateY(22px)';
+      el.style.transition = 'opacity 0.5s ease ' + (i * 0.04) + 's, transform 0.5s ease ' + (i * 0.04) + 's';
+      observer.observe(el);
+    });
+  });
+</script>
+<script>
+  // Function to open a modal by ID
+function openModal(modalId) {
+  document.getElementById(modalId).classList.add('active');
+  document.body.style.overflow = 'hidden'; // Prevent background scrolling
+}
+
+// Function to close a modal by ID
+function closeModal(modalId) {
+  document.getElementById(modalId).classList.remove('active');
+  document.body.style.overflow = 'auto'; // Restore background scrolling
+}
+
+// Optional: Close modal if user clicks outside the modal box
+window.addEventListener('click', function(event) {
+  if (event.target.classList.contains('ci-modal-overlay')) {
+    event.target.classList.remove('active');
+    document.body.style.overflow = 'auto';
+  }
+});
+</script>
+{% endblock 'script' %}

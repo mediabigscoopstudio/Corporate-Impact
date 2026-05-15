@@ -1,0 +1,522 @@
+{% extends "dash/base.html" %}
+
+{% block 'title' %}
+View Lead - Corporate Impact
+{% endblock 'title' %}
+
+
+{% block 'css' %}
+
+<style>
+
+.lead-card{
+    border:none;
+    border-radius:24px;
+    box-shadow:0 2px 20px rgba(0,0,0,0.06);
+}
+
+.info-label{
+    font-size:13px;
+    color:#6c757d;
+    margin-bottom:6px;
+    font-weight:500;
+}
+
+.info-value{
+    font-size:15px;
+    font-weight:600;
+    margin-bottom:24px;
+    word-break:break-word;
+}
+
+.info-value a{
+    color:#000;
+    text-decoration:none;
+}
+
+.info-value a:hover{
+    text-decoration:underline;
+}
+
+.section-title{
+    font-size:18px;
+    font-weight:700;
+    margin-bottom:25px;
+}
+
+.badge-status{
+    padding:8px 14px;
+    border-radius:30px;
+    font-size:13px;
+}
+
+</style>
+
+{% endblock 'css' %}
+
+
+
+{% block 'body' %}
+
+<div class="container-fluid">
+
+    <div class="py-3 d-flex justify-content-between align-items-center">
+
+        <div>
+
+            <h4 class="fw-bold mb-1">
+                Lead Details
+            </h4>
+
+            <p class="text-muted mb-0">
+                Complete application information.
+            </p>
+
+        </div>
+
+        <span class="badge bg-dark badge-status">
+
+            {{data.status}}
+
+        </span>
+
+    </div>
+
+
+
+    <div class="card lead-card">
+
+        <div class="card-body p-4">
+
+            <!-- BASIC INFO -->
+            <div class="section-title">
+                Basic Information
+            </div>
+
+            <div class="row">
+
+                <div class="col-md-6">
+
+                    <div class="info-label">
+                        Full Name
+                    </div>
+
+                    <div class="info-value">
+                        {{data.name}}
+                    </div>
+
+                </div>
+
+                <div class="col-md-6">
+
+                    <div class="info-label">
+                        Email
+                    </div>
+
+                    <div class="info-value">
+
+                        <a href="mailto:{{data.email}}">
+                            {{data.email}}
+                        </a>
+
+                    </div>
+
+                </div>
+
+                <div class="col-md-6">
+
+                    <div class="info-label">
+                        Phone Number
+                    </div>
+
+                    <div class="info-value">
+
+                        <a href="tel:{{data.phone}}">
+                            {{data.phone}}
+                        </a>
+
+                    </div>
+
+                </div>
+
+                <div class="col-md-6">
+
+                    <div class="info-label">
+                        City
+                    </div>
+
+                    <div class="info-value">
+                        {{data.city}}
+                    </div>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- HOMEMAKER -->
+            {% if lead_type == "homemaker" %}
+
+            <hr class="my-4">
+
+            <div class="section-title">
+                Homemaker Information
+            </div>
+
+            <div class="row">
+
+                <div class="col-md-6">
+
+                    <div class="info-label">
+                        Spotlight Type
+                    </div>
+
+                    <div class="info-value">
+                        {{data.get_spotlight_type_display}}
+                    </div>
+
+                </div>
+
+                <div class="col-md-6">
+
+                    <div class="info-label">
+                        Years as Homemaker
+                    </div>
+
+                    <div class="info-value">
+                        {{data.years_as_homemaker}}
+                    </div>
+
+                </div>
+
+                <div class="col-md-6">
+
+                    <div class="info-label">
+                        Entrepreneur
+                    </div>
+
+                    <div class="info-value">
+
+                        {% if data.is_entrepreneur %}
+                            Yes
+                        {% else %}
+                            No
+                        {% endif %}
+
+                    </div>
+
+                </div>
+
+                <div class="col-md-6">
+
+                    <div class="info-label">
+                        Business Name
+                    </div>
+
+                    <div class="info-value">
+                        {{data.business_name}}
+                    </div>
+
+                </div>
+
+                <div class="col-md-12">
+
+                    <div class="info-label">
+                        Instagram Handle
+                    </div>
+
+                    <div class="info-value">
+
+                        {% if data.instagram_handle %}
+
+                        <a href="https://instagram.com/{{data.instagram_handle|cut:'@'}}"
+                           target="_blank">
+
+                            {{data.instagram_handle}}
+
+                        </a>
+
+                        {% endif %}
+
+                    </div>
+
+                </div>
+
+                <div class="col-md-12">
+
+                    <div class="info-label">
+                        Story Summary
+                    </div>
+
+                    <div class="info-value">
+                        {{data.story_summary}}
+                    </div>
+
+                </div>
+
+            </div>
+
+            {% endif %}
+
+
+
+            <!-- BYLINE -->
+            {% if lead_type == "byline" %}
+
+            <hr class="my-4">
+
+            <div class="section-title">
+                Professional Information
+            </div>
+
+            <div class="row">
+
+                <div class="col-md-6">
+
+                    <div class="info-label">
+                        Organisation
+                    </div>
+
+                    <div class="info-value">
+                        {{data.organisation}}
+                    </div>
+
+                </div>
+
+                <div class="col-md-6">
+
+                    <div class="info-label">
+                        Designation
+                    </div>
+
+                    <div class="info-value">
+                        {{data.designation}}
+                    </div>
+
+                </div>
+
+                <div class="col-md-6">
+
+                    <div class="info-label">
+                        Program Tier
+                    </div>
+
+                    <div class="info-value">
+                        {{data.get_tier_display}}
+                    </div>
+
+                </div>
+
+                <div class="col-md-6">
+
+                    <div class="info-label">
+                        Assigned Editor
+                    </div>
+
+                    <div class="info-value">
+                        {{data.assigned_to}}
+                    </div>
+
+                </div>
+
+                <div class="col-md-12">
+
+                    <div class="info-label">
+                        Topic Idea
+                    </div>
+
+                    <div class="info-value">
+                        {{data.topic_idea}}
+                    </div>
+
+                </div>
+
+                <div class="col-md-6">
+
+                    <div class="info-label">
+                        LinkedIn
+                    </div>
+
+                    <div class="info-value">
+
+                        {% if data.linkedin_url %}
+
+                        <a href="{{data.linkedin_url}}"
+                           target="_blank">
+
+                            Open LinkedIn Profile
+
+                        </a>
+
+                        {% endif %}
+
+                    </div>
+
+                </div>
+
+                <div class="col-md-6">
+
+                    <div class="info-label">
+                        Website / Portfolio
+                    </div>
+
+                    <div class="info-value">
+
+                        {% if data.website_url %}
+
+                        <a href="{{data.website_url}}"
+                           target="_blank">
+
+                            Open Website
+
+                        </a>
+
+                        {% endif %}
+
+                    </div>
+
+                </div>
+
+                <div class="col-md-12">
+
+    <div class="info-label">
+        Writing Sample PDF
+    </div>
+
+    <div class="info-value">
+
+        {% if data.writing_sample %}
+
+        <div class="d-flex gap-2 flex-wrap">
+
+            <a href="{{data.writing_sample.url}}"
+               target="_blank"
+               class="btn btn-dark btn-sm">
+
+                View PDF
+
+            </a>
+
+            <a href="{{data.writing_sample.url}}"
+               download
+               class="btn btn-outline-dark btn-sm">
+
+                Download PDF
+
+            </a>
+
+        </div>
+
+        <div class="mt-3">
+
+            <iframe src="{{data.writing_sample.url}}"
+                    width="100%"
+                    height="600px"
+                    style="border-radius:16px; border:1px solid #e9ecef;">
+            </iframe>
+
+        </div>
+
+        {% else %}
+
+        <span class="text-muted">
+            No PDF uploaded.
+        </span>
+
+        {% endif %}
+
+    </div>
+
+</div>
+
+                <div class="col-md-6">
+
+                    <div class="info-label">
+                        Brand Name
+                    </div>
+
+                    <div class="info-value">
+                        {{data.brand_name}}
+                    </div>
+
+                </div>
+
+                <div class="col-md-6">
+
+                    <div class="info-label">
+                        Monthly Volume
+                    </div>
+
+                    <div class="info-value">
+                        {{data.monthly_volume}}
+                    </div>
+
+                </div>
+
+            </div>
+
+            {% endif %}
+
+
+
+            <!-- FOOTER INFO -->
+            <hr class="my-4">
+
+            <div class="section-title">
+                Editorial Workflow
+            </div>
+
+            <div class="row">
+
+                <div class="col-md-6">
+
+                    <div class="info-label">
+                        Consent to Publish
+                    </div>
+
+                    <div class="info-value">
+
+                        {% if data.consent_publish %}
+                            Yes
+                        {% else %}
+                            No
+                        {% endif %}
+
+                    </div>
+
+                </div>
+
+                <div class="col-md-6">
+
+                    <div class="info-label">
+                        Submitted At
+                    </div>
+
+                    <div class="info-value">
+                        {{data.created_at}}
+                    </div>
+
+                </div>
+
+                <div class="col-md-12">
+
+                    <div class="info-label">
+                        Internal Notes
+                    </div>
+
+                    <div class="info-value">
+                        {{data.internal_notes}}
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock 'body' %}

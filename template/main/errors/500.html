@@ -1,0 +1,453 @@
+{% extends "main/base.html" %}
+
+{% block 'title' %}Page Not Found | Corporate Impact{% endblock 'title' %}
+
+{% block 'css' %}
+<style>
+  /* =============================================
+     ERROR PAGE PREMIUM STYLES
+  ============================================= */
+  
+  /* --- Typography & Utilities --- */
+  .ep-display-font { font-family: var(--font-display, 'Playfair Display', serif); }
+  .ep-sans-font { font-family: var(--font-sans, 'DM Sans', sans-serif); }
+  .ep-serif-font { font-family: var(--font-serif, 'Source Serif 4', serif); }
+  
+  /* --- Cinematic Hero --- */
+  .ep-hero {
+    position: relative;
+    background: var(--ci-black, #0f0f0f);
+    color: #fff;
+    padding: 140px 0 100px;
+    overflow: hidden;
+    text-align: center;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  }
+  .ep-hero::before {
+    content: '';
+    position: absolute;
+    top: -50%; left: -50%; width: 200%; height: 200%;
+    background: radial-gradient(circle at center, rgba(204, 27, 27, 0.08) 0%, transparent 60%);
+    pointer-events: none;
+    animation: ep-pulse 8s ease-in-out infinite;
+  }
+  @keyframes ep-pulse {
+    0%, 100% { transform: scale(1); opacity: 0.8; }
+    50% { transform: scale(1.05); opacity: 1; }
+  }
+  
+  .ep-error-code {
+    font-size: clamp(100px, 15vw, 180px);
+    font-weight: 900;
+    line-height: 1;
+    margin-bottom: 10px;
+    background: linear-gradient(180deg, #ffffff 0%, rgba(255,255,255,0.2) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    letter-spacing: -4px;
+    position: relative;
+    z-index: 2;
+  }
+  
+  .ep-error-title {
+    font-size: clamp(28px, 4vw, 42px);
+    font-weight: 700;
+    letter-spacing: -0.5px;
+    margin-bottom: 16px;
+    position: relative;
+    z-index: 2;
+  }
+  
+  .ep-error-desc {
+    font-size: 18px;
+    color: rgba(255, 255, 255, 0.5);
+    max-width: 540px;
+    margin: 0 auto 48px;
+    font-style: italic;
+    position: relative;
+    z-index: 2;
+  }
+  
+  /* --- Hero CTAs --- */
+  .ep-hero-actions {
+    display: flex;
+    gap: 16px;
+    justify-content: center;
+    flex-wrap: wrap;
+    position: relative;
+    z-index: 2;
+  }
+  .ep-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 16px 32px;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    text-decoration: none;
+    border-radius: 3px;
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .ep-btn--primary {
+    background: var(--ci-red, #cc1b1b);
+    color: #fff;
+    border: 1px solid var(--ci-red, #cc1b1b);
+  }
+  .ep-btn--primary:hover {
+    background: var(--ci-red-dark, #a81616);
+    border-color: var(--ci-red-dark, #a81616);
+    transform: translateY(-2px);
+    color: #fff;
+  }
+  .ep-btn--outline {
+    background: transparent;
+    color: #fff;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+  }
+  .ep-btn--outline:hover {
+    background: #fff;
+    color: var(--ci-black, #0f0f0f);
+    transform: translateY(-2px);
+  }
+  
+  /* --- Section Label --- */
+  .ep-section-header {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 48px;
+  }
+  .ep-section-line {
+    height: 1px;
+    flex: 1;
+    background: var(--ci-mist, #e8e8e8);
+  }
+  .ep-section-title {
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--ci-black, #0f0f0f);
+    margin: 0;
+  }
+
+  /* --- Latest Stories Section --- */
+  .ep-stories {
+    background: var(--ci-paper, #f7f5f2);
+    padding: 96px 0;
+  }
+  .ep-article-card {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    background: var(--ci-white, #fff);
+    border: 1px solid var(--ci-mist, #e8e8e8);
+    border-radius: 4px;
+    overflow: hidden;
+    text-decoration: none;
+    color: inherit;
+    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s;
+  }
+  .ep-article-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.06);
+  }
+  .ep-article-img-wrapper {
+    aspect-ratio: 16/10;
+    overflow: hidden;
+    position: relative;
+    background: var(--ci-mist, #e8e8e8);
+  }
+  .ep-article-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .ep-article-card:hover .ep-article-img {
+    transform: scale(1.05);
+  }
+  .ep-article-body {
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+  }
+  .ep-article-cat {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--ci-red, #cc1b1b);
+    margin-bottom: 12px;
+  }
+  .ep-article-heading {
+    font-size: 18px;
+    font-weight: 700;
+    line-height: 1.3;
+    margin-bottom: 16px;
+    color: var(--ci-black, #0f0f0f);
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  .ep-article-meta {
+    margin-top: auto;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--ci-slate, #6b6b6b);
+  }
+
+  /* --- Explore Categories --- */
+  .ep-categories {
+    padding: 64px 0 96px;
+    background: var(--ci-white, #fff);
+  }
+  .ep-cat-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    justify-content: center;
+  }
+  .ep-cat-pill {
+    padding: 14px 28px;
+    border: 1px solid var(--ci-mist, #e8e8e8);
+    border-radius: 40px;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    color: var(--ci-graphite, #3a3a3a);
+    text-decoration: none;
+    transition: all 0.3s;
+    background: var(--ci-paper, #f7f5f2);
+  }
+  .ep-cat-pill:hover {
+    background: var(--ci-black, #0f0f0f);
+    border-color: var(--ci-black, #0f0f0f);
+    color: #fff;
+    transform: translateY(-2px);
+  }
+
+  /* --- Newsletter & Support Block --- */
+  .ep-bottom-section {
+    background: var(--ci-charcoal, #1e1e1e);
+    padding: 80px 0;
+    color: #fff;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+  }
+  .ep-ns-wrapper {
+    max-width: 600px;
+    margin: 0 auto;
+    text-align: center;
+  }
+  .ep-ns-title {
+    font-size: 32px;
+    font-weight: 900;
+    margin-bottom: 16px;
+    letter-spacing: -0.5px;
+  }
+  .ep-ns-desc {
+    font-size: 14px;
+    color: rgba(255, 255, 255, 0.5);
+    margin-bottom: 32px;
+  }
+  .ep-ns-form {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 48px;
+  }
+  .ep-ns-input {
+    flex: 1;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: #fff;
+    padding: 16px 20px;
+    border-radius: 3px;
+    font-size: 14px;
+    outline: none;
+    transition: border-color 0.3s;
+  }
+  .ep-ns-input:focus {
+    border-color: var(--ci-red, #cc1b1b);
+  }
+  .ep-support-block {
+    padding-top: 48px;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+  }
+  .ep-support-text {
+    font-size: 12px;
+    color: rgba(255, 255, 255, 0.4);
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+  .ep-support-link {
+    font-size: 16px;
+    color: #fff;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: color 0.2s;
+  }
+  .ep-support-link:hover {
+    color: var(--ci-red, #cc1b1b);
+  }
+  
+  /* Fade-in Animation */
+  .ep-fade-up {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .ep-fade-up.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  @media (max-width: 768px) {
+    .ep-hero { padding: 100px 20px 80px; }
+    .ep-hero-actions { flex-direction: column; width: 100%; max-width: 300px; margin: 0 auto; }
+    .ep-ns-form { flex-direction: column; }
+    .ep-btn { width: 100%; }
+  }
+</style>
+{% endblock 'css' %}
+
+{% block 'body' %}
+<!-- =============================================
+     CINEMATIC ERROR HERO
+============================================= -->
+<section class="ep-hero">
+  <div class="container">
+    <div class="ep-fade-up">
+      <h1 class="ep-error-code ep-display-font">404</h1>
+      <h2 class="ep-error-title ep-display-font">We lost the thread.</h2>
+      <p class="ep-error-desc ep-serif-font">The story or page you are looking for has been moved, renamed, or no longer exists. Let's get you back to the definitive voice of India Inc.</p>
+      
+      <div class="ep-hero-actions">
+        <a href="/" class="ep-btn ep-btn--primary ep-sans-font">Return to Homepage</a>
+        <a href="#latest-stories" class="ep-btn ep-btn--outline ep-sans-font">Explore Latest Stories</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- =============================================
+     LATEST STORIES SECTION
+============================================= -->
+<section class="ep-stories" id="latest-stories">
+  <div class="container">
+    <div class="ep-section-header ep-fade-up">
+      <h3 class="ep-section-title ep-sans-font">Continue Reading</h3>
+      <div class="ep-section-line"></div>
+    </div>
+    
+    <div class="row g-4">
+      {% for i in latest_articles|slice:":6" %}
+      <div class="col-md-6 col-lg-4 ep-fade-up" style="transition-delay: {{ forloop.counter0|add:1 }}00ms;">
+        <a href="/article/{{ i.slug }}" class="ep-article-card">
+          <div class="ep-article-img-wrapper">
+            {% if i.thumbnail_image %}
+              <img src="{{ i.thumbnail_image.url }}" alt="{{ i.title }}" class="ep-article-img" loading="lazy">
+            {% else %}
+              <div class="ep-article-img" style="background: var(--ci-mist);"></div>
+            {% endif %}
+          </div>
+          <div class="ep-article-body">
+            <div class="ep-article-cat ep-sans-font">{{ i.category.title }}</div>
+            <h4 class="ep-article-heading ep-display-font">{{ i.title }}</h4>
+            <div class="ep-article-meta ep-sans-font">
+              <span>{{ i.author.name|default:"Editorial Desk" }}</span>
+              <span style="color: var(--ci-silver);">&bull;</span>
+              <span>{{ i.created_at|date:"M d, Y" }}</span>
+            </div>
+          </div>
+        </a>
+      </div>
+      {% empty %}
+      <div class="col-12 text-center py-5">
+        <p class="ep-serif-font" style="color: var(--ci-slate);">No recent stories available at the moment.</p>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<!-- =============================================
+     EXPLORE CATEGORIES SECTION
+============================================= -->
+<section class="ep-categories">
+  <div class="container text-center">
+    <div class="ep-section-header ep-fade-up" style="justify-content: center; margin-bottom: 32px;">
+      <h3 class="ep-section-title ep-sans-font">Navigate the Ecosystem</h3>
+    </div>
+    <div class="ep-cat-grid ep-fade-up">
+      {% for i in categories %}
+        <a href="/category/{{ i.slug }}" class="ep-cat-pill ep-sans-font">{{ i.title }}</a>
+      {% empty %}
+        <a href="#" class="ep-cat-pill ep-sans-font">Markets</a>
+        <a href="#" class="ep-cat-pill ep-sans-font">Policy</a>
+        <a href="#" class="ep-cat-pill ep-sans-font">Startups</a>
+        <a href="#" class="ep-cat-pill ep-sans-font">Leadership</a>
+        <a href="#" class="ep-cat-pill ep-sans-font">Deep Tech</a>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<!-- =============================================
+     NEWSLETTER & SUPPORT SECTION
+============================================= -->
+<section class="ep-bottom-section">
+  <div class="container">
+    <div class="ep-ns-wrapper ep-fade-up">
+      <h2 class="ep-ns-title ep-display-font">The Daily Brief</h2>
+      <p class="ep-ns-desc ep-sans-font">Don't miss the next breaking story. Get authoritative analysis and exclusive policy updates delivered straight to your inbox.</p>
+      
+      <form action="/subscribe_form" method="POST" class="ep-ns-form">
+        {% csrf_token %}
+        <input type="email" name="email" class="ep-ns-input ep-sans-font" placeholder="Your work email address" required>
+        <button type="submit" class="ep-btn ep-btn--primary ep-sans-font" style="border-radius: 3px;">Subscribe</button>
+      </form>
+
+      <div class="ep-support-block">
+        <span class="ep-support-text ep-sans-font">Need Assistance?</span>
+        <a href="mailto:support@corporateimpact.in" class="ep-support-link ep-sans-font">
+          <i class="bi bi-envelope"></i> support@corporateimpact.in
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock 'body' %}
+
+{% block 'script' %}
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('is-visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { rootMargin: '0px 0px -50px 0px', threshold: 0.1 });
+
+    document.querySelectorAll('.ep-fade-up').forEach(el => {
+      observer.observe(el);
+    });
+  });
+</script>
+{% endblock 'script' %}

@@ -1,0 +1,665 @@
+{% extends "main/base.html" %}
+
+{% block 'title' %}{{ data.name }} | Corporate Impact{% endblock 'title' %}
+
+{% block 'meta' %}
+<meta name="description" content="Read articles and insights by {{ data.name }}, {{ data.designation }} at Corporate Impact.">
+{% endblock 'meta' %}
+
+{% block 'css' %}
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700;900&family=Source+Serif+4:ital,wght@0,300;0,400;0,600;1,400&family=DM+Sans:wght@300;400;500;600&display=swap');
+
+    :root {
+        --ci-red: #CC1B1B;
+        --ci-red-dark: #A01515;
+        --ci-black: #0F0F0F;
+        --ci-charcoal: #1E1E1E;
+        --ci-graphite: #3A3A3A;
+        --ci-slate: #6B6B6B;
+        --ci-mist: #E8E8E8;
+        --ci-paper: #F7F5F2;
+        --ci-white: #FFFFFF;
+        
+        --font-display: 'Playfair Display', Georgia, serif;
+        --font-serif: 'Source Serif 4', Georgia, serif;
+        --font-sans: 'DM Sans', system-ui, sans-serif;
+        
+        --transition-premium: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    body {
+        font-family: var(--font-sans);
+        background-color: var(--ci-paper);
+        color: var(--ci-black);
+        -webkit-font-smoothing: antialiased;
+    }
+
+    .font-serif { font-family: var(--font-serif); }
+    .font-display { font-family: var(--font-display); }
+
+    /* =====================================
+       ANIMATIONS
+       ===================================== */
+    .fade-in-up {
+        animation: fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) both;
+    }
+    @keyframes fadeInUp {
+        0% { opacity: 0; transform: translateY(20px); }
+        100% { opacity: 1; transform: translateY(0); }
+    }
+    .delay-1 { animation-delay: 0.1s; }
+    .delay-2 { animation-delay: 0.2s; }
+    .delay-3 { animation-delay: 0.3s; }
+
+    /* =====================================
+       AUTHOR HERO
+       ===================================== */
+    .author-hero {
+        background-color: var(--ci-white);
+        border-bottom: 1px solid var(--ci-mist);
+        padding: 80px 0 100px;
+        position: relative;
+    }
+    .author-hero::after {
+        content: '';
+        position: absolute;
+        bottom: 0; left: 0; right: 0;
+        height: 4px;
+        background: var(--ci-red);
+    }
+    .author-image-wrapper {
+        position: relative;
+        width: 220px;
+        height: 220px;
+        margin: 0 auto;
+    }
+    .author-image {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        border-radius: 50%;
+        border: 1px solid var(--ci-mist);
+        padding: 8px;
+        background: var(--ci-white);
+        box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+    }
+    .author-badge {
+        position: absolute;
+        bottom: 10px;
+        right: 20px;
+        background: var(--ci-red);
+        color: var(--ci-white);
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border: 4px solid var(--ci-white);
+        font-size: 1.2rem;
+    }
+    .author-name {
+        font-family: var(--font-display);
+        font-size: clamp(3rem, 5vw, 4.5rem);
+        font-weight: 900;
+        letter-spacing: -1.5px;
+        line-height: 1.1;
+        color: var(--ci-black);
+        margin-bottom: 0.5rem;
+    }
+    .author-designation {
+        font-family: var(--font-serif);
+        font-size: 1.25rem;
+        color: var(--ci-red);
+        font-style: italic;
+        margin-bottom: 1.5rem;
+    }
+    .author-bio {
+        font-size: 1.05rem;
+        color: var(--ci-graphite);
+        line-height: 1.7;
+        max-width: 700px;
+    }
+    
+    .social-btn-editorial {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        border: 1px solid var(--ci-mist);
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--ci-graphite);
+        background: var(--ci-white);
+        transition: var(--transition-premium);
+        text-decoration: none;
+    }
+    .social-btn-editorial:hover {
+        background: var(--ci-black);
+        color: var(--ci-white);
+        border-color: var(--ci-black);
+        transform: translateY(-2px);
+    }
+
+    /* =====================================
+       STATS BAR
+       ===================================== */
+    .stats-container {
+        margin-top: -40px;
+        position: relative;
+        z-index: 10;
+    }
+    .stats-card {
+        background: var(--ci-black);
+        border-radius: 8px;
+        padding: 24px;
+        display: flex;
+        justify-content: space-around;
+        box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+        color: var(--ci-white);
+    }
+    .stat-item {
+        text-align: center;
+        padding: 0 24px;
+        border-right: 1px solid rgba(255,255,255,0.1);
+        flex: 1;
+    }
+    .stat-item:last-child {
+        border-right: none;
+    }
+    .stat-value {
+        font-family: var(--font-display);
+        font-size: 2.5rem;
+        font-weight: 700;
+        color: var(--ci-white);
+        line-height: 1;
+        margin-bottom: 0.5rem;
+    }
+    .stat-label {
+        font-size: 0.75rem;
+        font-weight: 600;
+        letter-spacing: 0.15em;
+        text-transform: uppercase;
+        color: rgba(255,255,255,0.5);
+    }
+
+    /* =====================================
+       AUTHOR EXPERTISE
+       ===================================== */
+    .expertise-section {
+        background: var(--ci-white);
+        padding: 2rem;
+        border: 0.5px solid var(--ci-mist);
+        border-radius: 8px;
+        margin-bottom: 3rem;
+        border-left: 4px solid var(--ci-black);
+    }
+    .expertise-title {
+        font-size: 0.75rem;
+        font-weight: 700;
+        letter-spacing: 0.15em;
+        text-transform: uppercase;
+        color: var(--ci-slate);
+        margin-bottom: 1rem;
+    }
+    .expertise-text {
+        font-family: var(--font-serif);
+        font-size: 1.15rem;
+        color: var(--ci-graphite);
+        line-height: 1.6;
+        font-style: italic;
+    }
+
+    /* =====================================
+       ARTICLE GRID
+       ===================================== */
+    .section-headline {
+        font-family: var(--font-display);
+        font-size: 2rem;
+        font-weight: 900;
+        border-bottom: 2px solid var(--ci-black);
+        padding-bottom: 0.75rem;
+        margin-bottom: 2rem;
+        color: var(--ci-black);
+    }
+    .card-editorial {
+        background: var(--ci-white);
+        border: 0.5px solid var(--ci-mist);
+        border-radius: 8px;
+        overflow: hidden;
+        transition: var(--transition-premium);
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+    }
+    .card-editorial:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 16px 32px rgba(0,0,0,0.06);
+    }
+    .card-img-wrapper {
+        aspect-ratio: 16/9;
+        overflow: hidden;
+        position: relative;
+    }
+    .card-img-wrapper img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .card-editorial:hover .card-img-wrapper img {
+        transform: scale(1.05);
+    }
+    .badge-category {
+        position: absolute;
+        top: 12px;
+        left: 12px;
+        background: var(--ci-red);
+        color: var(--ci-white);
+        font-size: 0.65rem;
+        font-weight: 700;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        padding: 4px 10px;
+        border-radius: 2px;
+        z-index: 2;
+    }
+    .card-body-editorial {
+        padding: 1.5rem;
+        flex-grow: 1;
+        display: flex;
+        flex-direction: column;
+    }
+    .card-title-editorial {
+        font-family: var(--font-display);
+        font-size: 1.25rem;
+        font-weight: 700;
+        line-height: 1.3;
+        color: var(--ci-black);
+        text-decoration: none;
+        margin-bottom: 0.75rem;
+        display: -webkit-box;
+        -webkit-line-clamp: 3;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        transition: color 0.2s;
+    }
+    .card-title-editorial:hover {
+        color: var(--ci-red);
+    }
+    .card-desc-editorial {
+        font-size: 0.9rem;
+        color: var(--ci-slate);
+        margin-bottom: 1.25rem;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+    }
+    .card-meta {
+        margin-top: auto;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        font-size: 0.75rem;
+        color: var(--ci-slate);
+        font-weight: 500;
+        border-top: 1px solid var(--ci-mist);
+        padding-top: 1rem;
+    }
+
+    /* =====================================
+       SIDEBAR WIDGETS
+       ===================================== */
+    .sticky-sidebar {
+        position: sticky;
+        top: 2rem;
+    }
+    .widget {
+        background: var(--ci-white);
+        border: 0.5px solid var(--ci-mist);
+        border-radius: 8px;
+        padding: 1.5rem;
+        margin-bottom: 2rem;
+    }
+    .widget-title {
+        font-family: var(--font-sans);
+        font-size: 0.75rem;
+        font-weight: 700;
+        letter-spacing: 0.15em;
+        text-transform: uppercase;
+        color: var(--ci-black);
+        border-bottom: 2px solid var(--ci-black);
+        padding-bottom: 0.75rem;
+        margin-bottom: 1.25rem;
+    }
+    .sidebar-list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        counter-reset: trending-counter;
+    }
+    .sidebar-list-item {
+        position: relative;
+        padding-bottom: 1rem;
+        margin-bottom: 1rem;
+        border-bottom: 1px solid var(--ci-mist);
+    }
+    .sidebar-list-item:last-child {
+        border-bottom: none;
+        padding-bottom: 0;
+        margin-bottom: 0;
+    }
+    .trending-item {
+        padding-left: 2rem;
+    }
+    .trending-item::before {
+        counter-increment: trending-counter;
+        content: counter(trending-counter);
+        position: absolute;
+        left: 0;
+        top: 2px;
+        font-family: var(--font-display);
+        font-size: 1.25rem;
+        font-weight: 900;
+        color: var(--ci-red);
+        line-height: 1;
+    }
+    .sidebar-article-title {
+        font-family: var(--font-display);
+        font-size: 1rem;
+        font-weight: 700;
+        color: var(--ci-black);
+        text-decoration: none;
+        line-height: 1.3;
+        transition: color 0.2s;
+        display: block;
+        margin-bottom: 0.25rem;
+    }
+    .sidebar-article-title:hover {
+        color: var(--ci-red);
+    }
+    .sidebar-meta {
+        font-size: 0.7rem;
+        color: var(--ci-slate);
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+    }
+
+    .widget-newsletter {
+        background: var(--ci-charcoal);
+        color: var(--ci-white);
+        border: none;
+    }
+    .widget-newsletter .widget-title {
+        color: var(--ci-white);
+        border-color: var(--ci-red);
+    }
+    .widget-newsletter .form-control {
+        background: rgba(255,255,255,0.05);
+        border: 1px solid rgba(255,255,255,0.1);
+        color: var(--ci-white);
+        font-size: 0.85rem;
+    }
+    .widget-newsletter .form-control:focus {
+        border-color: var(--ci-red);
+        box-shadow: none;
+    }
+    .btn-red {
+        background: var(--ci-red);
+        color: var(--ci-white);
+        font-weight: 600;
+        font-size: 0.85rem;
+        letter-spacing: 0.05em;
+        text-transform: uppercase;
+        border: none;
+        transition: var(--transition-premium);
+    }
+    .btn-red:hover {
+        background: var(--ci-red-dark);
+        color: var(--ci-white);
+    }
+
+    /* =====================================
+       PAGINATION & GLOBAL NEWSLETTER
+       ===================================== */
+    .pagination .page-link {
+        color: var(--ci-black);
+        border-color: var(--ci-mist);
+        font-weight: 500;
+        padding: 0.5rem 1rem;
+    }
+    .pagination .page-item.active .page-link {
+        background-color: var(--ci-black);
+        border-color: var(--ci-black);
+        color: var(--ci-white);
+    }
+    .pagination .page-link:hover {
+        background-color: var(--ci-paper);
+        color: var(--ci-red);
+    }
+
+    .global-newsletter {
+        background: linear-gradient(135deg, var(--ci-charcoal) 0%, var(--ci-black) 100%);
+        padding: 80px 0;
+        color: var(--ci-white);
+        text-align: center;
+    }
+
+    @media (max-width: 768px) {
+        .author-hero { padding: 40px 0 60px; text-align: center; }
+        .stats-card { flex-direction: column; gap: 24px; }
+        .stat-item { border-right: none; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 24px; }
+        .stat-item:last-child { border-bottom: none; padding-bottom: 0; }
+        .social-btn-group { justify-content: center; }
+    }
+</style>
+{% endblock 'css' %}
+
+{% block 'body' %}
+
+<section class="author-hero">
+    <div class="container">
+        <nav aria-label="breadcrumb" class="mb-5 fade-in-up">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="/" class="text-decoration-none" style="color: var(--ci-slate); font-size: 12px; text-transform: uppercase; letter-spacing: 0.1em; font-weight: 600;">Home</a></li>
+                <li class="breadcrumb-item"><a href="#" class="text-decoration-none" style="color: var(--ci-slate); font-size: 12px; text-transform: uppercase; letter-spacing: 0.1em; font-weight: 600;">Authors</a></li>
+                <li class="breadcrumb-item active" aria-current="page" style="color: var(--ci-red); font-size: 12px; text-transform: uppercase; letter-spacing: 0.1em; font-weight: 600;">{{ data.name }}</li>
+            </ol>
+        </nav>
+
+        <div class="row align-items-center">
+            <div class="col-lg-4 mb-4 mb-lg-0 text-center fade-in-up">
+                <div class="author-image-wrapper">
+                    {% if data.image %}
+                        <img src="{{ data.image.url }}" alt="{{ data.name }}" class="author-image">
+                    {% else %}
+                        <div class="author-image d-flex align-items-center justify-content-center" style="background: var(--ci-mist); color: var(--ci-slate); font-family: var(--font-display); font-size: 4rem;">
+                            {{ data.name|make_list|first }}
+                        </div>
+                    {% endif %}
+                    <div class="author-badge"><i class="bi bi-pen"></i></div>
+                </div>
+            </div>
+            
+            <div class="col-lg-8 fade-in-up delay-1">
+                <h1 class="author-name">{{ data.name }}</h1>
+                <div class="author-designation">{{ data.designation }}</div>
+                <p class="author-bio mb-4">{{ data.description }}</p>
+                
+                <div class="d-flex gap-3 social-btn-group">
+                    {% if data.linkedin_url %}
+                    <a href="{{ data.linkedin_url }}" class="social-btn-editorial"><i class="bi bi-linkedin"></i></a>
+                    {% endif %}
+                    {% if data.twitter_url %}
+                    <a href="{{ data.twitter_url }}" class="social-btn-editorial"><i class="bi bi-twitter-x"></i></a>
+                    {% endif %}
+                    {% if data.instagram_url %}
+                    <a href="{{ data.instagram_url }}" class="social-btn-editorial"><i class="bi bi-instagram"></i></a>
+                    {% endif %}
+                    {% if data.facebook_url %}
+                    <a href="{{ data.facebook_url }}" class="social-btn-editorial"><i class="bi bi-facebook"></i></a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="container stats-container fade-in-up delay-2">
+    <div class="stats-card">
+        <div class="stat-item">
+            <div class="stat-value">{{ total_articles|default:"0" }}</div>
+            <div class="stat-label">Published Stories</div>
+        </div>
+        <div class="stat-item">
+            <div class="stat-value">{{ total_views|default:"0" }}</div>
+            <div class="stat-label">Total Readership</div>
+        </div>
+        <div class="stat-item">
+            <div class="stat-value">{{ data.created_at|date:"Y" }}</div>
+            <div class="stat-label">Member Since</div>
+        </div>
+    </div>
+</section>
+
+<section class="py-5 mt-4">
+    <div class="container">
+        <div class="row g-5">
+            
+            <div class="col-lg-8">
+                
+                <div class="expertise-section fade-in-up delay-3">
+                    <div class="expertise-title">Editorial Focus</div>
+                    <div class="expertise-text">
+                        "Delivering authoritative analysis and precise insights into the forces reshaping modern business, policy, and industry landscapes."
+                    </div>
+                </div>
+
+                <h2 class="section-headline fade-in-up delay-3">Latest by {{ data.name }}</h2>
+
+                <div class="row row-cols-1 row-cols-md-2 g-4 mb-5 fade-in-up delay-3">
+                    {% for i in articles %}
+                    <div class="col">
+                        <article class="card-editorial">
+                            <a href="/article/{{ i.slug }}" class="card-img-wrapper">
+                                {% if i.thumbnail_image %}
+                                    <img src="{{ i.thumbnail_image.url }}" alt="{{ i.title }}">
+                                {% else %}
+                                    <div style="width: 100%; height: 100%; background: var(--ci-mist);"></div>
+                                {% endif %}
+                                <span class="badge-category">{{ i.category.title }}</span>
+                            </a>
+                            <div class="card-body-editorial">
+                                <a href="/article/{{ i.slug }}" class="card-title-editorial">{{ i.title }}</a>
+                                <p class="card-desc-editorial">{{ i.description }}</p>
+                                <div class="card-meta">
+                                    <span><i class="bi bi-calendar3 me-1"></i> {{ i.created_at|date:"M d, Y" }}</span>
+                                    <span><i class="bi bi-eye me-1"></i> {{ i.views }}</span>
+                                </div>
+                            </div>
+                        </article>
+                    </div>
+                    {% empty %}
+                    <div class="col-12 text-center py-5">
+                        <p class="text-muted">No articles published yet.</p>
+                    </div>
+                    {% endfor %}
+                </div>
+
+                {% if articles.has_other_pages %}
+                <nav aria-label="Article navigation" class="mb-5 fade-in-up">
+                    <ul class="pagination justify-content-center">
+                        {% if articles.has_previous %}
+                        <li class="page-item">
+                            <a class="page-link" href="?page={{ articles.previous_page_number }}">Previous</a>
+                        </li>
+                        {% endif %}
+                        
+                        <li class="page-item active">
+                            <span class="page-link">{{ articles.number }}</span>
+                        </li>
+
+                        {% if articles.has_next %}
+                        <li class="page-item">
+                            <a class="page-link" href="?page={{ articles.next_page_number }}">Next</a>
+                        </li>
+                        {% endif %}
+                    </ul>
+                </nav>
+                {% endif %}
+
+            </div>
+
+            <div class="col-lg-4">
+                <aside class="sticky-sidebar fade-in-up delay-3">
+                    
+                    {% if trending_articles %}
+                    <div class="widget">
+                        <h3 class="widget-title">Trending Stories</h3>
+                        <ul class="sidebar-list">
+                            {% for i in trending_articles|slice:":5" %}
+                            <li class="sidebar-list-item trending-item">
+                                <a href="/article/{{ i.slug }}" class="sidebar-article-title">{{ i.title }}</a>
+                                <div class="sidebar-meta">{{ i.views }} Views</div>
+                            </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                    {% endif %}
+
+                    {% if latest_articles %}
+                    <div class="widget">
+                        <h3 class="widget-title">Latest Updates</h3>
+                        <ul class="sidebar-list">
+                            {% for i in latest_articles|slice:":5" %}
+                            <li class="sidebar-list-item">
+                                <a href="/article/{{ i.slug }}" class="sidebar-article-title">{{ i.title }}</a>
+                                <div class="sidebar-meta">{{ i.created_at|date:"M d, Y" }} · {{ i.category.title }}</div>
+                            </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                    {% endif %}
+
+                    <div class="widget widget-newsletter">
+                        <h3 class="widget-title">The Daily Brief</h3>
+                        <p style="font-size: 0.85rem; color: rgba(255,255,255,0.7); margin-bottom: 1rem;">Get the stories shaping India Inc. delivered straight to your inbox.</p>
+                        <form action="/subscribe_form" method="POST">
+                            {% csrf_token %}
+                            <input type="email" name="email" class="form-control mb-2" placeholder="Your business email" required>
+                            <button type="submit" class="btn btn-red w-100">Subscribe</button>
+                        </form>
+                    </div>
+
+                </aside>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+<section class="global-newsletter fade-in-up">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <h2 class="font-display fw-bold mb-3" style="font-size: 2.5rem;">Stay ahead of the curve.</h2>
+                <p class="mb-4" style="color: rgba(255,255,255,0.7); font-size: 1.1rem;">Join 50,000+ industry leaders receiving our exclusive editorial briefings.</p>
+                
+                <form action="/subscribe_form" method="POST" class="d-flex flex-column flex-sm-row gap-2 justify-content-center mx-auto" style="max-width: 500px;">
+                    {% csrf_token %}
+                    <input type="email" name="email" class="form-control form-control-lg" style="background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); color: #fff;" placeholder="Enter your email" required>
+                    <button type="submit" class="btn btn-red px-4 py-2" style="font-size: 1rem;">Subscribe Now</button>
+                </form>
+                <div class="mt-3" style="font-size: 0.75rem; color: rgba(255,255,255,0.4); text-transform: uppercase; letter-spacing: 0.1em;">
+                    <i class="bi bi-shield-check me-1"></i> No spam. Only meaningful updates.
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endblock 'body' %}

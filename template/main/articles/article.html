@@ -1,0 +1,803 @@
+{% extends "main/base.html" %}
+
+{% block 'title' %}{{ data.title }} | Corporate Impact{% endblock 'title' %}
+
+{% block 'meta' %}
+<meta name="description" content="{{ data.meta_description|default:data.tldr }}">
+<meta name="keywords" content="{{ data.meta_keywords }}">
+<meta name="author" content="{{ data.author.name }}">
+{% endblock 'meta' %}
+
+{% block 'css' %}
+<style>
+  /* =========================================
+     ARTICLE PAGE STYLES & ANIMATIONS
+     ========================================= */
+  
+  /* Animations */
+  @keyframes ciFadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .animate-fade-up {
+    animation: ciFadeUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    opacity: 0;
+  }
+  .delay-1 { animation-delay: 0.1s; }
+  .delay-2 { animation-delay: 0.2s; }
+  .delay-3 { animation-delay: 0.3s; }
+
+  /* Page Layout */
+  .ci-article-page {
+    background: var(--ci-paper);
+    padding-top: 48px;
+    padding-bottom: 64px;
+  }
+  .ci-container {
+    max-width: 1240px;
+    margin: 0 auto;
+    padding: 0 24px;
+  }
+  .ci-article-grid {
+    display: grid;
+    grid-template-columns: 1fr 340px;
+    gap: 64px;
+    align-items: start;
+  }
+
+  /* -----------------------------------------
+     HERO SECTION
+     ----------------------------------------- */
+  .ci-article-hero {
+    max-width: 800px;
+    margin: 0 auto 40px;
+    text-align: center;
+  }
+  .ci-hero-category {
+    font-family: var(--font-sans);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--ci-red);
+    margin-bottom: 16px;
+    display: inline-block;
+  }
+  .ci-hero-title {
+    font-family: var(--font-display);
+    font-size: 48px;
+    font-weight: 900;
+    line-height: 1.1;
+    color: var(--ci-black);
+    letter-spacing: -0.5px;
+    margin-bottom: 24px;
+  }
+  .ci-hero-deck {
+    font-family: var(--font-serif);
+    font-size: 20px;
+    font-style: italic;
+    color: var(--ci-graphite);
+    line-height: 1.5;
+    margin-bottom: 32px;
+  }
+  .ci-hero-meta {
+    font-family: var(--font-sans);
+    font-size: 13px;
+    color: var(--ci-slate);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+  }
+  .ci-hero-meta a {
+    color: var(--ci-black);
+    font-weight: 600;
+    text-decoration: none;
+    transition: color 0.15s;
+  }
+  .ci-hero-meta a:hover { color: var(--ci-red); }
+  .ci-meta-dot { color: var(--ci-silver); }
+
+  /* Banner Image */
+  .ci-article-banner {
+    width: 100%;
+    margin-bottom: 48px;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.06);
+  }
+  .ci-article-banner img {
+    width: 100%;
+    height: auto;
+    max-height: 600px;
+    object-fit: cover;
+    display: block;
+  }
+
+  /* -----------------------------------------
+     RICH TEXT EDITORIAL CONTENT (The |safe area)
+     ----------------------------------------- */
+  .ci-editorial-content {
+    font-family: var(--font-sans);
+    font-size: 16px;
+    line-height: 1.8;
+    color: var(--ci-graphite);
+  }
+  
+  /* Dynamic HTML tags from your WYSIWYG editor */
+  .ci-editorial-content p { margin-bottom: 24px; }
+  
+  /* Drop cap for first paragraph */
+  .ci-editorial-content > p:first-of-type::first-letter {
+    font-family: var(--font-display);
+    font-size: 64px;
+    font-weight: 900;
+    color: var(--ci-black);
+    float: left;
+    line-height: 0.8;
+    margin-right: 8px;
+    margin-top: 6px;
+  }
+
+  .ci-editorial-content h2 {
+    font-family: var(--font-display);
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--ci-black);
+    margin: 48px 0 20px;
+    line-height: 1.2;
+  }
+  .ci-editorial-content h3 {
+    font-family: var(--font-display);
+    font-size: 22px;
+    font-weight: 600;
+    color: var(--ci-black);
+    margin: 32px 0 16px;
+  }
+  .ci-editorial-content blockquote {
+    font-family: var(--font-serif);
+    font-size: 22px;
+    font-style: italic;
+    color: var(--ci-black);
+    margin: 40px 0;
+    padding: 24px 32px;
+    border-left: 4px solid var(--ci-red);
+    background: var(--ci-white);
+  }
+  .ci-editorial-content img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+    margin: 32px 0;
+    border: 0.5px solid var(--ci-mist);
+  }
+  .ci-editorial-content ul, .ci-editorial-content ol {
+    margin-bottom: 24px;
+    padding-left: 24px;
+  }
+  .ci-editorial-content li { margin-bottom: 12px; }
+  .ci-editorial-content a {
+    color: var(--ci-red);
+    text-decoration: underline;
+    text-decoration-color: var(--ci-mist);
+  }
+  .ci-editorial-content a:hover { text-decoration-color: var(--ci-red); }
+
+  /* -----------------------------------------
+     AUTHOR BOX
+     ----------------------------------------- */
+  .ci-author-box {
+    margin-top: 64px;
+    padding: 32px;
+    background: var(--ci-white);
+    border: 0.5px solid var(--ci-mist);
+    border-radius: 8px;
+    display: flex;
+    gap: 24px;
+    align-items: center;
+  }
+  .ci-author-img {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid var(--ci-paper);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  }
+  .ci-author-info h4 {
+    font-family: var(--font-display);
+    font-size: 20px;
+    color: var(--ci-black);
+    margin-bottom: 4px;
+  }
+  .ci-author-info span {
+    font-family: var(--font-sans);
+    font-size: 12px;
+    color: var(--ci-red);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    display: block;
+    margin-bottom: 12px;
+  }
+  .ci-author-info p {
+    font-size: 14px;
+    color: var(--ci-slate);
+    line-height: 1.5;
+    margin-bottom: 12px;
+  }
+  .ci-author-info a {
+    font-size: 12px;
+    color: var(--ci-black);
+    font-weight: 600;
+  }
+
+  /* -----------------------------------------
+     SIDEBAR (Sticky)
+     ----------------------------------------- */
+  .ci-sidebar {
+    position: sticky;
+    top: 100px;
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+  }
+  .ci-sidebar-widget {
+    background: var(--ci-white);
+    border: 0.5px solid var(--ci-mist);
+    border-radius: 8px;
+    padding: 24px;
+  }
+  .ci-widget-title {
+    font-family: var(--font-sans);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--ci-black);
+    margin-bottom: 20px;
+    padding-bottom: 12px;
+    border-bottom: 2px solid var(--ci-black);
+  }
+
+  /* Newsletter Widget */
+  .ci-widget-newsletter {
+    background: var(--ci-charcoal);
+    color: var(--ci-white);
+    border: none;
+  }
+  .ci-widget-newsletter .ci-widget-title {
+    color: var(--ci-white);
+    border-bottom-color: var(--ci-red);
+  }
+  .ci-widget-newsletter p {
+    font-size: 13px;
+    color: rgba(255,255,255,0.7);
+    margin-bottom: 16px;
+    line-height: 1.5;
+  }
+  .ci-newsletter-form input {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 12px;
+    background: rgba(255,255,255,0.1);
+    border: 1px solid rgba(255,255,255,0.2);
+    color: var(--ci-white);
+    border-radius: 4px;
+    font-family: var(--font-sans);
+    outline: none;
+  }
+  .ci-newsletter-form input::placeholder { color: rgba(255,255,255,0.5); }
+  .ci-newsletter-form button {
+    width: 100%;
+    padding: 12px;
+    background: var(--ci-red);
+    color: var(--ci-white);
+    border: none;
+    font-weight: 600;
+    font-family: var(--font-sans);
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+  .ci-newsletter-form button:hover { background: var(--ci-red-dark); }
+
+  /* Trending List */
+  .ci-trending-list {
+    list-style: none;
+    counter-reset: trending-counter;
+  }
+  .ci-trending-item {
+    position: relative;
+    padding-left: 28px;
+    margin-bottom: 16px;
+  }
+  .ci-trending-item::before {
+    counter-increment: trending-counter;
+    content: counter(trending-counter);
+    position: absolute;
+    left: 0;
+    top: 2px;
+    font-family: var(--font-display);
+    font-size: 16px;
+    font-weight: 900;
+    color: var(--ci-red);
+  }
+  .ci-trending-link {
+    font-family: var(--font-display);
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--ci-black);
+    line-height: 1.3;
+    transition: color 0.15s;
+  }
+  .ci-trending-link:hover { color: var(--ci-red); }
+
+  /* Category Tags */
+  .ci-cat-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .ci-cat-tag {
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--ci-graphite);
+    background: var(--ci-paper);
+    padding: 6px 12px;
+    border-radius: 4px;
+    border: 0.5px solid var(--ci-mist);
+    transition: all 0.2s;
+  }
+  .ci-cat-tag:hover {
+    background: var(--ci-black);
+    color: var(--ci-white);
+    border-color: var(--ci-black);
+  }
+
+  /* -----------------------------------------
+     RELATED ARTICLES
+     ----------------------------------------- */
+  .ci-related-section {
+    border-top: 1px solid var(--ci-mist);
+    padding-top: 48px;
+    margin-top: 48px;
+  }
+  .ci-related-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 32px;
+  }
+  .ci-related-header::before {
+    content: '';
+    width: 4px; height: 24px;
+    background: var(--ci-red);
+  }
+  .ci-related-header h3 {
+    font-family: var(--font-display);
+    font-size: 24px;
+    font-weight: 700;
+  }
+  .ci-related-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+  }
+  .ci-related-card {
+    background: var(--ci-white);
+    border: 0.5px solid var(--ci-mist);
+    border-radius: 8px;
+    overflow: hidden;
+    transition: box-shadow 0.2s;
+  }
+  .ci-related-card:hover { box-shadow: 0 8px 24px rgba(0,0,0,0.08); }
+  .ci-related-img {
+    aspect-ratio: 16/9;
+    background: var(--ci-paper);
+  }
+  .ci-related-img img { width: 100%; height: 100%; object-fit: cover; }
+  .ci-related-body { padding: 16px; }
+  .ci-related-title {
+    font-family: var(--font-display);
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--ci-black);
+    line-height: 1.3;
+  }
+
+  /* Responsive */
+  @media (max-width: 992px) {
+    .ci-article-grid { grid-template-columns: 1fr; }
+    .ci-sidebar { position: static; }
+    .ci-related-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+  @media (max-width: 768px) {
+    .ci-hero-title { font-size: 32px; }
+    .ci-hero-deck { font-size: 18px; }
+    .ci-related-grid { grid-template-columns: 1fr; }
+    .ci-author-box { flex-direction: column; text-align: center; }
+  }
+  /* =========================================
+     ARTICLE PAGE STYLES & ANIMATIONS
+     ========================================= */
+  
+  @keyframes ciFadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .animate-fade-up {
+    animation: ciFadeUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    opacity: 0;
+  }
+  .delay-1 { animation-delay: 0.1s; }
+  .delay-2 { animation-delay: 0.2s; }
+  .delay-3 { animation-delay: 0.3s; }
+
+  .ci-article-page {
+    background: var(--ci-paper);
+    padding-top: 48px;
+    padding-bottom: 64px;
+  }
+  .ci-container {
+    max-width: 1240px;
+    margin: 0 auto;
+    padding: 0 24px;
+  }
+
+  /* -----------------------------------------
+     SPLIT HERO SECTION
+     ----------------------------------------- */
+  .ci-hero-split {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 48px;
+    align-items: center; /* Centers content vertically with the image */
+    margin-bottom: 64px;
+    border-bottom: 1px solid var(--ci-mist);
+    padding-bottom: 48px;
+  }
+
+  /* Left Side: Banner */
+  .ci-hero-left {
+    width: 100%;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.08);
+  }
+  .ci-hero-left img {
+    width: 100%;
+    height: 100%;
+    aspect-ratio: 4/3; /* Keeps a consistent, premium image ratio */
+    object-fit: cover;
+    display: block;
+  }
+
+  /* Right Side: Content */
+  .ci-hero-right {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  .ci-hero-category {
+    font-family: var(--font-sans);
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--ci-red);
+    margin-bottom: 16px;
+    display: inline-block;
+  }
+  .ci-hero-title {
+    font-family: var(--font-display);
+    font-size: 44px;
+    font-weight: 900;
+    line-height: 1.15;
+    color: var(--ci-black);
+    letter-spacing: -0.5px;
+    margin-bottom: 24px;
+  }
+  .ci-hero-meta {
+    font-family: var(--font-sans);
+    font-size: 13px;
+    color: var(--ci-slate);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 32px;
+  }
+  .ci-hero-meta a {
+    color: var(--ci-black);
+    font-weight: 600;
+    text-decoration: none;
+    transition: color 0.15s;
+  }
+  .ci-hero-meta a:hover { color: var(--ci-red); }
+  .ci-meta-dot { color: var(--ci-silver); }
+
+  /* Collapsible TL;DR Accordion */
+  .ci-tldr-accordion {
+    background: var(--ci-white);
+    border: 0.5px solid var(--ci-mist);
+    border-radius: 8px;
+    overflow: hidden;
+  }
+  .ci-tldr-accordion summary {
+    font-family: var(--font-sans);
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--ci-black);
+    padding: 16px 20px;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: var(--ci-paper);
+    list-style: none; /* Hides default arrow */
+    transition: background 0.2s;
+  }
+  .ci-tldr-accordion summary::-webkit-details-marker {
+    display: none; /* Hides default arrow in older Safari */
+  }
+  .ci-tldr-accordion summary:hover {
+    background: var(--ci-mist);
+  }
+  /* Custom Plus/Minus Icon */
+  .ci-tldr-accordion summary::after {
+    content: '+';
+    font-size: 20px;
+    color: var(--ci-red);
+    font-weight: 300;
+    line-height: 1;
+  }
+  .ci-tldr-accordion[open] summary::after {
+    content: '−'; /* Minus sign */
+  }
+  .ci-tldr-content {
+    padding: 20px;
+    font-family: var(--font-serif);
+    font-size: 18px;
+    line-height: 1.6;
+    color: var(--ci-graphite);
+    font-style: italic;
+    border-top: 0.5px solid var(--ci-mist);
+  }
+
+  /* -----------------------------------------
+     MAIN CONTENT & LAYOUT GRID
+     ----------------------------------------- */
+  .ci-article-grid {
+    display: grid;
+    grid-template-columns: 1fr 340px;
+    gap: 64px;
+    align-items: start;
+  }
+
+  .ci-editorial-content {
+    font-family: var(--font-sans);
+    font-size: 16px;
+    line-height: 1.8;
+    color: var(--ci-graphite);
+  }
+  .ci-editorial-content p { margin-bottom: 24px; }
+  .ci-editorial-content > p:first-of-type::first-letter {
+    font-family: var(--font-display);
+    font-size: 64px;
+    font-weight: 900;
+    color: var(--ci-black);
+    float: left;
+    line-height: 0.8;
+    margin-right: 8px;
+    margin-top: 6px;
+  }
+  .ci-editorial-content h2 { font-family: var(--font-display); font-size: 28px; font-weight: 700; color: var(--ci-black); margin: 48px 0 20px; line-height: 1.2; }
+  .ci-editorial-content h3 { font-family: var(--font-display); font-size: 22px; font-weight: 600; color: var(--ci-black); margin: 32px 0 16px; }
+  .ci-editorial-content blockquote { font-family: var(--font-serif); font-size: 22px; font-style: italic; color: var(--ci-black); margin: 40px 0; padding: 24px 32px; border-left: 4px solid var(--ci-red); background: var(--ci-white); }
+  .ci-editorial-content img { max-width: 100%; height: auto; border-radius: 8px; margin: 32px 0; border: 0.5px solid var(--ci-mist); }
+  .ci-editorial-content ul, .ci-editorial-content ol { margin-bottom: 24px; padding-left: 24px; }
+  .ci-editorial-content li { margin-bottom: 12px; }
+  .ci-editorial-content a { color: var(--ci-red); text-decoration: underline; text-decoration-color: var(--ci-mist); }
+  .ci-editorial-content a:hover { text-decoration-color: var(--ci-red); }
+
+  /* -----------------------------------------
+     AUTHOR BOX
+     ----------------------------------------- */
+  .ci-author-box { margin-top: 64px; padding: 32px; background: var(--ci-white); border: 0.5px solid var(--ci-mist); border-radius: 8px; display: flex; gap: 24px; align-items: center; }
+  .ci-author-img { width: 80px; height: 80px; border-radius: 50%; object-fit: cover; border: 2px solid var(--ci-paper); box-shadow: 0 4px 12px rgba(0,0,0,0.08); }
+  .ci-author-info h4 { font-family: var(--font-display); font-size: 20px; color: var(--ci-black); margin-bottom: 4px; }
+  .ci-author-info span { font-family: var(--font-sans); font-size: 12px; color: var(--ci-red); font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; display: block; margin-bottom: 12px; }
+  .ci-author-info p { font-size: 14px; color: var(--ci-slate); line-height: 1.5; margin-bottom: 12px; }
+  .ci-author-info a { font-size: 12px; color: var(--ci-black); font-weight: 600; }
+
+  /* -----------------------------------------
+     SIDEBAR
+     ----------------------------------------- */
+  .ci-sidebar { position: sticky; top: 100px; display: flex; flex-direction: column; gap: 40px; }
+  .ci-sidebar-widget { background: var(--ci-white); border: 0.5px solid var(--ci-mist); border-radius: 8px; padding: 24px; }
+  .ci-widget-title { font-family: var(--font-sans); font-size: 11px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ci-black); margin-bottom: 20px; padding-bottom: 12px; border-bottom: 2px solid var(--ci-black); }
+  .ci-widget-newsletter { background: var(--ci-charcoal); color: var(--ci-white); border: none; }
+  .ci-widget-newsletter .ci-widget-title { color: var(--ci-white); border-bottom-color: var(--ci-red); }
+  .ci-widget-newsletter p { font-size: 13px; color: rgba(255,255,255,0.7); margin-bottom: 16px; line-height: 1.5; }
+  .ci-newsletter-form input { width: 100%; padding: 12px; margin-bottom: 12px; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); color: var(--ci-white); border-radius: 4px; font-family: var(--font-sans); outline: none; }
+  .ci-newsletter-form input::placeholder { color: rgba(255,255,255,0.5); }
+  .ci-newsletter-form button { width: 100%; padding: 12px; background: var(--ci-red); color: var(--ci-white); border: none; font-weight: 600; font-family: var(--font-sans); border-radius: 4px; cursor: pointer; transition: background 0.2s; }
+  .ci-newsletter-form button:hover { background: var(--ci-red-dark); }
+  .ci-trending-list { list-style: none; counter-reset: trending-counter; }
+  .ci-trending-item { position: relative; padding-left: 28px; margin-bottom: 16px; }
+  .ci-trending-item::before { counter-increment: trending-counter; content: counter(trending-counter); position: absolute; left: 0; top: 2px; font-family: var(--font-display); font-size: 16px; font-weight: 900; color: var(--ci-red); }
+  .ci-trending-link { font-family: var(--font-display); font-size: 14px; font-weight: 700; color: var(--ci-black); line-height: 1.3; transition: color 0.15s; }
+  .ci-trending-link:hover { color: var(--ci-red); }
+  .ci-cat-tags { display: flex; flex-wrap: wrap; gap: 8px; }
+  .ci-cat-tag { font-size: 11px; font-weight: 600; color: var(--ci-graphite); background: var(--ci-paper); padding: 6px 12px; border-radius: 4px; border: 0.5px solid var(--ci-mist); transition: all 0.2s; }
+  .ci-cat-tag:hover { background: var(--ci-black); color: var(--ci-white); border-color: var(--ci-black); }
+
+  /* -----------------------------------------
+     RELATED ARTICLES
+     ----------------------------------------- */
+  .ci-related-section { border-top: 1px solid var(--ci-mist); padding-top: 48px; margin-top: 48px; }
+  .ci-related-header { display: flex; align-items: center; gap: 12px; margin-bottom: 32px; }
+  .ci-related-header::before { content: ''; width: 4px; height: 24px; background: var(--ci-red); }
+  .ci-related-header h3 { font-family: var(--font-display); font-size: 24px; font-weight: 700; }
+  .ci-related-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+  .ci-related-card { background: var(--ci-white); border: 0.5px solid var(--ci-mist); border-radius: 8px; overflow: hidden; transition: box-shadow 0.2s; }
+  .ci-related-card:hover { box-shadow: 0 8px 24px rgba(0,0,0,0.08); }
+  .ci-related-img { aspect-ratio: 16/9; background: var(--ci-paper); }
+  .ci-related-img img { width: 100%; height: 100%; object-fit: cover; }
+  .ci-related-body { padding: 16px; }
+  .ci-related-title { font-family: var(--font-display); font-size: 16px; font-weight: 700; color: var(--ci-black); line-height: 1.3; }
+
+  /* Responsive Adjustments */
+  @media (max-width: 992px) {
+    .ci-hero-split { grid-template-columns: 1fr; gap: 32px; margin-bottom: 40px; padding-bottom: 32px; }
+    /* On mobile, usually better to show the image first, then the title */
+    .ci-hero-left { order: -1; } 
+    .ci-article-grid { grid-template-columns: 1fr; }
+    .ci-sidebar { position: static; }
+    .ci-related-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+  @media (max-width: 768px) {
+    .ci-hero-title { font-size: 32px; }
+    .ci-related-grid { grid-template-columns: 1fr; }
+    .ci-author-box { flex-direction: column; text-align: center; }
+  }
+</style>
+{% endblock 'css' %}
+
+{% block 'body' %}
+<div class="ci-article-page">
+  <div class="ci-container">
+    
+    <header class="ci-hero-split">
+      <div class="ci-hero-left animate-fade-up delay-1">
+        {% if data.banner_image %}
+          <img src="{{ data.banner_image.url }}" alt="{{ data.title }}">
+        {% else %}
+          <div style="width: 100%; height: 100%; background: var(--ci-black); display:flex; align-items:center; justify-content:center;">
+             <span style="color:var(--ci-white); font-family:var(--font-display); font-size: 24px; opacity:0.2;">Corporate Impact</span>
+          </div>
+        {% endif %}
+      </div>
+
+      <div class="ci-hero-right animate-fade-up">
+        <a href="{% url 'category' slug=data.category.slug %}" class="ci-hero-category">{{ data.category.title }}</a>
+        <h1 class="ci-hero-title">{{ data.title }}</h1>
+        
+        <div class="ci-hero-meta">
+          <span>By <a href="{% url 'author' slug=data.author.slug %}">{{ data.author.name }}</a></span>
+          <span class="ci-meta-dot">&middot;</span>
+          <span>{{ data.created_at|date:"M d, Y" }}</span>
+          <span class="ci-meta-dot">&middot;</span>
+          <span>{{ data.views }} Views</span>
+        </div>
+
+        {% if data.tldr %}
+        <details class="ci-tldr-accordion" open> <summary>Executive Summary</summary>
+          <div class="ci-tldr-content">
+            {{ data.tldr }}
+          </div>
+        </details>
+        {% endif %}
+      </div>
+    </header>
+
+    <div class="ci-article-grid">
+      
+      <article class="animate-fade-up delay-2">
+        <div class="ci-editorial-content">
+          {{ data.content|safe }}
+        </div>
+
+        <div class="ci-author-box">
+          {% if data.author.image %}
+            <img src="{{ data.author.image.url }}" alt="{{ data.author.name }}" class="ci-author-img">
+          {% else %}
+            <div class="ci-author-img" style="background: var(--ci-black); display:flex; align-items:center; justify-content:center; color:white; font-family:var(--font-display); font-size:24px;">
+              {{ data.author.name|make_list|first }}
+            </div>
+          {% endif %}
+          
+          <div class="ci-author-info">
+            <h4>{{ data.author.name }}</h4>
+            <span>{{ data.author.designation }}</span>
+            <p>{{ data.author.description }}</p>
+            <a href="{% url 'author' slug=data.author.slug %}">Read more from {{ data.author.name }} &rarr;</a>
+          </div>
+        </div>
+
+        {% if related_articles %}
+        <section class="ci-related-section">
+          <div class="ci-related-header">
+            <h3>More in {{ data.category.title }}</h3>
+          </div>
+          <div class="ci-related-grid">
+            {% for i in related_articles|slice:":3" %}
+            <a href="{% url 'article' slug=i.slug %}" class="ci-related-card">
+              <div class="ci-related-img">
+                {% if i.thumbnail_image %}
+                  <img src="{{ i.thumbnail_image.url }}" alt="{{ i.title }}">
+                {% elif i.banner_image %}
+                  <img src="{{ i.banner_image.url }}" alt="{{ i.title }}">
+                {% endif %}
+              </div>
+              <div class="ci-related-body">
+                <h4 class="ci-related-title">{{ i.title }}</h4>
+              </div>
+            </a>
+            {% endfor %}
+          </div>
+        </section>
+        {% endif %}
+      </article>
+
+      <aside class="ci-sidebar animate-fade-up delay-3">
+        
+        <div class="ci-sidebar-widget ci-widget-newsletter">
+          <div class="ci-widget-title">The Daily Brief</div>
+          <p>Get authoritative analysis and exclusive policy updates delivered straight to your inbox.</p>
+          <form action="/subscribe_form" method="POST" class="ci-newsletter-form">
+            {% csrf_token %}
+            <input type="email" name="email" placeholder="Your work email address" required>
+            <button type="submit">Subscribe</button>
+          </form>
+        </div>
+
+        {% if trending_articles %}
+        <div class="ci-sidebar-widget">
+          <div class="ci-widget-title">Trending Now</div>
+          <ul class="ci-trending-list">
+            {% for i in trending_articles|slice:":5" %}
+            <li class="ci-trending-item">
+              <a href="{% url 'article' slug=i.slug %}" class="ci-trending-link">{{ i.title }}</a>
+            </li>
+            {% endfor %}
+          </ul>
+        </div>
+        {% endif %}
+
+        {% if categories %}
+        <div class="ci-sidebar-widget">
+          <div class="ci-widget-title">Explore Topics</div>
+          <div class="ci-cat-tags">
+            {% for i in categories %}
+            <a href="{% url 'category' slug=i.slug %}" class="ci-cat-tag">{{ i.title }}</a>
+            {% endfor %}
+          </div>
+        </div>
+        {% endif %}
+
+      </aside>
+
+    </div>
+  </div>
+</div>
+{% endblock 'body' %}
+
+{% block 'script' %}
+<script>
+  // Add a slight scroll-triggered reading progress bar to the top if desired later
+  // Keeps the template interactive and scalable.
+</script>
+{% endblock 'script' %}

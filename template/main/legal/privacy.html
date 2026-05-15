@@ -1,0 +1,318 @@
+{% extends "main/base.html" %}
+
+{% block 'title' %}Privacy Policy | Corporate Impact{% endblock 'title' %}
+
+{% block 'meta' %}
+<meta name="description" content="Privacy Policy for Corporate Impact. Learn how we collect, use, and protect your data across our digital media network.">
+{% endblock 'meta' %}
+
+{% block 'css' %}
+<style>
+  /* =========================================
+     LEGAL PAGE SPECIFIC STYLES
+     ========================================= */
+  .ci-legal-wrapper {
+    padding: 64px 40px;
+    max-width: 1240px;
+    margin: 0 auto;
+  }
+
+  /* Page Header */
+  .ci-legal-header {
+    margin-bottom: 48px;
+    border-bottom: 2px solid var(--ci-black);
+    padding-bottom: 24px;
+  }
+  .ci-legal-eyebrow {
+    font-family: var(--font-sans);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--ci-red);
+    margin-bottom: 12px;
+  }
+  .ci-legal-title {
+    font-family: var(--font-display);
+    font-size: 48px;
+    font-weight: 900;
+    line-height: 1.1;
+    color: var(--ci-black);
+    letter-spacing: -0.5px;
+    margin-bottom: 16px;
+  }
+  .ci-legal-meta {
+    font-family: var(--font-sans);
+    font-size: 13px;
+    color: var(--ci-slate);
+  }
+
+  /* Layout Grid */
+  .ci-legal-layout {
+    display: grid;
+    grid-template-columns: 280px 1fr;
+    gap: 64px;
+    align-items: start;
+  }
+
+  /* Sticky Sidebar Navigation */
+  .ci-legal-nav {
+    position: sticky;
+    top: 100px;
+    background: var(--ci-white);
+    border: 0.5px solid var(--ci-mist);
+    border-radius: 8px;
+    padding: 24px;
+  }
+  .ci-legal-nav-title {
+    font-family: var(--font-sans);
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--ci-slate);
+    margin-bottom: 16px;
+    padding-bottom: 8px;
+    border-bottom: 0.5px solid var(--ci-mist);
+  }
+  .ci-legal-nav-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  .ci-legal-nav-link {
+    font-family: var(--font-sans);
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--ci-graphite);
+    text-decoration: none;
+    transition: color 0.15s, transform 0.15s;
+    display: inline-block;
+  }
+  .ci-legal-nav-link:hover,
+  .ci-legal-nav-link.active {
+    color: var(--ci-red);
+    transform: translateX(4px);
+  }
+
+  /* Document Content */
+  .ci-legal-content {
+    font-family: var(--font-sans);
+    color: var(--ci-graphite);
+    line-height: 1.7;
+    font-size: 15px;
+    max-width: 760px;
+  }
+  .ci-legal-section {
+    margin-bottom: 48px;
+    scroll-margin-top: 100px;
+  }
+  .ci-legal-section h2 {
+    font-family: var(--font-display);
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--ci-black);
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .ci-legal-section h2::before {
+    content: '';
+    display: block;
+    width: 4px;
+    height: 20px;
+    background: var(--ci-red);
+    border-radius: 2px;
+  }
+  .ci-legal-section p {
+    margin-bottom: 16px;
+  }
+  .ci-legal-section ul {
+    margin-bottom: 16px;
+    padding-left: 24px;
+  }
+  .ci-legal-section li {
+    margin-bottom: 8px;
+  }
+  .ci-legal-section a {
+    color: var(--ci-red);
+    text-decoration: underline;
+    text-decoration-color: var(--ci-mist);
+    transition: text-decoration-color 0.15s;
+  }
+  .ci-legal-section a:hover {
+    text-decoration-color: var(--ci-red);
+  }
+
+  /* Responsive Adjustments */
+  @media (max-width: 992px) {
+    .ci-legal-layout {
+      grid-template-columns: 1fr;
+      gap: 40px;
+    }
+    .ci-legal-nav {
+      position: static;
+      border-radius: 0;
+      border-left: none;
+      border-right: none;
+      background: transparent;
+      padding: 24px 0;
+    }
+  }
+  @media (max-width: 768px) {
+    .ci-legal-wrapper {
+      padding: 40px 20px;
+    }
+    .ci-legal-title {
+      font-size: 36px;
+    }
+  }
+</style>
+{% endblock 'css' %}
+
+{% block 'body' %}
+<main class="ci-legal-wrapper">
+  
+  <header class="ci-legal-header">
+    <div class="ci-legal-eyebrow">Legal Information</div>
+    <h1 class="ci-legal-title">Privacy Policy</h1>
+    <div class="ci-legal-meta">Last Updated: May 12, 2026</div>
+  </header>
+
+  <div class="ci-legal-layout">
+    
+    <aside class="ci-legal-nav">
+      <div class="ci-legal-nav-title">Table of Contents</div>
+      <ul class="ci-legal-nav-list">
+        <li><a href="#information-we-collect" class="ci-legal-nav-link active">1. Information We Collect</a></li>
+        <li><a href="#how-we-use" class="ci-legal-nav-link">2. How We Use Your Data</a></li>
+        <li><a href="#information-sharing" class="ci-legal-nav-link">3. Information Sharing</a></li>
+        <li><a href="#cookies-tracking" class="ci-legal-nav-link">4. Cookies &amp; Tracking</a></li>
+        <li><a href="#data-security" class="ci-legal-nav-link">5. Data Security &amp; Retention</a></li>
+        <li><a href="#your-rights" class="ci-legal-nav-link">6. Your Privacy Rights</a></li>
+        <li><a href="#contact" class="ci-legal-nav-link">7. Contact Us</a></li>
+      </ul>
+    </aside>
+
+    <article class="ci-legal-content">
+      
+      <section id="information-we-collect" class="ci-legal-section">
+        <h2>1. Information We Collect</h2>
+        <p>At Corporate Impact Media Network, we believe in transparency regarding the data we collect to provide you with premium business journalism. We may collect the following types of information:</p>
+        <ul>
+          <li><strong>Personal Information:</strong> Name, email address, job title, company name, and billing details provided when you subscribe to our newsletters, premium content, or attend our events.</li>
+          <li><strong>Usage Data:</strong> Information about how you interact with <em>corporateimpact.in</em>, including reading history, time spent on articles, IP address, browser type, and device information.</li>
+          <li><strong>Communication Data:</strong> Records of your correspondence with us, including customer support inquiries or editorial feedback.</li>
+        </ul>
+      </section>
+
+      <section id="how-we-use" class="ci-legal-section">
+        <h2>2. How We Use Your Data</h2>
+        <p>The information we collect is strictly used to enhance your experience and deliver the authoritative content you expect from us. Specifically, we use your data to:</p>
+        <ul>
+          <li>Provide, maintain, and improve our digital platforms and journalism.</li>
+          <li>Process premium subscriptions and manage your account.</li>
+          <li>Send administrative emails, newsletters, and personalized content recommendations based on your reading habits (e.g., Markets, Startups, or Policy).</li>
+          <li>Analyze platform traffic and optimize our UI/UX for better readability and performance.</li>
+        </ul>
+      </section>
+
+      <section id="information-sharing" class="ci-legal-section">
+        <h2>3. Information Sharing &amp; Disclosure</h2>
+        <p>Corporate Impact does not sell your personal data to third-party data brokers. We only share information under the following circumstances:</p>
+        <ul>
+          <li><strong>Service Providers:</strong> We employ trusted third-party companies to facilitate our website (e.g., payment processing via Stripe, email delivery, hosting, and analytics). These partners have access to your data only to perform specific tasks on our behalf and are obligated not to disclose or use it for other purposes.</li>
+          <li><strong>Legal Requirements:</strong> We may disclose your information if required to do so by law or in response to valid requests by public authorities (e.g., a court or government agency).</li>
+          <li><strong>Business Transfers:</strong> In the event of a merger, acquisition, or asset sale, your Personal Data may be transferred. We will provide notice before your Personal Data is transferred and becomes subject to a different Privacy Policy.</li>
+        </ul>
+      </section>
+
+      <section id="cookies-tracking" class="ci-legal-section">
+        <h2>4. Cookies &amp; Tracking Technologies</h2>
+        <p>We use cookies and similar tracking technologies (like web beacons and pixels) to track activity on our Website and store certain information. Cookies help us remember your subscription status, preferences, and enable the seamless operation of features like our live breaking news ticker.</p>
+        <p>You can instruct your browser to refuse all cookies or to indicate when a cookie is being sent. However, if you do not accept cookies, you may not be able to use certain premium portions of our Website.</p>
+      </section>
+
+      <section id="data-security" class="ci-legal-section">
+        <h2>5. Data Security &amp; Retention</h2>
+        <p>The security of your data is paramount. We implement enterprise-grade security measures to protect against unauthorized access, alteration, disclosure, or destruction of your personal information.</p>
+        <p>We will retain your Personal Data only for as long as is necessary for the purposes set out in this Privacy Policy, such as complying with our legal obligations, resolving disputes, and enforcing our legal agreements and policies.</p>
+      </section>
+
+      <section id="your-rights" class="ci-legal-section">
+        <h2>6. Your Privacy Rights</h2>
+        <p>Depending on your jurisdiction, you may have specific rights regarding your personal information. These generally include the right to:</p>
+        <ul>
+          <li>Request access to the personal data we hold about you.</li>
+          <li>Request correction of any inaccurate or incomplete data.</li>
+          <li>Request the deletion of your personal data ("Right to be Forgotten").</li>
+          <li>Opt-out of marketing communications at any time by clicking the "unsubscribe" link in any email we send.</li>
+        </ul>
+      </section>
+
+      <section id="contact" class="ci-legal-section">
+        <h2>7. Contact Us</h2>
+        <p>If you have any questions, concerns, or requests regarding this Privacy Policy or how we handle your data, please reach out to our Data Protection Officer at:</p>
+        <p><strong>Email:</strong> <a href="mailto:connect@corporateimpact.in">connect@corporateimpact.in</a></p>
+        <p>Corporate Impact Media Network<br>
+        Mumbai | New Delhi | Bengaluru</p>
+      </section>
+
+    </article>
+  </div>
+</main>
+{% endblock 'body' %}
+
+{% block 'script' %}
+<script>
+  /* =========================================
+     SCROLL SPY FOR SIDEBAR NAVIGATION
+     ========================================= */
+  document.addEventListener('DOMContentLoaded', () => {
+    const sections = document.querySelectorAll('.ci-legal-section');
+    const navLinks = document.querySelectorAll('.ci-legal-nav-link');
+
+    // Highlight active link based on scroll position
+    window.addEventListener('scroll', () => {
+      let current = '';
+
+      sections.forEach(section => {
+        const sectionTop = section.offsetTop;
+        const sectionHeight = section.clientHeight;
+        
+        // Offset by 150px to account for sticky headers and trigger point
+        if (scrollY >= (sectionTop - 150)) {
+          current = section.getAttribute('id');
+        }
+      });
+
+      navLinks.forEach(link => {
+        link.classList.remove('active');
+        if (link.getAttribute('href').includes(current) && current !== '') {
+          link.classList.add('active');
+        }
+      });
+    });
+
+    // Smooth scrolling for anchor links
+    navLinks.forEach(anchor => {
+      anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        const targetId = this.getAttribute('href');
+        const targetSection = document.querySelector(targetId);
+        
+        if (targetSection) {
+          window.scrollTo({
+            top: targetSection.offsetTop - 100, // Offset for sticky topbars
+            behavior: 'smooth'
+          });
+        }
+      });
+    });
+  });
+</script>
+{% endblock 'script' %}
