@@ -423,81 +423,11 @@
     }
 </style>
 <style>
-    /* =========================================
-       LAYER 1: IMAGE-ONLY EDGE-TO-EDGE CAROUSEL
-       ========================================= */
-    .hero-carousel-wrapper {
-        /* Viewport Breakout: Forces edge-to-edge */
-        width: 100vw;
-        position: relative;
-        left: 50%;
-        right: 50%;
-        margin-left: -50vw;
-        margin-right: -50vw;
-        background-color: var(--ci-black);
-    }
-
-    .ci-carousel-item {
-        /* THE FIX: Lock the aspect ratio. 
-           If the client uses 1920x1080 images, change this to 16/9.
-           If they use 1920x800, use 2.4/1. 
-        */
-        aspect-ratio: 16 / 9; 
-        width: 100%;
-        position: relative;
-        display: block; /* Makes the entire image clickable */
-        text-decoration: none;
-        overflow: hidden;
-    }
-
-    .ci-carousel-img {
-        width: 100%;
-        height: 100%;
-        /* Because the container ratio matches the image ratio, 'cover' will not crop anything! */
-        object-fit: cover; 
-    }
-
-    /* Custom Indicators */
-    .carousel-indicators {
-        margin-bottom: 16px;
-        gap: 8px;
-    }
-    .carousel-indicators [data-bs-target] {
-        width: 32px;
-        height: 4px;
-        background-color: rgba(255,255,255,0.5);
-        border: none;
-        border-radius: 2px;
-        transition: background-color 0.3s ease;
-    }
-    .carousel-indicators .active {
-        background-color: var(--ci-red);
-    }
-
-    /* Custom Controls */
-    .carousel-control-prev, .carousel-control-next {
-        width: 8%;
-        opacity: 0;
-        transition: opacity 0.3s;
-        z-index: 5;
-    }
-    
-    /* Make controls slightly visible on mobile so users know they can swipe */
-    @media (max-width: 768px) {
-        .carousel-control-prev, .carousel-control-next {
-            opacity: 0.3;
-            width: 12%;
-        }
-    }
-
-    .hero-carousel-wrapper:hover .carousel-control-prev, 
-    .hero-carousel-wrapper:hover .carousel-control-next {
-        opacity: 1;
-    }
-    /* =============================================
-     1. HERO CAROUSEL (UNIFIED FIX)
+  /* =============================================
+     1. HERO CAROUSEL (PURE PROPORTIONAL SCALING)
   ============================================= */
   .hero-carousel-wrapper { 
+      /* Forces the wrapper to break out of any container and touch the edges */
       width: 100vw; 
       position: relative; 
       left: 50%; right: 50%; 
@@ -507,22 +437,20 @@
   }
   
   .ci-carousel-item { 
-      /* Locks the shape to standard widescreen on desktop */
-      aspect-ratio: 16 / 9; 
       width: 100%; 
       position: relative; 
       display: block; 
       text-decoration: none; 
-      overflow: hidden; 
-      /* We explicitly DO NOT use height or min-height here to prevent distortion */
+      /* CRITICAL: No height, min-height, or aspect-ratio limits here */
   }
   
   .ci-carousel-img { 
       width: 100%; 
-      height: 100%; 
-      object-fit: cover; 
+      height: auto; /* CRITICAL: This guarantees zero squeezing and zero cropping */
+      display: block;
   }
   
+  /* Indicators and Controls */
   .carousel-indicators { margin-bottom: 16px; gap: 8px; }
   .carousel-indicators [data-bs-target] { width: 32px; height: 4px; background: rgba(255,255,255,0.5); border: none; border-radius: 2px; transition: background 0.3s ease; }
   .carousel-indicators .active { background: var(--ci-red); }
@@ -531,14 +459,8 @@
   .hero-carousel-wrapper:hover .carousel-control-prev, .hero-carousel-wrapper:hover .carousel-control-next { opacity: 1; }
   
   @media (max-width: 768px) { 
-      .carousel-control-prev, .carousel-control-next { opacity: 0.3; width: 12%; } 
-      
-      .ci-carousel-item {
-          /* Makes the banner slightly taller on mobile so it doesn't look collapsed.
-             NOTE: This WILL crop a small amount of the left/right edges. 
-             Advise the client to keep baked-in text near the center of the image! */
-          aspect-ratio: 4 / 3;
-      }
+      /* Always show arrows slightly on mobile so users know they can swipe */
+      .carousel-control-prev, .carousel-control-next { opacity: 0.4; width: 12%; } 
   }
 </style>
 
