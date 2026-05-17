@@ -310,8 +310,6 @@
 
                         <ul>
                             <li>Image must be WEBP format</li>
-                            <li>Dimension must be exactly 900 × 400 px</li>
-                            <li>Optimized high-quality image recommended</li>
                         </ul>
 
                     </div>
@@ -359,21 +357,6 @@ document.querySelectorAll('.gallery-image-input').forEach(input => {
 
             return;
         }
-
-        // Dimension Validation
-        const img = new Image();
-
-        img.onload = function(){
-
-            if(img.width !== 900 || img.height !== 400){
-
-                alert('Image must be exactly 900 × 400 pixels.');
-
-                e.target.value = '';
-            }
-        };
-
-        img.src = URL.createObjectURL(file);
 
     });
 
