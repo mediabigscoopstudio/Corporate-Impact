@@ -20,29 +20,6 @@
   .ci-eyebrow::before { content: ''; width: 28px; height: 1px; background: var(--ci-red); flex-shrink: 0; }
 
   /* =============================================
-     1. HERO CAROUSEL
-  ============================================= */
-  .hero-carousel-wrapper { width: 100vw; position: relative; left: 50%; right: 50%; margin-left: -50vw; margin-right: -50vw; background: var(--ci-black); }
-  .ci-carousel-item { height: 78vh; min-height: 520px; max-height: 820px; position: relative; display: block; text-decoration: none; overflow: hidden; }
-  .ci-carousel-img { width: 100%; height: 100%; object-fit: cover; transform: scale(1.02); transition: transform 7s cubic-bezier(0.25,1,0.5,1); }
-  .ci-carousel-item:hover .ci-carousel-img { transform: scale(1.06); }
-  .ci-carousel-overlay { position: absolute; inset: 0; background: linear-gradient(180deg,rgba(15,15,15,0) 0%,rgba(15,15,15,0.35) 45%,rgba(15,15,15,0.95) 100%); z-index: 1; }
-  .ci-carousel-content { position: absolute; bottom: 0; left: 0; right: 0; z-index: 2; padding-bottom: 64px; }
-  .ci-hero-badge { font-family: var(--font-sans); background: var(--ci-red); color: #fff; font-size: 10px; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; padding: 5px 12px; border-radius: 2px; display: inline-block; margin-bottom: 18px; }
-  .ci-hero-title { font-family: var(--font-display); font-size: clamp(2.2rem,5.5vw,4.8rem); font-weight: 900; line-height: 1.05; letter-spacing: -1.5px; color: #fff; margin-bottom: 18px; max-width: 880px; text-shadow: 0 4px 16px rgba(0,0,0,0.5); }
-  .ci-hero-meta { font-family: var(--font-sans); font-size: 13px; font-weight: 500; color: rgba(255,255,255,0.75); display: flex; align-items: center; gap: 10px; }
-  .carousel-indicators { margin-bottom: 20px; gap: 6px; }
-  .carousel-indicators [data-bs-target] { width: 28px; height: 3px; background: rgba(255,255,255,0.35); border: none; border-radius: 2px; transition: background 0.3s; }
-  .carousel-indicators .active { background: var(--ci-red); }
-  .carousel-control-prev, .carousel-control-next { width: 5%; opacity: 0; transition: opacity 0.3s; z-index: 5; }
-  .hero-carousel-wrapper:hover .carousel-control-prev, .hero-carousel-wrapper:hover .carousel-control-next { opacity: 1; }
-  @media (max-width:768px) {
-    .ci-carousel-item { height: 62vh; min-height: 380px; max-height: 520px; }
-    .ci-carousel-content { padding-bottom: 40px; }
-    .carousel-control-prev, .carousel-control-next { opacity: 0.5; width: 10%; }
-  }
-
-  /* =============================================
      2. LIVE WIRE MARQUEE
   ============================================= */
   .ci-marquee-section { background: var(--ci-charcoal); padding: 28px 0 36px; overflow: hidden; border-bottom: 3px solid var(--ci-red); }
@@ -444,80 +421,54 @@
         .byline-content { max-width: 100%; margin-bottom: 40px; }
         .byline-image-wrapper { aspect-ratio: 16/10; }
     }
+    /* =============================================
+     1. HERO CAROUSEL (UNIFIED FIX)
+  ============================================= */
+  .hero-carousel-wrapper { 
+      width: 100vw; 
+      position: relative; 
+      left: 50%; right: 50%; 
+      margin-left: -50vw; 
+      margin-right: -50vw; 
+      background: var(--ci-black); 
+  }
+  
+  .ci-carousel-item { 
+      /* Locks the shape to standard widescreen on desktop */
+      aspect-ratio: 16 / 9; 
+      width: 100%; 
+      position: relative; 
+      display: block; 
+      text-decoration: none; 
+      overflow: hidden; 
+      /* We explicitly DO NOT use height or min-height here to prevent distortion */
+  }
+  
+  .ci-carousel-img { 
+      width: 100%; 
+      height: 100%; 
+      object-fit: cover; 
+  }
+  
+  .carousel-indicators { margin-bottom: 16px; gap: 8px; }
+  .carousel-indicators [data-bs-target] { width: 32px; height: 4px; background: rgba(255,255,255,0.5); border: none; border-radius: 2px; transition: background 0.3s ease; }
+  .carousel-indicators .active { background: var(--ci-red); }
+  
+  .carousel-control-prev, .carousel-control-next { width: 8%; opacity: 0; transition: opacity 0.3s; z-index: 5; }
+  .hero-carousel-wrapper:hover .carousel-control-prev, .hero-carousel-wrapper:hover .carousel-control-next { opacity: 1; }
+  
+  @media (max-width: 768px) { 
+      .carousel-control-prev, .carousel-control-next { opacity: 0.3; width: 12%; } 
+      
+      .ci-carousel-item {
+          /* Makes the banner slightly taller on mobile so it doesn't look collapsed.
+             NOTE: This WILL crop a small amount of the left/right edges. 
+             Advise the client to keep baked-in text near the center of the image! */
+          aspect-ratio: 4 / 3;
+      }
+  }
 </style>
-<style>
-    /* =========================================
-       LAYER 1: IMAGE-ONLY EDGE-TO-EDGE CAROUSEL
-       ========================================= */
-    .hero-carousel-wrapper {
-        /* Viewport Breakout: Forces edge-to-edge */
-        width: 100vw;
-        position: relative;
-        left: 50%;
-        right: 50%;
-        margin-left: -50vw;
-        margin-right: -50vw;
-        background-color: var(--ci-black);
-    }
 
-    .ci-carousel-item {
-        /* THE FIX: Lock the aspect ratio. 
-           If the client uses 1920x1080 images, change this to 16/9.
-           If they use 1920x800, use 2.4/1. 
-        */
-        aspect-ratio: 16 / 9; 
-        width: 100%;
-        position: relative;
-        display: block; /* Makes the entire image clickable */
-        text-decoration: none;
-        overflow: hidden;
-    }
-
-    .ci-carousel-img {
-        width: 100%;
-        height: 100%;
-        /* Because the container ratio matches the image ratio, 'cover' will not crop anything! */
-        object-fit: cover; 
-    }
-
-    /* Custom Indicators */
-    .carousel-indicators {
-        margin-bottom: 16px;
-        gap: 8px;
-    }
-    .carousel-indicators [data-bs-target] {
-        width: 32px;
-        height: 4px;
-        background-color: rgba(255,255,255,0.5);
-        border: none;
-        border-radius: 2px;
-        transition: background-color 0.3s ease;
-    }
-    .carousel-indicators .active {
-        background-color: var(--ci-red);
-    }
-
-    /* Custom Controls */
-    .carousel-control-prev, .carousel-control-next {
-        width: 8%;
-        opacity: 0;
-        transition: opacity 0.3s;
-        z-index: 5;
-    }
-    
-    /* Make controls slightly visible on mobile so users know they can swipe */
-    @media (max-width: 768px) {
-        .carousel-control-prev, .carousel-control-next {
-            opacity: 0.3;
-            width: 12%;
-        }
-    }
-
-    .hero-carousel-wrapper:hover .carousel-control-prev, 
-    .hero-carousel-wrapper:hover .carousel-control-next {
-        opacity: 1;
-    }
-</style>
 {% endblock 'css' %}
 
 
