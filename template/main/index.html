@@ -538,9 +538,9 @@
         <div class="carousel-inner">
             {% for banner in hero_banners %}
             <div class="carousel-item {% if forloop.first %}active{% endif %}">
-                <a href="{{ banner.get_absolute_url }}" class="ci-carousel-item">
+                <a href="{{ banner.redirect_url }}" class="ci-carousel-item">
                     {% if banner.banner_image %}
-                        <img src="{{ banner.banner_image.url }}" class="ci-carousel-img" alt="{{ banner.title }}">
+                        <img src="{{ banner.image.url }}" class="ci-carousel-img" alt="{{ banner.title }}">
                     {% else %}
                         <img src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&q=80&w=1920&h=1080" class="ci-carousel-img" alt="Corporate Impact Story">
                     {% endif %}
