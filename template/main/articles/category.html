@@ -251,7 +251,7 @@
                 <div class="d-flex flex-column gap-3">
                     
                     {% if main_grid.editor_choice_1 %}
-                    <a href="/article/{{ main_grid.editor_choice_1.slug }}" class="text-decoration-none article-title d-flex align-items-center group">
+                    <a href="/article/{{ main_grid.editor_choice_1.slug }}/" class="text-decoration-none article-title d-flex align-items-center group">
                         <div class="img-hover-zoom rounded flex-shrink-0 me-3">
                             <img src="{{ main_grid.editor_choice_1.thumbnail_image.url }}" class="featured-side-img" alt="{{ main_grid.editor_choice_1.title }}">
                         </div>
@@ -380,7 +380,7 @@
                         <ul class="trending-list">
                             {% for i in trending_articles|slice:":5" %}
                             <li class="trending-item">
-                                <a href="{{ i.slug }}" class="article-title font-serif fw-bold d-block mb-1">{{ i.title }}</a>
+                                <a href="/article/{{ i.slug }}" class="article-title font-serif fw-bold d-block mb-1">{{ i.title }}</a>
                                 <span class="meta-text">{{ i.views }} views</span>
                             </li>
                             {% endfor %}
@@ -391,7 +391,7 @@
                         <h3 class="widget-title">Explore Topics</h3>
                         <div class="d-flex flex-wrap gap-2">
                             {% for i in categories %}
-                            <a href="{{ i.slug }}" class="btn btn-outline-dark btn-sm rounded-pill px-3">{{ i.title }}</a>
+                            <a href="/category/{{ i.slug }}" class="btn btn-outline-dark btn-sm rounded-pill px-3">{{ i.title }}</a>
                             {% endfor %}
                         </div>
                     </div>
