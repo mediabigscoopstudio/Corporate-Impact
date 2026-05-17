@@ -330,6 +330,120 @@
     .ci-modal-content { width: 100%; padding: 32px 24px; }
     .ci-form-grid { grid-template-columns: 1fr; gap: 0; }
   }
+  /* =====================================
+       THE BYLINE PROGRAM (SPLIT DESIGN)
+       ===================================== */
+    .byline-section {
+        padding: 100px 0;
+        background-color: var(--ci-paper);
+        border-top: 1px solid var(--ci-mist);
+        overflow: hidden;
+    }
+
+    .byline-content {
+        max-width: 560px;
+    }
+
+    .ci-eyebrow {
+        font-family: var(--font-sans);
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: 0.15em;
+        text-transform: uppercase;
+        color: var(--ci-red);
+        margin-bottom: 16px;
+        display: block;
+    }
+
+    .byline-main-title {
+        font-family: var(--font-display);
+        font-size: clamp(36px, 4vw, 52px);
+        font-weight: 900;
+        color: var(--ci-black);
+        line-height: 1.1;
+        margin-bottom: 24px;
+        letter-spacing: -0.5px;
+    }
+
+    .byline-main-desc {
+        font-family: var(--font-sans);
+        font-size: 16px;
+        color: var(--ci-graphite);
+        line-height: 1.7;
+        margin-bottom: 20px;
+    }
+
+    .byline-hindi {
+        font-family: var(--font-serif);
+        font-size: 20px;
+        color: var(--ci-black);
+        font-style: italic;
+        margin: 32px 0 40px;
+        padding-left: 24px;
+        border-left: 3px solid var(--ci-red);
+    }
+
+    .byline-hindi span {
+        font-family: var(--font-sans);
+        font-size: 13px;
+        color: var(--ci-slate);
+        font-style: normal;
+        display: block;
+        margin-top: 8px;
+    }
+
+    .byline-cta-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 16px 36px;
+        background-color: var(--ci-red);
+        color: var(--ci-white);
+        font-family: var(--font-sans);
+        font-size: 13px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+        text-decoration: none;
+        border-radius: 2px;
+        border: 1px solid var(--ci-red);
+        transition: all 0.3s ease;
+    }
+
+    .byline-cta-btn:hover {
+        background-color: var(--ci-red-dark);
+        border-color: var(--ci-red-dark);
+        color: var(--ci-white);
+        transform: translateY(-2px);
+        box-shadow: 0 12px 24px rgba(204, 27, 27, 0.2);
+    }
+
+    /* Right Side Image */
+    .byline-image-wrapper {
+        position: relative;
+        width: 100%;
+        /* 4:5 aspect ratio gives it a cinematic, magazine-feature feel */
+        aspect-ratio: 4/5;
+        border-radius: 4px;
+        overflow: hidden;
+        box-shadow: 0 24px 48px rgba(0,0,0,0.08);
+    }
+
+    .byline-image-wrapper img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .byline-image-wrapper:hover img {
+        transform: scale(1.03);
+    }
+
+    @media (max-width: 991px) {
+        .byline-content { max-width: 100%; margin-bottom: 40px; }
+        .byline-image-wrapper { aspect-ratio: 16/10; }
+    }
 </style>
 {% endblock 'css' %}
 
@@ -799,61 +913,32 @@
 ============================================= -->
 <section class="byline-section" id="byline-program">
   <div class="container">
-    <div class="byline-intro">
-      <div class="ci-eyebrow">Publisher Portal</div>
-      <h2 class="byline-main-title">Your First Byline.<br/>In a Real Magazine.</h2>
-      <p class="byline-main-desc">You have something to say. Corporate Impact gives you the platform to say it — with your name on it, in a real published magazine that real people read. From executives building thought leadership to students earning their first byline, we have a place for every voice that matters.</p>
-      <p class="byline-main-desc">Open to executives, entrepreneurs, journalists, and students across India. Hindi and English. Print and digital.</p>
-      <div class="byline-hindi">
-        "Apni pehli byline — sirf ek step door hai."<br>
-        <span style="font-size:12px; opacity:0.7; font-style:normal;">Your first byline is just one step away.</span>
-      </div>
-    </div>
-    <div class="row g-4">
-      <div class="col-lg-4">
-        <div class="byline-card">
-          <div class="byline-tier-name">Guest Op-Ed</div>
-          <div class="byline-tier-desc">For executives publishing a single, high-impact thought leadership piece.</div>
-          <div class="byline-price">Free <span>/ standard</span></div>
-          <ul class="byline-list">
-            <li>Publish 1 editorial piece</li>
-            <li>Standard editorial review</li>
-            <li>Author profile page</li>
-            <li>Standard platform visibility</li>
-          </ul>
-          <button type="button" onclick="location.href='/byline'" class="byline-cta byline-cta--outline">Apply to Contribute</button>
+    <div class="row align-items-center g-lg-5">
+      
+      <div class="col-lg-6 fade-in-up">
+        <div class="byline-content">
+          <div class="ci-eyebrow">Publisher Portal</div>
+          <h2 class="byline-main-title">Your First Byline.<br/>In a Real Magazine.</h2>
+          
+          <p class="byline-main-desc">You have something to say. Corporate Impact gives you the platform to say it — with your name on it, in a real published magazine that real people read. From executives building thought leadership to students earning their first byline, we have a place for every voice that matters.</p>
+          
+          <p class="byline-main-desc">Open to executives, entrepreneurs, journalists, and students across India. Hindi and English. Print and digital.</p>
+          
+          <div class="byline-hindi">
+            "Apni pehli byline — sirf ek step door hai."<br>
+            <span>Your first byline is just one step away.</span>
+          </div>
+          
+          <a href="/byline-form" class="byline-cta-btn">Apply to Contribute</a>
         </div>
       </div>
-      <div class="col-lg-4">
-        <div class="byline-card byline-card--highlight">
-          <div class="byline-rec-badge">Recommended</div>
-          <div class="byline-tier-name">Resident Columnist</div>
-          <div class="byline-tier-desc">For experts building sustained authority and a loyal readership over time.</div>
-          <div class="byline-price">Pro <span>/ monthly</span></div>
-          <ul class="byline-list">
-            <li>Up to 3 articles per month</li>
-            <li>Fast-track priority editorial review</li>
-            <li>Social media amplification</li>
-            <li>Homepage featuring opportunities</li>
-            <li>Anchor backlink to your website</li>
-          </ul>
-          <button type="button" onclick="location.href='/byline'" class="byline-cta  byline-cta--solid">Apply to Contribute</button>
+
+      <div class="col-lg-6 fade-in-up delay-1">
+        <div class="byline-image-wrapper">
+          <img src="https://images.pexels.com/photos/4144096/pexels-photo-4144096.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2" alt="Student Researcher publishing in Corporate Impact">
         </div>
       </div>
-      <div class="col-lg-4">
-        <div class="byline-card">
-          <div class="byline-tier-name">Brand Collab</div>
-          <div class="byline-tier-desc">For PR agencies and enterprises syndicating corporate communications at scale.</div>
-          <div class="byline-price">Custom <span>/ enterprise</span></div>
-          <ul class="byline-list">
-            <li>Unlimited publishing volume</li>
-            <li>"Sponsored By" visual tagging</li>
-            <li>Dedicated content manager</li>
-            <li>Detailed readership analytics</li>
-          </ul>
-          <button type="button" onclick="location.href='/byline'" class="byline-cta byline-cta--outline">Apply to Contribute</button>
-        </div>
-      </div>
+
     </div>
   </div>
 </section>

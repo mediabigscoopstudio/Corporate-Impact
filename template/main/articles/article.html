@@ -696,7 +696,7 @@
         {% if data.tldr %}
         <details class="ci-tldr-accordion" open> <summary>Executive Summary</summary>
           <div class="ci-tldr-content">
-            {{ data.tldr }}
+            {{ data.tldr|safe}}
           </div>
         </details>
         {% endif %}
