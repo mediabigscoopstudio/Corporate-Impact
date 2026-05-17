@@ -734,7 +734,7 @@
           </div>
           <div class="ci-related-grid">
             {% for i in related_articles|slice:":3" %}
-            <a href="/article/{{i.slug}}" class="ci-related-card">
+            <a href="/article/{{i.slug}}/" class="ci-related-card">
               <div class="ci-related-img">
                 {% if i.thumbnail_image %}
                   <img src="{{ i.thumbnail_image.url }}" alt="{{ i.title }}">
