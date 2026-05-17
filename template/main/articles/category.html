@@ -266,7 +266,7 @@
                     {% if main_grid.editor_choice_2 %}
                     <a href="/article/{{ main_grid.editor_choice_2.slug }}" class="text-decoration-none article-title d-flex align-items-center group border-top pt-3">
                         <div class="img-hover-zoom rounded flex-shrink-0 me-3">
-                            <img src="/article/{{ main_grid.editor_choice_2.thumbnail_image.url }}" class="featured-side-img" alt="{{ main_grid.editor_choice_2.title }}">
+                            <img src="{{ main_grid.editor_choice_2.thumbnail_image.url }}" class="featured-side-img" alt="{{ main_grid.editor_choice_2.title }}">
                         </div>
                         <div>
                             <span class="meta-text text-uppercase text-danger fw-bold" style="font-size: 0.65rem;">{{ main_grid.editor_choice_2.category.title }}</span>
