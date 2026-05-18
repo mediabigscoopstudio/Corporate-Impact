@@ -434,8 +434,8 @@
   .hero-split-box {
       position: relative;
       width: 100%;
-      /* 4/5 Aspect Ratio creates a perfect vertical rectangle */
-      aspect-ratio: 4 / 5; 
+      /* Exactly matches your 450x650px image dimensions */
+      aspect-ratio: 450 / 650; 
       border-radius: 6px;
       overflow: hidden;
       box-shadow: 0 16px 32px rgba(0,0,0,0.06);
@@ -470,104 +470,68 @@
      1. HERO CAROUSEL
 ============================================= -->
 <section class="hero-split-section">
-
   <div class="container">
+    <div class="row g-4 justify-content-center">
 
-    <div class="row g-4">
-
-      <!-- LEFT HERO BANNERS -->
-      <div class="col-md-8 fade-in-up">
-
+      <div class="col-md-6 fade-in-up">
         <div class="hero-split-box">
-
-          <div id="heroLeftCarousel"
-               class="carousel slide carousel-fade h-100"
-               data-bs-ride="carousel"
-               data-bs-interval="4000">
-
+          <div id="heroLeftCarousel" class="carousel slide carousel-fade h-100" data-bs-ride="carousel" data-bs-interval="4000">
             <div class="carousel-inner h-100">
 
               {% for banner in hero_banners %}
-
               <div class="carousel-item h-100 {% if forloop.first %}active{% endif %}">
-
-                <a href="{{ banner.redirect_url }}"
-                   target="_blank"
-                   class="hero-split-item">
-
+                <a href="{{ banner.redirect_url }}" target="_blank" class="hero-split-item">
                   {% if banner.image %}
-
-                  <img src="{{ banner.image.url }}"
-                       class="hero-split-img"
-                       alt="{{ banner.title }}">
-
+                    <img src="{{ banner.image.url }}" class="hero-split-img" alt="{{ banner.title }}">
                   {% else %}
-
-                  <img src="https://images.unsplash.com/photo-1556761175-5973dc0f32e7?auto=format&fit=crop&q=80&w=800&h=1000"
-                       class="hero-split-img"
-                       alt="Corporate Impact">
-
+                    <img src="https://images.unsplash.com/photo-1556761175-5973dc0f32e7?auto=format&fit=crop&q=80&w=450&h=650" class="hero-split-img" alt="Corporate Impact">
                   {% endif %}
-
                 </a>
-
               </div>
-
               {% empty %}
-
               <div class="carousel-item active h-100">
-
-                <a href="#"
-                   class="hero-split-item">
-
-                  <img src="https://images.unsplash.com/photo-1556761175-5973dc0f32e7?auto=format&fit=crop&q=80&w=800&h=1000"
-                       class="hero-split-img"
-                       alt="Corporate Impact">
-
+                <a href="#" class="hero-split-item">
+                  <img src="https://images.unsplash.com/photo-1556761175-5973dc0f32e7?auto=format&fit=crop&q=80&w=450&h=650" class="hero-split-img" alt="Corporate Impact">
                 </a>
-
               </div>
-
               {% endfor %}
 
             </div>
-
           </div>
-
         </div>
-
       </div>
 
 
+      <div class="col-md-6 fade-in-up delay-1">
+        <div class="hero-split-box">
+          <div id="heroRightCarousel" class="carousel slide carousel-fade h-100" data-bs-ride="carousel" data-bs-interval="5500">
+            <div class="carousel-inner h-100">
 
-      <!-- RIGHT ADS -->
-      <div class="col-md-4 fade-in-up delay-1">
+              {% for i in homepage_ads %}
+              <div class="carousel-item h-100 {% if forloop.first %}active{% endif %}">
+                <a href="{{ i.redirect_url }}" target="_blank" class="hero-split-item">
+                  {% if i.image %}
+                    <img src="{{ i.image.url }}" class="hero-split-img" alt="{{ i.title }}">
+                  {% else %}
+                    <img src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&q=80&w=450&h=650" class="hero-split-img" alt="Advertisement">
+                  {% endif %}
+                </a>
+              </div>
+              {% empty %}
+              <div class="carousel-item active h-100">
+                <a href="#" class="hero-split-item">
+                  <img src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&q=80&w=450&h=650" class="hero-split-img" alt="Advertisement">
+                </a>
+              </div>
+              {% endfor %}
 
-        <div class="d-flex flex-column gap-4 h-100">
-
-          {% for i in homepage_ads %}
-
-          <a href="{{i.redirect_url}}"
-             target="_blank"
-             class="hero-split-box d-block overflow-hidden"
-             style="height:100%; min-height:230px;">
-
-            <img src="{{i.image.url}}"
-                 alt="{{i.title}}"
-                 class="hero-split-img">
-
-          </a>
-
-          {% endfor %}
-
+            </div>
+          </div>
         </div>
-
       </div>
 
     </div>
-
   </div>
-
 </section>
 
 
