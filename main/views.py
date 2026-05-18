@@ -7,36 +7,75 @@ from dash.models import (
 )
 
 def index(request):
-    category = get_object_or_404(Category,title="Simply Two",status="Enabled")
-    hero_banners = HomepageBanner.objects.all()
+
+    category = get_object_or_404(
+        Category,
+        title="Simply Two",
+        status="Enabled"
+    )
+
+    # HERO BANNERS
+    hero_banners = HomepageBanner.objects.filter(
+        status="Enabled"
+    ).order_by(
+        'display_order'
+    )
+
+    # HOMEPAGE ADS
+    homepage_ads = HomepageAds.objects.filter(
+        status="Enabled"
+    ).order_by(
+        'display_order'
+    )
+
+    # TEAM
     teams = team.objects.all()
-    latest_news = Article.objects.filter(category='7')[:10]
+
+    # LATEST NEWS
+    latest_news = Article.objects.filter(
+        category='7'
+    )[:10]
+
+    # SIMPLY TWO
     simply_two_category = Category.objects.filter(
-    title="Simply Two",
-    status="Enabled"
+        title="Simply Two",
+        status="Enabled"
     ).first()
 
     simply_two_main_grid = None
 
     if simply_two_category:
-        simply_two_main_grid = CategoryMainGrid.objects.filter(
-        category=simply_two_category
-    ).select_related(
-        'featured_article',
-        'editor_choice_1',
-        'editor_choice_2',
-        'editor_choice_3',
-        'editor_choice_4'
-    ).first()
 
-    context={
-        'latest_articles':latest_news,
+        simply_two_main_grid = CategoryMainGrid.objects.filter(
+            category=simply_two_category
+        ).select_related(
+            'featured_article',
+            'editor_choice_1',
+            'editor_choice_2',
+            'editor_choice_3',
+            'editor_choice_4'
+        ).first()
+
+    context = {
+
+        'latest_articles': latest_news,
+
         'simply_two_category': simply_two_category,
+
         'simply_two_main_grid': simply_two_main_grid,
-        'teams':teams,
-        'hero_banners':hero_banners,
+
+        'teams': teams,
+
+        'hero_banners': hero_banners,
+
+        'homepage_ads': homepage_ads,
     }
-    return render(request,'main/index.html',context)
+
+    return render(
+        request,
+        'main/index.html',
+        context
+    )
 
 def about(request):
     return render(request,'main/about.html')

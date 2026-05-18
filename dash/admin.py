@@ -329,3 +329,39 @@ class HomemakerLeadAdmin(admin.ModelAdmin):
     readonly_fields = ('created_at', 'updated_at')
     ordering = ('-created_at',)
     search_fields = ('name', 'email', 'city')
+
+
+# ============================================
+# HOMEPAGE ADS ADMIN
+# ============================================
+@admin.register(HomepageAds)
+class HomepageAdsAdmin(admin.ModelAdmin):
+
+    list_display = (
+        'title',
+        'display_order',
+        'status',
+        'created_at'
+    )
+
+    list_editable = (
+        'display_order',
+        'status'
+    )
+
+    list_filter = (
+        'status',
+        'created_at'
+    )
+
+    search_fields = (
+        'title',
+    )
+
+    ordering = (
+        'display_order',
+    )
+
+    readonly_fields = (
+        'created_at',
+    )

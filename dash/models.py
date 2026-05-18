@@ -376,3 +376,42 @@ class CategoryMainGrid(models.Model):
 
     def __str__(self):
         return self.category.title
+    
+# ============================================
+# HOMEPAGE ADS
+# ============================================
+class HomepageAds(models.Model):
+
+    title = models.CharField(
+        max_length=255
+    )
+
+    image = models.ImageField(
+        upload_to='homepage_ads/'
+    )
+
+    redirect_url = models.URLField(
+        blank=True,
+        null=True
+    )
+
+    display_order = models.PositiveIntegerField(
+        default=1
+    )
+
+    status = models.CharField(
+        max_length=50,
+        choices=[
+            ('Enabled', 'Enabled'),
+            ('Disabled', 'Disabled')
+        ],
+        default='Enabled'
+    )
+
+    created_at = models.DateTimeField(
+        auto_now_add=True
+    )
+
+    def __str__(self):
+
+        return self.title

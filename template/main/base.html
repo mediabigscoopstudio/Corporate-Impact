@@ -7,13 +7,10 @@
   <link rel="shortcut icon" href="/static/main/logo/Vector.webp" type="image/x-icon">
   {% block 'meta' %}{% endblock 'meta' %}
 
-  <!-- FONTS -->
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700;900&family=Source+Serif+4:ital,wght@0,300;0,400;0,600;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 
-  <!-- BOOTSTRAP -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
 
-  <!-- BOOTSTRAP ICONS -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 
   <style>
@@ -68,6 +65,14 @@
       position: sticky;
       top: 0;
       z-index: 500;
+      /* Smooth transition for the hide/show effect */
+      transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+      will-change: transform;
+    }
+
+    /* This class hides the header by pushing it exactly 100% upwards */
+    .ci-masthead--hidden {
+      transform: translateY(-100%);
     }
 
     /* --- Top Bar --- */
@@ -108,13 +113,14 @@
     }
     .ci-btn-subscribe:hover { background: var(--ci-red-dark); color: var(--ci-white); }
 
-    /* --- Logo --- */
+    /* --- Logo (Updated to White Background) --- */
     .ci-logo-container {
       display: flex;
       justify-content: center;
       align-items: center;
       padding: 24px 40px;
-      border-bottom: 0.5px solid rgba(255,255,255,0.08);
+      background-color: var(--ci-white);
+      border-bottom: 0.5px solid var(--ci-mist);
     }
     .ci-logo-container img {
       height: 44px;
@@ -180,7 +186,6 @@
       transition: all 0.22s cubic-bezier(0.4, 0, 0.2, 1);
       z-index: 400;
       pointer-events: none;
-      
     }
     .ci-megamenu-global.is-visible {
       opacity: 1;
@@ -234,77 +239,21 @@
     }
 
     /* =========================================
-       BREAKING TICKER
-    ========================================= */
-    .ci-ticker {
-      display: flex;
-      align-items: center;
-      background: var(--ci-red);
-      height: 34px;
-      padding: 0 40px;
-      overflow: hidden;
-    }
-    .ci-ticker-label {
-      font-family: var(--font-sans);
-      font-size: 10px;
-      font-weight: 700;
-      color: var(--ci-white);
-      letter-spacing: 0.15em;
-      text-transform: uppercase;
-      white-space: nowrap;
-      border-right: 1px solid rgba(255,255,255,0.35);
-      padding-right: 16px;
-      margin-right: 16px;
-      flex-shrink: 0;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-    .ci-ticker-label::before {
-      content: '';
-      display: inline-block;
-      width: 6px;
-      height: 6px;
-      background: #fff;
-      border-radius: 50%;
-      animation: live-pulse 1.4s ease-in-out infinite;
-    }
-    @keyframes live-pulse { 0%,100%{ opacity:1; } 50%{ opacity:0.35; } }
-
-    .ci-ticker-track { overflow: hidden; flex: 1; }
-    .ci-ticker-mover {
-      display: flex;
-      width: max-content;
-      animation: ticker-scroll 40s linear infinite;
-    }
-    .ci-ticker-mover:hover { animation-play-state: paused; }
-    .ci-ticker-content {
-      font-family: var(--font-sans);
-      font-size: 12px;
-      color: rgba(255,255,255,0.92);
-      white-space: nowrap;
-      padding-right: 10px;
-    }
-    @keyframes ticker-scroll {
-      0%   { transform: translateX(0); }
-      100% { transform: translateX(-50%); }
-    }
-
-    /* =========================================
        MAIN CONTENT AREA
     ========================================= */
     .ci-page-body { flex: 1; }
 
     /* =========================================
-       FOOTER
+       FOOTER (Updated to Light Theme)
     ========================================= */
     .ci-footer {
-      background: var(--ci-charcoal);
-      color: rgba(255,255,255,0.6);
+      background: var(--ci-paper);
+      color: var(--ci-graphite);
       padding: 64px 40px 28px;
       font-family: var(--font-sans);
       font-size: 13px;
       margin-top: auto;
+      border-top: 1px solid var(--ci-mist);
     }
     .ci-footer-grid {
       max-width: 1240px;
@@ -321,11 +270,10 @@
     .ci-footer-logo img {
       height: 22px;
       width: auto;
-      /* logo on dark bg — use a white/light version or CSS filter if needed */
-      filter: brightness(0) invert(1);
+      /* Removed inverted filter so the dark logo shows on light background */
     }
     .ci-footer-tagline {
-      color: rgba(255,255,255,0.38);
+      color: var(--ci-slate);
       font-size: 12px;
       line-height: 1.65;
       max-width: 260px;
@@ -336,28 +284,28 @@
       font-weight: 700;
       letter-spacing: 0.14em;
       text-transform: uppercase;
-      color: rgba(255,255,255,0.3);
+      color: var(--ci-black);
       margin-bottom: 18px;
     }
     .ci-footer-link {
       display: block;
       font-size: 13px;
-      color: rgba(255,255,255,0.6);
+      color: var(--ci-graphite);
       margin-bottom: 11px;
       transition: color 0.15s;
     }
-    .ci-footer-link:hover { color: var(--ci-white); }
+    .ci-footer-link:hover { color: var(--ci-red); }
 
     .ci-footer-bottom {
       max-width: 1240px;
       margin: 48px auto 0;
       padding-top: 22px;
-      border-top: 0.5px solid rgba(255,255,255,0.08);
+      border-top: 0.5px solid var(--ci-mist);
       display: flex;
       justify-content: space-between;
       align-items: center;
       font-size: 11px;
-      color: rgba(255,255,255,0.28);
+      color: var(--ci-slate);
       text-transform: uppercase;
       letter-spacing: 0.05em;
     }
@@ -523,7 +471,6 @@
       .ci-topbar,
       .ci-logo-container,
       .ci-nav-scroll-wrapper,
-      .ci-ticker,
       .ci-footer { padding-left: 16px; padding-right: 16px; }
 
       .ci-date { display: none; }
@@ -551,107 +498,14 @@
     @media (max-width: 992px), (hover: none) {
       .ci-megamenu-global { display: none !important; }
     }
-    .ci-masthead {
-      background: var(--ci-black);
-      position: sticky;
-      top: 0;
-      z-index: 500;
-      /* NEW: Smooth transition for the hide/show effect */
-      transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-      will-change: transform;
-    }
-
-    /* NEW: This class hides the header by pushing it exactly 100% upwards */
-    .ci-masthead--hidden {
-      transform: translateY(-100%);
-    }
-    .ci-ticker-link {
-      color: inherit;
-      text-decoration: none;
-      transition: color 0.2s, opacity 0.2s;
-    }
-    
-    .ci-ticker-link:hover {
-      color: #ffffff; /* Brightens up slightly on hover */
-      opacity: 0.8;
-      text-decoration: underline;
-      text-underline-offset: 3px;
-    }
-  </style>
-  <style>
-    /* =========================================
-       BREAKING TICKER
-    ========================================= */
-    .ci-ticker {
-      display: flex;
-      align-items: center;
-      justify-content: center; /* Centers the entire ticker block */
-      background: var(--ci-red);
-      height: 34px;
-      padding: 0 40px;
-      overflow: hidden;
-    }
-    .ci-ticker-label {
-      font-family: var(--font-sans);
-      font-size: 10px;
-      font-weight: 700;
-      color: var(--ci-white);
-      letter-spacing: 0.15em;
-      text-transform: uppercase;
-      white-space: nowrap;
-      border-right: 1px solid rgba(255,255,255,0.35);
-      padding-right: 16px;
-      margin-right: 16px;
-      flex-shrink: 0;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-    .ci-ticker-label::before {
-      content: '';
-      display: inline-block;
-      width: 6px;
-      height: 6px;
-      background: #fff;
-      border-radius: 50%;
-      animation: live-pulse 1.4s ease-in-out infinite;
-    }
-    @keyframes live-pulse { 0%,100%{ opacity:1; } 50%{ opacity:0.35; } }
-
-    .ci-ticker-track { 
-      overflow: hidden; 
-      display: flex; 
-      /* Removed flex: 1; so it centers naturally next to the label */
-    }
-    .ci-ticker-mover {
-      display: flex;
-      width: max-content;
-      animation: ticker-scroll 40s linear infinite;
-    }
-    .ci-ticker-mover:hover { animation-play-state: paused; }
-    .ci-ticker-content {
-      font-family: var(--font-sans);
-      font-size: 12px;
-      color: rgba(255,255,255,0.92);
-      white-space: nowrap;
-      padding-right: 10px;
-    }
-    @keyframes ticker-scroll {
-      0%   { transform: translateX(0); }
-      100% { transform: translateX(-50%); }
-    }
   </style>
 
   {% block 'css' %}{% endblock 'css' %}
 </head>
 <body>
 
-  <!-- =============================================
-       HEADER / MASTHEAD
-  ============================================= -->
   <header class="ci-masthead" id="mainHeader">
 
-    <!-- Top Bar -->
     <div class="ci-topbar">
       <span class="ci-date" id="ci-live-date"></span>
       <div class="ci-top-actions">
@@ -660,14 +514,12 @@
       </div>
     </div>
 
-    <!-- Logo -->
     <div class="ci-logo-container">
       <a href="/">
         <img src="/static/main/logo/logo.png" alt="Corporate Impact" style="height:44px;">
       </a>
     </div>
 
-    <!-- Category Navigation -->
     <nav class="ci-nav-scroll-wrapper">
       <ul class="ci-nav-links" id="categoryNav">
         {% for item in mega_menu %}
@@ -680,7 +532,6 @@
       </ul>
     </nav>
 
-    <!-- Mega Menu -->
     <div class="ci-megamenu-global" id="megaMenu">
       {% for item in mega_menu %}
       <div class="ci-megamenu-panel" id="panel-{{ item.category.slug }}">
@@ -705,54 +556,21 @@
       {% endfor %}
     </div>
 
-    <!-- Breaking News Ticker -->
-    <!-- Breaking News Ticker -->
-    <div class="ci-ticker">
-      <div class="ci-ticker-label">Live</div>
-      <div class="ci-ticker-track">
-        <div class="ci-ticker-mover">
-          
-          <!-- First track (Visible) -->
-          <span class="ci-ticker-content">
-            {% for article in live_wire %}
-              <a href="/article/{{ article.slug }}/" class="ci-ticker-link">{{ article.title }}</a> &nbsp;&nbsp;&nbsp;&nbsp;·&nbsp;&nbsp;&nbsp;&nbsp;
-            {% empty %}
-              <!-- Fallback if no live_wire articles exist -->
-              <a href="#" class="ci-ticker-link">Sensex gains 1.2% amid strong Q4 results</a> &nbsp;&nbsp;&nbsp;&nbsp;·&nbsp;&nbsp;&nbsp;&nbsp;
-            {% endfor %}
-          </span>
-
-        </div>
-      </div>
-    </div>
-
   </header>
 
-  <!-- =============================================
-       PAGE BODY — child templates render here
-  ============================================= -->
   <main class="ci-page-body">
     {% block 'body' %}{% endblock 'body' %}
   </main>
 
-  <!-- =============================================
-       FOOTER
-  ============================================= -->
-  <!-- =============================================
-       FOOTER
-  ============================================= -->
   <footer class="ci-footer">
-    <!-- Adjusted to 4 columns instead of 5 -->
     <div class="ci-footer-grid" style="grid-template-columns: 1.5fr 1.2fr 1fr 1fr;">
 
-      <!-- Brand & Socials -->
       <div class="ci-footer-brand">
         <div class="ci-footer-logo">
           <img src="/static/main/logo/logo.png" alt="Corporate Impact">
         </div>
         <p class="ci-footer-tagline">Corporate Impact is India's premier bilingual business magazine, offering authoritative analysis of the forces reshaping business, finance, and industry. The definitive voice of India Inc.</p>
         
-        <!-- Social Media Links -->
         <div style="margin-top: 24px; display: flex; gap: 16px;">
           <a href="#" aria-label="LinkedIn" class="ci-footer-link" style="font-size: 18px; margin: 0;"><i class="bi bi-linkedin"></i></a>
           <a href="#" aria-label="Instagram" class="ci-footer-link" style="font-size: 18px; margin: 0;"><i class="bi bi-instagram"></i></a>
@@ -761,14 +579,12 @@
         </div>
       </div>
 
-      <!-- Offices -->
       <div>
         <div class="ci-footer-col-title">Offices</div>
         
-        <!-- Editorial Office -->
         <div style="margin-bottom: 24px;">
-          <div style="font-size: 11px; font-weight: 700; color: #fff; margin-bottom: 8px;">Editorial Office</div>
-          <address style="color: rgba(255,255,255,0.6); font-size: 13px; line-height: 1.6; font-style: normal; margin-bottom: 0;">
+          <div style="font-size: 11px; font-weight: 700; color: var(--ci-black); margin-bottom: 8px;">Editorial Office</div>
+          <address style="color: var(--ci-graphite); font-size: 13px; line-height: 1.6; font-style: normal; margin-bottom: 0;">
             G Nine Publication, 2nd Floor<br>
             Maruti Courier Building<br>
             Opp. Punjab National Bank<br>
@@ -777,10 +593,9 @@
           </address>
         </div>
 
-        <!-- Mumbai Office -->
         <div>
-          <div style="font-size: 11px; font-weight: 700; color: #fff; margin-bottom: 8px;">Mumbai Office</div>
-          <address style="color: rgba(255,255,255,0.6); font-size: 13px; line-height: 1.6; font-style: normal; margin-bottom: 0;">
+          <div style="font-size: 11px; font-weight: 700; color: var(--ci-black); margin-bottom: 8px;">Mumbai Office</div>
+          <address style="color: var(--ci-graphite); font-size: 13px; line-height: 1.6; font-style: normal; margin-bottom: 0;">
             Flat No. 905, Laxmi Heights<br>
             Opp. Ambesh Complex, Near Banana Leaf Hotel<br>
             Prabhakar Dattu Mhatre Road<br>
@@ -789,15 +604,14 @@
         </div>
       </div>
 
-      <!-- Contact & Company -->
       <div>
         <div class="ci-footer-col-title">Contact Us</div>
         <div style="margin-bottom: 24px; display: flex; flex-direction: column; gap: 8px;">
           <a href="mailto:connect@corporateimpact.in" class="ci-footer-link" style="margin: 0; display: flex; align-items: center; gap: 8px;">
             <i class="bi bi-envelope"></i> connect@corporateimpact.in
           </a>
-          <a href="mailto:support@corporateimpact.in" class="ci-footer-link" style="margin: 0; display: flex; align-items: center; gap: 8px;">
-            <i class="bi bi-headset"></i> support@corporateimpact.in
+          <a href="mailto:editor@corporateimpact.in" class="ci-footer-link" style="margin: 0; display: flex; align-items: center; gap: 8px;">
+            <i class="bi bi-headset"></i> editor@corporateimpact.in
           </a>
           <a href="tel:+917581802616" class="ci-footer-link" style="margin: 0; display: flex; align-items: center; gap: 8px;">
             <i class="bi bi-telephone"></i> +91 7581802616
@@ -812,7 +626,6 @@
         <a href="/static/main/media-kit/Corporate_Impact_MediaKit.pdf" download class="ci-footer-link">Media Kit</a>
       </div>
 
-      <!-- Legal -->
       <div>
         <div class="ci-footer-col-title">Legal</div>
         <a href="/terms" class="ci-footer-link">Terms of Service</a>
@@ -830,9 +643,6 @@
     </div>
   </footer>
 
-  <!-- =============================================
-       NEWSLETTER MODAL
-  ============================================= -->
   <div class="ci-modal-overlay" id="newsletterModal" role="dialog" aria-modal="true" aria-label="Subscribe to newsletter">
     <div class="ci-modal">
       <button class="ci-modal-close" id="closeNewsletterModal" aria-label="Close">&times;</button>
@@ -869,9 +679,6 @@
     </div>
   </div>
 
-  <!-- =============================================
-       SCRIPTS
-  ============================================= -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 
   <script>

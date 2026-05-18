@@ -643,6 +643,10 @@ def content_management(request):
     banners = HomepageBanner.objects.all().order_by(
         'display_order'
     )
+    # Homepage Ads
+    ads = HomepageAds.objects.all().order_by(
+    'display_order'
+    )
 
     # Articles
     articles = Article.objects.filter(
@@ -679,6 +683,25 @@ def content_management(request):
             )
 
             return redirect('content_management')
+        
+        elif action == "save_ads":
+            HomepageAds.objects.create(
+
+            title=request.POST.get('title'),
+
+            redirect_url=request.POST.get(
+            'redirect_url'
+            ),
+
+            image=request.FILES.get('image'),
+
+            display_order=request.POST.get(
+            'display_order'
+            ) or 1,
+
+            status="Enabled"
+            )
+
 
 
         # =========================================
@@ -752,6 +775,8 @@ def content_management(request):
 
             'banners': banners,
 
+            'ads': ads,
+
             'articles': articles,
         }
     )
@@ -775,6 +800,23 @@ def delete_banner(request, id):
     banner.delete()
 
     return redirect('/content_management')
+
+
+@user_passes_test(
+    superadmin_required,
+    login_url='/login_view'
+)
+def delete_ads(request, id):
+
+    ad = get_object_or_404(
+        HomepageAds,
+        id=id
+    )
+
+    ad.delete()
+
+    return redirect('content_management') 
+
 from dash.models import team
 def teams(request):
 
@@ -954,3 +996,6 @@ def view_career(request, id):
             'data': data
         }
     )
+
+from .models import HomepageAds
+
