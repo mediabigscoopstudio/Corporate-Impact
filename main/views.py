@@ -3,7 +3,7 @@ from django.contrib import messages
 
 from dash.models import (
     Newsletter,
-    Enquiry,Author,team,HomepageBanner
+    Enquiry,Author,team,HomepageBanner,HomepageAds
 )
 
 def index(request):
