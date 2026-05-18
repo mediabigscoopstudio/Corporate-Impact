@@ -65,6 +65,7 @@ urlpatterns = [
     path('view_career/<int:id>/',views.view_career,name='view_career'),
 
     path('delete_ads/<int:id>/',views.delete_ads,name='delete_ads'),
+    path('delete_banner/<int:id>/',views.delete_banner,name='delete_banner'),
 
 
 
