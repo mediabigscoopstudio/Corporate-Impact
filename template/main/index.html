@@ -1071,42 +1071,6 @@
   </div>
 </section>
 
-
-<!-- =============================================
-     9. GALLERY
-============================================= -->
-<section class="gallery-section">
-  <div class="container">
-    <div class="ci-section-label" style="border-color:rgba(255,255,255,0.12);">
-      <div class="ci-section-label__bar"></div>
-      <h2 class="ci-section-label__title" style="color:#fff;">In the Frame</h2>
-    </div>
-    <div class="gallery-grid">
-      {% for item in gallery_images %}
-      <div class="gallery-item">
-        <img src="{{ item.image.url }}" alt="{{ item.alt_text }}" loading="lazy">
-        <div class="gallery-item__overlay">
-          <span class="gallery-item__title">{{ item.title }}</span>
-        </div>
-      </div>
-      {% empty %}
-      <!-- Fallback gallery — replace once Gallery model has data -->
-      <div class="gallery-item"><img src="https://images.unsplash.com/photo-1504711434969-e33886168f5c?auto=format&fit=crop&q=80&w=600" alt="Annual Summit" loading="lazy"><div class="gallery-item__overlay"><span class="gallery-item__title">Annual Summit 2026</span></div></div>
-      <div class="gallery-item"><img src="https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?auto=format&fit=crop&q=80&w=600&h=800" alt="CEO Roundtable" loading="lazy"><div class="gallery-item__overlay"><span class="gallery-item__title">CEO Roundtable, Mumbai</span></div></div>
-      <div class="gallery-item"><img src="https://images.unsplash.com/photo-1521737604893-d14cc237f11d?auto=format&fit=crop&q=80&w=600" alt="Startup Pitch" loading="lazy"><div class="gallery-item__overlay"><span class="gallery-item__title">Startup Pitch Night</span></div></div>
-      <div class="gallery-item"><img src="https://images.unsplash.com/photo-1556761175-4b46a572b786?auto=format&fit=crop&q=80&w=600&h=900" alt="Women in Leadership" loading="lazy"><div class="gallery-item__overlay"><span class="gallery-item__title">Women in Leadership Forum</span></div></div>
-      <div class="gallery-item"><img src="https://images.unsplash.com/photo-1542744094-3a31f272c490?auto=format&fit=crop&q=80&w=600" alt="Cover Shoot" loading="lazy"><div class="gallery-item__overlay"><span class="gallery-item__title">Cover Shoot — May 2026</span></div></div>
-      <div class="gallery-item"><img src="https://images.unsplash.com/photo-1559136555-9303baea8ebd?auto=format&fit=crop&q=80&w=600&h=700" alt="Brand Awards" loading="lazy"><div class="gallery-item__overlay"><span class="gallery-item__title">Brand Awards Night</span></div></div>
-      <div class="gallery-item"><img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=600" alt="Simply Two" loading="lazy"><div class="gallery-item__overlay"><span class="gallery-item__title">Simply Two — Behind the Lens</span></div></div>
-      <div class="gallery-item"><img src="https://images.unsplash.com/photo-1573164574572-cb89e39749b4?auto=format&fit=crop&q=80&w=600&h=800" alt="Homemaker Spotlight" loading="lazy"><div class="gallery-item__overlay"><span class="gallery-item__title">Homemaker Spotlight Shoot</span></div></div>
-      <div class="gallery-item"><img src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&q=80&w=600" alt="Markets Edition" loading="lazy"><div class="gallery-item__overlay"><span class="gallery-item__title">Markets Special Edition</span></div></div>
-      <div class="gallery-item"><img src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&q=80&w=600&h=500" alt="Editorial Team" loading="lazy"><div class="gallery-item__overlay"><span class="gallery-item__title">Editorial Team 2026</span></div></div>
-      {% endfor %}
-    </div>
-  </div>
-</section>
-
-
 <!-- =============================================
      10. LATEST STORIES
 ============================================= -->
