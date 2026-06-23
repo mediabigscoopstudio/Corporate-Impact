@@ -365,3 +365,42 @@ class HomepageAdsAdmin(admin.ModelAdmin):
     readonly_fields = (
         'created_at',
     )
+
+
+# ============================================
+# FEATURED VIDEOS ADMIN
+# ============================================
+@admin.register(FeaturedVideo)
+class FeaturedVideoAdmin(admin.ModelAdmin):
+
+    list_display = (
+        'title',
+        'display_order',
+        'status',
+        'created_at'
+    )
+
+    list_editable = (
+        'display_order',
+        'status'
+    )
+
+    list_filter = (
+        'status',
+        'created_at'
+    )
+
+    search_fields = (
+        'title',
+        'youtube_url'
+    )
+
+    ordering = (
+        'display_order',
+    )
+
+    readonly_fields = (
+        'youtube_video_id',
+        'created_at',
+        'updated_at'
+    )

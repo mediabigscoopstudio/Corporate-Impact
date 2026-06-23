@@ -4,7 +4,7 @@ from django.contrib import messages
 from django.contrib.auth.decorators import user_passes_test
 from django.contrib.auth import authenticate, login
 from django.contrib.auth import logout
-from .models import UserProfile,Enquiry,Article,ArticleFAQ,ArticleHowTo,Author,Ad,WriterApplication,youtube,Newsletter,Category,Gallery
+from .models import UserProfile,Enquiry,Article,ArticleFAQ,ArticleHowTo,Author,Ad,WriterApplication,youtube,Newsletter,Category,Gallery,FeaturedVideo
 def superadmin_required(user):
     return user.is_superuser 
 
@@ -998,4 +998,76 @@ def view_career(request, id):
     )
 
 from .models import HomepageAds
+
+
+# ============================================
+# FEATURED VIDEOS (Homepage "Watch" strip)
+# ============================================
+@user_passes_test(superadmin_required, login_url='/login_view')
+def featured_videos(request):
+    videos = FeaturedVideo.objects.all().order_by('display_order')
+    return render(
+        request,
+        'dash/featured_videos/featured_videos.html',
+        {'videos': videos}
+    )
+
+
+@user_passes_test(superadmin_required, login_url='/login_view')
+def add_featured_video(request):
+    if request.method == 'POST':
+        FeaturedVideo.objects.create(
+            title=request.POST.get('title'),
+            youtube_url=request.POST.get('youtube_url'),
+            thumbnail_image=request.FILES.get('thumbnail_image'),
+            display_order=request.POST.get('display_order') or 0,
+            status=request.POST.get('status', 'Enabled'),
+        )
+        return redirect('/featured_videos')
+
+    return render(request, 'dash/featured_videos/add_featured_video.html')
+
+
+@user_passes_test(superadmin_required, login_url='/login_view')
+def edit_featured_video(request, id):
+    data = get_object_or_404(FeaturedVideo, id=id)
+
+    if request.method == 'POST':
+        data.title = request.POST.get('title')
+        data.youtube_url = request.POST.get('youtube_url')
+        data.display_order = request.POST.get('display_order') or 0
+        data.status = request.POST.get('status', 'Enabled')
+
+        file = request.FILES.get('thumbnail_image')
+        if file:
+            data.thumbnail_image = file
+
+        data.save()
+        return redirect('/featured_videos')
+
+    return render(
+        request,
+        'dash/featured_videos/edit_featured_video.html',
+        {'data': data}
+    )
+
+
+def disable_featured_video(request, id):
+    data = get_object_or_404(FeaturedVideo, id=id)
+    data.status = "Disabled"
+    data.save()
+    return redirect('/featured_videos')
+
+
+def enable_featured_video(request, id):
+    data = get_object_or_404(FeaturedVideo, id=id)
+    data.status = "Enabled"
+    data.save()
+    return redirect('/featured_videos')
+
+
+def delete_featured_video(request, id):
+    data = get_object_or_404(FeaturedVideo, id=id)
+    data.delete()
+    return redirect('/featured_videos')
 

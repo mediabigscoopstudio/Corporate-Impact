@@ -50,6 +50,13 @@ urlpatterns = [
     path("delete_youtube/<id>",        views.delete_youtube,      name='delete_youtube'),
     path("edit_youtube/<id>",          views.edit_youtube,        name='edit_youtube'),
 
+    path("featured_videos",                 views.featured_videos,         name='featured_videos'),
+    path("add_featured_video",              views.add_featured_video,      name='add_featured_video'),
+    path("edit_featured_video/<id>",        views.edit_featured_video,     name='edit_featured_video'),
+    path("disable_featured_video/<id>",     views.disable_featured_video,  name='disable_featured_video'),
+    path("enable_featured_video/<id>",      views.enable_featured_video,   name='enable_featured_video'),
+    path("delete_featured_video/<id>",      views.delete_featured_video,   name='delete_featured_video'),
+
     path("gallery",                    views.gallery,             name='gallery'),
     path('edit_gallery/<int:id>/', views.edit_gallery, name='edit_gallery'),
     path('delete_gallery/<int:id>/', views.delete_gallery, name='delete_gallery'),

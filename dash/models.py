@@ -1,8 +1,37 @@
+import re
+
 from django.db import models
 from django.utils.text import slugify
 from django.utils import timezone
 from django.contrib.auth.models import User
 from django.urls import reverse
+
+
+def extract_youtube_id(url):
+    """Extract the 11-char YouTube video ID from any standard URL format."""
+    if not url:
+        return ""
+
+    patterns = [
+        r'youtube\.com/watch\?v=([\w-]{11})',
+        r'youtu\.be/([\w-]{11})',
+        r'youtube\.com/embed/([\w-]{11})',
+        r'youtube\.com/shorts/([\w-]{11})',
+        r'youtube\.com/v/([\w-]{11})',
+    ]
+
+    for pattern in patterns:
+        match = re.search(pattern, url)
+        if match:
+            return match.group(1)
+
+    # Fallback: a bare video id or a "v=" query param anywhere
+    match = re.search(r'[?&]v=([\w-]{11})', url)
+    if match:
+        return match.group(1)
+
+    match = re.search(r'([\w-]{11})', url)
+    return match.group(1) if match else ""
 
 # ---------------- User Profile ----------------
 class UserProfile(models.Model):
@@ -414,4 +443,89 @@ class HomepageAds(models.Model):
 
     def __str__(self):
 
+        return self.title
+
+
+# ============================================
+# FEATURED VIDEOS (Homepage "Watch" strip)
+# ============================================
+class FeaturedVideo(models.Model):
+
+    title = models.CharField(max_length=255)
+
+    youtube_url = models.URLField(max_length=500)
+
+    youtube_video_id = models.CharField(
+        max_length=20,
+        blank=True
+    )
+
+    thumbnail_image = models.ImageField(
+        upload_to='featured_videos/',
+        blank=True,
+        null=True
+    )
+
+    display_order = models.PositiveIntegerField(
+        default=0,
+        blank=True,
+        null=True
+    )
+
+    status = models.CharField(
+        max_length=50,
+        choices=[
+            ('Enabled', 'Enabled'),
+            ('Disabled', 'Disabled')
+        ],
+        default='Enabled'
+    )
+
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def save(self, *args, **kwargs):
+
+        # Always keep the derived id in sync with the URL
+        self.youtube_video_id = extract_youtube_id(self.youtube_url)
+
+        # Auto place new videos at the end
+        if not self.pk and not self.display_order:
+
+            last_order = FeaturedVideo.objects.order_by(
+                '-display_order'
+            ).first()
+
+            self.display_order = (
+                last_order.display_order + 1
+                if last_order and last_order.display_order else 1
+            )
+
+        super().save(*args, **kwargs)
+
+    @property
+    def watch_url(self):
+        """Canonical YouTube watch link used by the homepage anchor."""
+        if self.youtube_video_id:
+            return f"https://www.youtube.com/watch?v={self.youtube_video_id}"
+        return self.youtube_url
+
+    @property
+    def thumbnail_url(self):
+        """Custom upload if present, else the high-res YouTube thumbnail."""
+        if self.thumbnail_image:
+            return self.thumbnail_image.url
+        if self.youtube_video_id:
+            return f"https://img.youtube.com/vi/{self.youtube_video_id}/maxresdefault.jpg"
+        return ""
+
+    @property
+    def thumbnail_fallback_url(self):
+        """hqdefault fallback for the (rare) missing maxresdefault."""
+        if self.youtube_video_id:
+            return f"https://img.youtube.com/vi/{self.youtube_video_id}/hqdefault.jpg"
+        return ""
+
+    def __str__(self):
         return self.title

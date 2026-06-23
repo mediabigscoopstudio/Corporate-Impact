@@ -424,6 +424,75 @@
 </style>
 <style>
   /* =============================================
+     0. FEATURED VIDEOS ("WATCH" STRIP)
+  ============================================= */
+  .ci-watch-section {
+      padding: 48px 0 8px;
+      background-color: var(--ci-paper);
+  }
+  .ci-watch-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 24px;
+  }
+  .ci-watch-card { display: block; text-decoration: none; color: inherit; }
+  .ci-watch-thumb {
+      position: relative;
+      aspect-ratio: 16 / 9;
+      border-radius: 6px;
+      overflow: hidden;
+      background-color: var(--ci-mist);
+      box-shadow: 0 16px 32px rgba(0,0,0,0.06);
+  }
+  .ci-watch-thumb img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.5s cubic-bezier(0.16,1,0.3,1);
+  }
+  .ci-watch-card:hover .ci-watch-thumb img { transform: scale(1.05); }
+  .ci-watch-play {
+      position: absolute;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      width: 58px; height: 58px;
+      border-radius: 50%;
+      background: var(--ci-red);
+      display: flex; align-items: center; justify-content: center;
+      box-shadow: 0 6px 18px rgba(0,0,0,0.3);
+      transition: background 0.2s, transform 0.2s;
+  }
+  .ci-watch-card:hover .ci-watch-play {
+      background: var(--ci-red-dark);
+      transform: translate(-50%, -50%) scale(1.08);
+  }
+  .ci-watch-play::after {
+      content: '';
+      display: block;
+      width: 0; height: 0;
+      margin-left: 4px;
+      border-style: solid;
+      border-width: 11px 0 11px 18px;
+      border-color: transparent transparent transparent #fff;
+  }
+  .ci-watch-title {
+      font-family: var(--font-display);
+      font-size: 17px;
+      font-weight: 700;
+      line-height: 1.3;
+      color: var(--ci-black);
+      margin-top: 14px;
+      transition: color 0.15s;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+  }
+  .ci-watch-card:hover .ci-watch-title { color: var(--ci-red); }
+  @media (max-width: 991px) { .ci-watch-grid { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 576px) { .ci-watch-grid { grid-template-columns: 1fr; } }
+
+  /* =============================================
      1. HERO SECTION (SPLIT VERTICAL BANNERS)
   ============================================= */
   .hero-split-section {
@@ -465,6 +534,38 @@
 
 
 {% block 'body' %}
+
+<!-- =============================================
+     0. FEATURED VIDEOS ("WATCH" STRIP)
+============================================= -->
+{% if featured_videos %}
+<section class="ci-watch-section">
+  <div class="container">
+    <div class="ci-section-label">
+      <span class="ci-section-label__bar"></span>
+      <h2 class="ci-section-label__title">Watch</h2>
+    </div>
+    <div class="ci-watch-grid">
+      {% for video in featured_videos %}
+      <a class="ci-watch-card"
+         href="{{ video.watch_url }}"
+         target="_blank"
+         rel="noopener noreferrer"
+         aria-label="Watch on YouTube: {{ video.title }}">
+        <div class="ci-watch-thumb">
+          <img src="{{ video.thumbnail_url }}"
+               onerror="this.onerror=null;this.src='{{ video.thumbnail_fallback_url }}';"
+               alt="{{ video.title }}"
+               loading="lazy">
+          <span class="ci-watch-play" aria-hidden="true"></span>
+        </div>
+        <div class="ci-watch-title">{{ video.title }}</div>
+      </a>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+{% endif %}
 
 <!-- =============================================
      1. HERO CAROUSEL

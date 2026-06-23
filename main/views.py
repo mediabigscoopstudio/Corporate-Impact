@@ -3,7 +3,7 @@ from django.contrib import messages
 
 from dash.models import (
     Newsletter,
-    Enquiry,Author,team,HomepageBanner,HomepageAds
+    Enquiry,Author,team,HomepageBanner,HomepageAds,FeaturedVideo
 )
 
 def index(request):
@@ -23,6 +23,13 @@ def index(request):
 
     # HOMEPAGE ADS
     homepage_ads = HomepageAds.objects.filter(
+        status="Enabled"
+    ).order_by(
+        'display_order'
+    )
+
+    # FEATURED VIDEOS ("Watch" strip)
+    featured_videos = FeaturedVideo.objects.filter(
         status="Enabled"
     ).order_by(
         'display_order'
@@ -69,6 +76,8 @@ def index(request):
         'hero_banners': hero_banners,
 
         'homepage_ads': homepage_ads,
+
+        'featured_videos': featured_videos,
     }
 
     return render(
