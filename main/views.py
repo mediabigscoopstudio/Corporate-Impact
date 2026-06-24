@@ -41,6 +41,8 @@ def index(request):
     # LATEST NEWS
     latest_news = Article.objects.filter(
         category='7'
+    ).order_by(
+        '-created_at'
     )[:10]
 
     # SIMPLY TWO
