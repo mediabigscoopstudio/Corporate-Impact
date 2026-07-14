@@ -15,6 +15,8 @@ def global_content(request):
     header_categories = Category.objects.filter(
         status="Enabled",
         show_in_nav=True
+    ).exclude(
+        display_order=0
     ).order_by('display_order')
 
     # Homepage Banners
