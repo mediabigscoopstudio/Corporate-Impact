@@ -196,6 +196,7 @@ def add_category(request):
                 meta_title=meta_title,
                 meta_description=meta_description,
                 meta_keywords=meta_keywords,
+                show_in_nav='show_in_nav' in request.POST,
             )
         return redirect('/categories') 
 
@@ -228,6 +229,7 @@ def edit_category(request,id):
         data.meta_title = request.POST.get('meta_title')
         data.meta_description = request.POST.get('meta_description')
         data.meta_keywords = request.POST.get('meta_keywords')
+        data.show_in_nav = 'show_in_nav' in request.POST
         data.save()
         return redirect('/categories') 
 
@@ -639,6 +641,11 @@ def content_management(request):
         'display_order'
     )
 
+    # Teams
+    teams_list = team.objects.all().order_by(
+        'display_order'
+    )
+
     # Homepage Banners
     banners = HomepageBanner.objects.all().order_by(
         'display_order'
@@ -727,6 +734,28 @@ def content_management(request):
 
 
         # =========================================
+        # UPDATE TEAM ORDER
+        # =========================================
+        elif action == "update_team_order":
+
+            for member in teams_list:
+
+                new_order = request.POST.get(
+                    f'order_{member.id}'
+                )
+
+                if new_order:
+
+                    member.display_order = int(
+                        new_order
+                    )
+
+                    member.save()
+
+            return redirect('content_management')
+
+
+        # =========================================
         # SAVE CATEGORY MAIN GRID
         # =========================================
         elif action == "save_main_grid":
@@ -772,6 +801,8 @@ def content_management(request):
         'dash/content_management.html',
         {
             'categories': categories,
+
+            'teams_list': teams_list,
 
             'banners': banners,
 
@@ -820,7 +851,7 @@ def delete_ads(request, id):
 from dash.models import team
 def teams(request):
 
-    members = team.objects.all().order_by('name')
+    members = team.objects.all().order_by('display_order')
 
     # ADD MEMBER
     if request.method == "POST":
@@ -833,7 +864,8 @@ def teams(request):
             team.objects.create(
                 name=request.POST.get('name'),
                 designation=request.POST.get('designation'),
-                image=request.FILES.get('image')
+                image=request.FILES.get('image'),
+                status=request.POST.get('status') or "Enabled",
             )
 
             return redirect('teams')
@@ -849,6 +881,8 @@ def teams(request):
             obj.name = request.POST.get('name')
 
             obj.designation = request.POST.get('designation')
+
+            obj.status = request.POST.get('status') or obj.status
 
             if request.FILES.get('image'):
                 obj.image = request.FILES.get('image')
@@ -876,6 +910,22 @@ def delete_team(request, id):
 
     obj.delete()
 
+    return redirect('/teams')
+
+
+def disable_team(request, id):
+
+    data = get_object_or_404(team, id=id)
+    data.status = "Disabled"
+    data.save()
+    return redirect('/teams')
+
+
+def enable_team(request, id):
+
+    data = get_object_or_404(team, id=id)
+    data.status = "Enabled"
+    data.save()
     return redirect('/teams')
 
 

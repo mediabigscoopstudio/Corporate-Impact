@@ -21,6 +21,7 @@
                                 <th>Category</th>
                                 <th>Articles</th>
                                 <th>Status</th>
+                                <th>Nav</th>
                                 <th>Action</th>
                               </tr>
                             </thead>
@@ -46,6 +47,13 @@
                                         <span class="badge bg-warning-subtle text-success">Disabled</span>
                                     </td>
                                     {% endif %}
+                                    <td>
+                                        {% if i.show_in_nav %}
+                                        <span class="badge bg-success-subtle text-success">Yes</span>
+                                        {% else %}
+                                        <span class="badge bg-danger-subtle text-danger">No</span>
+                                        {% endif %}
+                                    </td>
                                     {% if i.status == "Enabled" %}
                                     <td>
                                         <a aria-label="anchor" class="btn btn-sm bg-primary-subtle" data-bs-toggle="tooltip" data-bs-original-title="Disable Category" href="/disable_category/{{i.id}}">Disable</a>

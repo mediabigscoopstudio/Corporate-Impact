@@ -84,6 +84,56 @@
     </div>
 
 
+    <!-- TEAM ORDER -->
+    <div class="card border-0 shadow-sm mb-4">
+
+        <div class="card-header bg-white">
+            <h5 class="mb-0">
+                Team Display Order
+            </h5>
+        </div>
+
+        <div class="card-body">
+
+            <form method="POST">
+
+                {% csrf_token %}
+
+                <input type="hidden"
+                       name="action"
+                       value="update_team_order">
+
+                <div class="row">
+
+                    {% for i in teams_list %}
+
+                    <div class="col-md-3 mb-3">
+
+                        <label class="form-label">
+                            {{i.name}}
+                        </label>
+
+                        <input type="number"
+                               class="form-control"
+                               name="order_{{i.id}}"
+                               value="{{i.display_order}}">
+
+                    </div>
+                    {% endfor %}
+
+                </div>
+
+                <button class="btn btn-dark">
+                    Save Order
+                </button>
+
+            </form>
+
+        </div>
+
+    </div>
+
+
 
     <!-- HOMEPAGE BANNERS -->
     <div class="card border-0 shadow-sm mb-4">

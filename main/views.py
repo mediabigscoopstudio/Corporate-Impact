@@ -36,10 +36,19 @@ def index(request):
     )
 
     # TEAM
-    teams = team.objects.all()
+    teams = team.objects.filter(status="Enabled").order_by('display_order')
 
-    # LATEST NEWS
-    latest_news = Article.objects.filter(
+    # LATEST NEWS (everything except News & Views)
+    latest_news = Article.objects.exclude(
+        category='7'
+    ).order_by(
+        '-created_at'
+    )[:10]
+
+    # NEWS & VIEWS (auto-rotating homepage carousel)
+    news_views_category = Category.objects.filter(pk=7).first()
+
+    news_views_articles = Article.objects.filter(
         category='7'
     ).order_by(
         '-created_at'
@@ -68,6 +77,10 @@ def index(request):
     context = {
 
         'latest_articles': latest_news,
+
+        'news_views_articles': news_views_articles,
+
+        'news_views_category': news_views_category,
 
         'simply_two_category': simply_two_category,
 

@@ -64,6 +64,8 @@ urlpatterns = [
     path("content_management/",views.content_management,name='content_management'),
     path("teams",views.teams,name='teams'),
     path('delete_team/<int:id>/',views.delete_team,name='delete_team'),
+    path('disable_team/<int:id>/',views.disable_team,name='disable_team'),
+    path('enable_team/<int:id>/',views.enable_team,name='enable_team'),
 
     path('leads/',views.leads,name='leads'),
     path('view_lead/<str:lead_type>/<int:id>/',views.view_lead,name='view_lead'),

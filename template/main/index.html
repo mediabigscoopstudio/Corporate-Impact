@@ -1005,6 +1005,147 @@
 
 
 <!-- =============================================
+     3B. NEWS & VIEWS — AUTO ROTATING
+============================================= -->
+<section class="latest-section news-views-carousel-section">
+  <div class="container">
+    <div class="ci-section-label">
+      <div class="ci-section-label__bar"></div>
+      <h2 class="ci-section-label__title">News &amp; Views</h2>
+      <a href="{% if news_views_category %}/category/{{ news_views_category.slug }}/{% else %}#{% endif %}" class="ci-section-label__link">View All →</a>
+    </div>
+    <div id="newsViewsCarousel" class="carousel slide" data-bs-ride="carousel" data-bs-interval="4500">
+      <div class="carousel-inner">
+
+        <div class="carousel-item active">
+          <div class="row g-4">
+            {% for article in news_views_articles|slice:":3" %}
+            <div class="col-sm-6 col-lg-4">
+              <a href="/article/{{ article.slug }}/" class="article-grid-card d-block text-decoration-none">
+                <div class="agc-img-wrap">
+                  {% if article.thumbnail_image %}
+                    <img src="{{ article.thumbnail_image.url }}" alt="{{ article.title }}" loading="lazy">
+                  {% else %}
+                    <div style="width:100%;height:100%;background:var(--ci-mist);"></div>
+                  {% endif %}
+                </div>
+                <div class="agc-body">
+                  <div class="agc-cat">{{ article.category.title }}</div>
+                  <div class="agc-title">{{ article.title }}</div>
+                  <div class="agc-desc">{{ article.description }}</div>
+                  <div class="agc-meta">
+                    <span>{{ article.author.name|default:"Editorial" }}</span>
+                    <span style="color:var(--ci-silver);">&bull;</span>
+                    <span>{{ article.created_at|date:"M d, Y" }}</span>
+                  </div>
+                </div>
+              </a>
+            </div>
+            {% empty %}
+            <div class="col-sm-6 col-lg-4"><a href="#" class="article-grid-card d-block text-decoration-none"><div class="agc-img-wrap"><img src="https://images.unsplash.com/photo-1504711434969-e33886168f5c?auto=format&fit=crop&q=80&w=600" alt="" loading="lazy"></div><div class="agc-body"><div class="agc-cat">News & Views</div><div class="agc-title">Corporate Update: Industry Trends and Market Moves</div><div class="agc-desc">Stay informed with the latest news, market updates, and business insights shaping India Inc.</div><div class="agc-meta"><span>Editorial</span><span style="color:var(--ci-silver);">&bull;</span><span>May 14, 2026</span></div></div></a></div>
+            <div class="col-sm-6 col-lg-4"><a href="#" class="article-grid-card d-block text-decoration-none"><div class="agc-img-wrap"><img src="https://images.unsplash.com/photo-1559136555-9303baea8ebd?auto=format&fit=crop&q=80&w=600" alt="" loading="lazy"></div><div class="agc-body"><div class="agc-cat">News & Views</div><div class="agc-title">Breaking News: Major Corporate Announcements</div><div class="agc-desc">Recent developments and strategic decisions from India's leading companies and entrepreneurs.</div><div class="agc-meta"><span>Editorial</span><span style="color:var(--ci-silver);">&bull;</span><span>May 13, 2026</span></div></div></a></div>
+            <div class="col-sm-6 col-lg-4"><a href="#" class="article-grid-card d-block text-decoration-none"><div class="agc-img-wrap"><img src="https://images.unsplash.com/photo-1542744094-3a31f272c490?auto=format&fit=crop&q=80&w=600" alt="" loading="lazy"></div><div class="agc-body"><div class="agc-cat">News & Views</div><div class="agc-title">Market Snapshot: This Week in Indian Business</div><div class="agc-desc">Quick takes on the events, deals, and decisions affecting corporate India right now.</div><div class="agc-meta"><span>Editorial</span><span style="color:var(--ci-silver);">&bull;</span><span>May 12, 2026</span></div></div></a></div>
+            {% endfor %}
+          </div>
+        </div>
+
+        {% if news_views_articles|length > 3 %}
+        <div class="carousel-item">
+          <div class="row g-4">
+            {% for article in news_views_articles|slice:"3:6" %}
+            <div class="col-sm-6 col-lg-4">
+              <a href="/article/{{ article.slug }}/" class="article-grid-card d-block text-decoration-none">
+                <div class="agc-img-wrap">
+                  {% if article.thumbnail_image %}
+                    <img src="{{ article.thumbnail_image.url }}" alt="{{ article.title }}" loading="lazy">
+                  {% else %}
+                    <div style="width:100%;height:100%;background:var(--ci-mist);"></div>
+                  {% endif %}
+                </div>
+                <div class="agc-body">
+                  <div class="agc-cat">{{ article.category.title }}</div>
+                  <div class="agc-title">{{ article.title }}</div>
+                  <div class="agc-desc">{{ article.description }}</div>
+                  <div class="agc-meta">
+                    <span>{{ article.author.name|default:"Editorial" }}</span>
+                    <span style="color:var(--ci-silver);">&bull;</span>
+                    <span>{{ article.created_at|date:"M d, Y" }}</span>
+                  </div>
+                </div>
+              </a>
+            </div>
+            {% endfor %}
+          </div>
+        </div>
+        {% endif %}
+
+        {% if news_views_articles|length > 6 %}
+        <div class="carousel-item">
+          <div class="row g-4">
+            {% for article in news_views_articles|slice:"6:9" %}
+            <div class="col-sm-6 col-lg-4">
+              <a href="/article/{{ article.slug }}/" class="article-grid-card d-block text-decoration-none">
+                <div class="agc-img-wrap">
+                  {% if article.thumbnail_image %}
+                    <img src="{{ article.thumbnail_image.url }}" alt="{{ article.title }}" loading="lazy">
+                  {% else %}
+                    <div style="width:100%;height:100%;background:var(--ci-mist);"></div>
+                  {% endif %}
+                </div>
+                <div class="agc-body">
+                  <div class="agc-cat">{{ article.category.title }}</div>
+                  <div class="agc-title">{{ article.title }}</div>
+                  <div class="agc-desc">{{ article.description }}</div>
+                  <div class="agc-meta">
+                    <span>{{ article.author.name|default:"Editorial" }}</span>
+                    <span style="color:var(--ci-silver);">&bull;</span>
+                    <span>{{ article.created_at|date:"M d, Y" }}</span>
+                  </div>
+                </div>
+              </a>
+            </div>
+            {% endfor %}
+          </div>
+        </div>
+        {% endif %}
+
+        {% if news_views_articles|length > 9 %}
+        <div class="carousel-item">
+          <div class="row g-4">
+            {% for article in news_views_articles|slice:"9:10" %}
+            <div class="col-sm-6 col-lg-4">
+              <a href="/article/{{ article.slug }}/" class="article-grid-card d-block text-decoration-none">
+                <div class="agc-img-wrap">
+                  {% if article.thumbnail_image %}
+                    <img src="{{ article.thumbnail_image.url }}" alt="{{ article.title }}" loading="lazy">
+                  {% else %}
+                    <div style="width:100%;height:100%;background:var(--ci-mist);"></div>
+                  {% endif %}
+                </div>
+                <div class="agc-body">
+                  <div class="agc-cat">{{ article.category.title }}</div>
+                  <div class="agc-title">{{ article.title }}</div>
+                  <div class="agc-desc">{{ article.description }}</div>
+                  <div class="agc-meta">
+                    <span>{{ article.author.name|default:"Editorial" }}</span>
+                    <span style="color:var(--ci-silver);">&bull;</span>
+                    <span>{{ article.created_at|date:"M d, Y" }}</span>
+                  </div>
+                </div>
+              </a>
+            </div>
+            {% endfor %}
+          </div>
+        </div>
+        {% endif %}
+
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- =============================================
      4. THE ECOSYSTEM WE MAP
 ============================================= -->
 <section class="ecosystem-section">
@@ -1012,7 +1153,7 @@
     <div class="ecosystem-intro">
       <div class="ci-eyebrow" style="color:var(--ci-red);">Editorial Pillars</div>
       <h2 class="ecosystem-title">The Ecosystem<br/><em>We Map.</em></h2>
-      <p class="ecosystem-subtitle">Eight sectors. Authoritative coverage. The complete picture of the forces reshaping India Inc.</p>
+      <p class="ecosystem-subtitle">Thirteen sectors. Authoritative coverage. The complete picture of the forces reshaping India Inc.</p>
     </div>
     <div class="row g-3">
       <div class="col-6 col-md-4 col-lg-3"><a href="#" class="pillar-card" data-num="01"><div class="pillar-num">01</div><span class="pillar-icon-wrap">🎤</span><div class="pillar-name">Leadership</div><div class="pillar-desc">CXO insights, executive strategies, and the psychology behind India's most consequential corporate decisions.</div><div class="pillar-explore">Explore →</div></a></div>
@@ -1023,6 +1164,58 @@
       <div class="col-6 col-md-4 col-lg-3"><a href="#" class="pillar-card" data-num="06"><div class="pillar-num">06</div><span class="pillar-icon-wrap">⚙️</span><div class="pillar-name">Deep Tech</div><div class="pillar-desc">AI architecture, space technology, and the absolute bleeding edge of advanced engineering from India.</div><div class="pillar-explore">Explore →</div></a></div>
       <div class="col-6 col-md-4 col-lg-3"><a href="#" class="pillar-card" data-num="07"><div class="pillar-num">07</div><span class="pillar-icon-wrap">🌱</span><div class="pillar-name">Sustainability</div><div class="pillar-desc">ESG mandates, green energy transitions, and the rise of commercial climate technology as a business imperative.</div><div class="pillar-explore">Explore →</div></a></div>
       <div class="col-6 col-md-4 col-lg-3"><a href="#" class="pillar-card" data-num="08"><div class="pillar-num">08</div><span class="pillar-icon-wrap">🏗️</span><div class="pillar-name">Industry</div><div class="pillar-desc">Manufacturing evolution, supply chain resilience, and the modernization of India's legacy sectors.</div><div class="pillar-explore">Explore →</div></a></div>
+      <div class="col-6 col-md-4 col-lg-3"><a href="#" class="pillar-card" data-num="09"><div class="pillar-num">09</div><span class="pillar-icon-wrap">👨‍🍳</span><div class="pillar-name">Chef's Corner</div><div class="pillar-desc">Culinary excellence meets corporate hospitality — chef interviews, sustainable gastronomy, and the strategies shaping executive dining.</div><div class="pillar-explore">Explore →</div></a></div>
+      <div class="col-6 col-md-4 col-lg-3"><a href="#" class="pillar-card" data-num="10"><div class="pillar-num">10</div><span class="pillar-icon-wrap">✈️</span><div class="pillar-name">Travel and Tourism</div><div class="pillar-desc">Corporate travel trends, eco-conscious tourism initiatives, and the strategic insights driving the future of global executive mobility.</div><div class="pillar-explore">Explore →</div></a></div>
+      <div class="col-6 col-md-4 col-lg-3"><a href="#" class="pillar-card" data-num="11"><div class="pillar-num">11</div><span class="pillar-icon-wrap">✍️</span><div class="pillar-name">By Lines</div><div class="pillar-desc">A published platform for executives, entrepreneurs, journalists, and students — real bylines in a real magazine, print and digital.</div><div class="pillar-explore">Explore →</div></a></div>
+      <div class="col-6 col-md-4 col-lg-3"><a href="#" class="pillar-card" data-num="12"><div class="pillar-num">12</div><span class="pillar-icon-wrap">🏠</span><div class="pillar-name">Homemaker Spotlight</div><div class="pillar-desc">Celebrating homemakers' stories, entrepreneurial journeys, and the everyday leadership shaping households across India.</div><div class="pillar-explore">Explore →</div></a></div>
+      <div class="col-6 col-md-4 col-lg-3"><a href="#" class="pillar-card" data-num="13"><div class="pillar-num">13</div><span class="pillar-icon-wrap">✨</span><div class="pillar-name">Brand Spotlight</div><div class="pillar-desc">Highlighting brands, startups, and businesses making a meaningful impact through innovation, leadership, and market influence.</div><div class="pillar-explore">Explore →</div></a></div>
+    </div>
+  </div>
+</section>
+
+
+<!-- =============================================
+     4B. LATEST STORIES
+============================================= -->
+<section class="latest-section">
+  <div class="container">
+    <div class="ci-section-label">
+      <div class="ci-section-label__bar"></div>
+      <h2 class="ci-section-label__title">Latest Stories</h2>
+      <a href="/articles/" class="ci-section-label__link">View All →</a>
+    </div>
+    <div class="row g-4">
+      {% for article in latest_articles|slice:":6" %}
+      <div class="col-sm-6 col-lg-4">
+        <a href="/article/{{ article.slug }}/" class="article-grid-card d-block text-decoration-none">
+          <div class="agc-img-wrap">
+            {% if article.thumbnail_image %}
+              <img src="{{ article.thumbnail_image.url }}" alt="{{ article.title }}" loading="lazy">
+            {% else %}
+              <div style="width:100%;height:100%;background:var(--ci-mist);"></div>
+            {% endif %}
+          </div>
+          <div class="agc-body">
+            <div class="agc-cat">{{ article.category.title }}</div>
+            <div class="agc-title">{{ article.title }}</div>
+            <div class="agc-desc">{{ article.description }}</div>
+            <div class="agc-meta">
+              <span>{{ article.author.name|default:"Editorial" }}</span>
+              <span style="color:var(--ci-silver);">&bull;</span>
+              <span>{{ article.created_at|date:"M d, Y" }}</span>
+            </div>
+          </div>
+        </a>
+      </div>
+      {% empty %}
+      <!-- Fallback article cards — shows until articles are published -->
+      <div class="col-sm-6 col-lg-4"><a href="#" class="article-grid-card d-block text-decoration-none"><div class="agc-img-wrap"><img src="https://images.unsplash.com/photo-1504711434969-e33886168f5c?auto=format&fit=crop&q=80&w=600" alt="" loading="lazy"></div><div class="agc-body"><div class="agc-cat">Markets</div><div class="agc-title">Why the Sensex Rally Isn't the Whole Story — and What Investors Are Missing</div><div class="agc-desc">Behind the headline numbers lies a more complex picture of sectoral divergence and foreign capital behaviour.</div><div class="agc-meta"><span>Priya Sharma</span><span style="color:var(--ci-silver);">&bull;</span><span>May 14, 2026</span></div></div></a></div>
+      <div class="col-sm-6 col-lg-4"><a href="#" class="article-grid-card d-block text-decoration-none"><div class="agc-img-wrap"><img src="https://images.unsplash.com/photo-1559136555-9303baea8ebd?auto=format&fit=crop&q=80&w=600" alt="" loading="lazy"></div><div class="agc-body"><div class="agc-cat">Startups</div><div class="agc-title">Inside the ₹500 Crore Bet That Could Make India's Agri-Tech Sector Unrecognisable</div><div class="agc-desc">Three founders, one thesis, and a supply chain challenge that's defeated everyone who tried before them.</div><div class="agc-meta"><span>Arjun Kapoor</span><span style="color:var(--ci-silver);">&bull;</span><span>May 13, 2026</span></div></div></a></div>
+      <div class="col-sm-6 col-lg-4"><a href="#" class="article-grid-card d-block text-decoration-none"><div class="agc-img-wrap"><img src="https://images.unsplash.com/photo-1542744094-3a31f272c490?auto=format&fit=crop&q=80&w=600" alt="" loading="lazy"></div><div class="agc-body"><div class="agc-cat">Policy</div><div class="agc-title">The PLI Scheme at Year Three: What Worked, What Failed, and What Comes Next</div><div class="agc-desc">A sector-by-sector audit of India's most ambitious industrial policy in a generation.</div><div class="agc-meta"><span>Editorial Board</span><span style="color:var(--ci-silver);">&bull;</span><span>May 12, 2026</span></div></div></a></div>
+      <div class="col-sm-6 col-lg-4"><a href="#" class="article-grid-card d-block text-decoration-none"><div class="agc-img-wrap"><img src="https://images.unsplash.com/photo-1573164574572-cb89e39749b4?auto=format&fit=crop&q=80&w=600" alt="" loading="lazy"></div><div class="agc-body"><div class="agc-cat">Leadership</div><div class="agc-title">The CEO Who Turned a ₹30 Crore Loss into a ₹400 Crore Turnaround in 18 Months</div><div class="agc-desc">Nidhi Agarwal on radical transparency, letting go of legacy systems, and why she almost quit six times.</div><div class="agc-meta"><span>Rajiv Menon</span><span style="color:var(--ci-silver);">&bull;</span><span>May 11, 2026</span></div></div></a></div>
+      <div class="col-sm-6 col-lg-4"><a href="#" class="article-grid-card d-block text-decoration-none"><div class="agc-img-wrap"><img src="https://images.unsplash.com/photo-1521737604893-d14cc237f11d?auto=format&fit=crop&q=80&w=600" alt="" loading="lazy"></div><div class="agc-body"><div class="agc-cat">Deep Tech</div><div class="agc-title">India's AI Talent Pipeline Has a Gap. Here's Exactly Where It Breaks Down</div><div class="agc-desc">Despite 1.4 million engineering graduates annually, enterprise AI adoption is stalling at the implementation layer.</div><div class="agc-meta"><span>Suresh Pillai</span><span style="color:var(--ci-silver);">&bull;</span><span>May 10, 2026</span></div></div></a></div>
+      <div class="col-sm-6 col-lg-4"><a href="#" class="article-grid-card d-block text-decoration-none"><div class="agc-img-wrap"><img src="https://images.unsplash.com/photo-1556761175-4b46a572b786?auto=format&fit=crop&q=80&w=600" alt="" loading="lazy"></div><div class="agc-body"><div class="agc-cat">Sustainability</div><div class="agc-title">Green Bonds Are Booming. But Is India's ESG Reporting Ready to Back Them Up?</div><div class="agc-desc">The gap between what companies claim and what they can prove is India's next big governance crisis.</div><div class="agc-meta"><span>Kavya Nair</span><span style="color:var(--ci-silver);">&bull;</span><span>May 9, 2026</span></div></div></a></div>
+      {% endfor %}
     </div>
   </div>
 </section>
@@ -1171,53 +1364,6 @@
     </div>
   </div>
 </section>
-
-<!-- =============================================
-     10. LATEST STORIES
-============================================= -->
-<section class="latest-section">
-  <div class="container">
-    <div class="ci-section-label">
-      <div class="ci-section-label__bar"></div>
-      <h2 class="ci-section-label__title">Latest Stories</h2>
-      <a href="/articles/" class="ci-section-label__link">View All →</a>
-    </div>
-    <div class="row g-4">
-      {% for article in latest_articles|slice:":6" %}
-      <div class="col-sm-6 col-lg-4">
-        <a href="/article/{{ article.slug }}/" class="article-grid-card d-block text-decoration-none">
-          <div class="agc-img-wrap">
-            {% if article.thumbnail_image %}
-              <img src="{{ article.thumbnail_image.url }}" alt="{{ article.title }}" loading="lazy">
-            {% else %}
-              <div style="width:100%;height:100%;background:var(--ci-mist);"></div>
-            {% endif %}
-          </div>
-          <div class="agc-body">
-            <div class="agc-cat">{{ article.category.title }}</div>
-            <div class="agc-title">{{ article.title }}</div>
-            <div class="agc-desc">{{ article.description }}</div>
-            <div class="agc-meta">
-              <span>{{ article.author.name|default:"Editorial" }}</span>
-              <span style="color:var(--ci-silver);">&bull;</span>
-              <span>{{ article.created_at|date:"M d, Y" }}</span>
-            </div>
-          </div>
-        </a>
-      </div>
-      {% empty %}
-      <!-- Fallback article cards — shows until articles are published -->
-      <div class="col-sm-6 col-lg-4"><a href="#" class="article-grid-card d-block text-decoration-none"><div class="agc-img-wrap"><img src="https://images.unsplash.com/photo-1504711434969-e33886168f5c?auto=format&fit=crop&q=80&w=600" alt="" loading="lazy"></div><div class="agc-body"><div class="agc-cat">Markets</div><div class="agc-title">Why the Sensex Rally Isn't the Whole Story — and What Investors Are Missing</div><div class="agc-desc">Behind the headline numbers lies a more complex picture of sectoral divergence and foreign capital behaviour.</div><div class="agc-meta"><span>Priya Sharma</span><span style="color:var(--ci-silver);">&bull;</span><span>May 14, 2026</span></div></div></a></div>
-      <div class="col-sm-6 col-lg-4"><a href="#" class="article-grid-card d-block text-decoration-none"><div class="agc-img-wrap"><img src="https://images.unsplash.com/photo-1559136555-9303baea8ebd?auto=format&fit=crop&q=80&w=600" alt="" loading="lazy"></div><div class="agc-body"><div class="agc-cat">Startups</div><div class="agc-title">Inside the ₹500 Crore Bet That Could Make India's Agri-Tech Sector Unrecognisable</div><div class="agc-desc">Three founders, one thesis, and a supply chain challenge that's defeated everyone who tried before them.</div><div class="agc-meta"><span>Arjun Kapoor</span><span style="color:var(--ci-silver);">&bull;</span><span>May 13, 2026</span></div></div></a></div>
-      <div class="col-sm-6 col-lg-4"><a href="#" class="article-grid-card d-block text-decoration-none"><div class="agc-img-wrap"><img src="https://images.unsplash.com/photo-1542744094-3a31f272c490?auto=format&fit=crop&q=80&w=600" alt="" loading="lazy"></div><div class="agc-body"><div class="agc-cat">Policy</div><div class="agc-title">The PLI Scheme at Year Three: What Worked, What Failed, and What Comes Next</div><div class="agc-desc">A sector-by-sector audit of India's most ambitious industrial policy in a generation.</div><div class="agc-meta"><span>Editorial Board</span><span style="color:var(--ci-silver);">&bull;</span><span>May 12, 2026</span></div></div></a></div>
-      <div class="col-sm-6 col-lg-4"><a href="#" class="article-grid-card d-block text-decoration-none"><div class="agc-img-wrap"><img src="https://images.unsplash.com/photo-1573164574572-cb89e39749b4?auto=format&fit=crop&q=80&w=600" alt="" loading="lazy"></div><div class="agc-body"><div class="agc-cat">Leadership</div><div class="agc-title">The CEO Who Turned a ₹30 Crore Loss into a ₹400 Crore Turnaround in 18 Months</div><div class="agc-desc">Nidhi Agarwal on radical transparency, letting go of legacy systems, and why she almost quit six times.</div><div class="agc-meta"><span>Rajiv Menon</span><span style="color:var(--ci-silver);">&bull;</span><span>May 11, 2026</span></div></div></a></div>
-      <div class="col-sm-6 col-lg-4"><a href="#" class="article-grid-card d-block text-decoration-none"><div class="agc-img-wrap"><img src="https://images.unsplash.com/photo-1521737604893-d14cc237f11d?auto=format&fit=crop&q=80&w=600" alt="" loading="lazy"></div><div class="agc-body"><div class="agc-cat">Deep Tech</div><div class="agc-title">India's AI Talent Pipeline Has a Gap. Here's Exactly Where It Breaks Down</div><div class="agc-desc">Despite 1.4 million engineering graduates annually, enterprise AI adoption is stalling at the implementation layer.</div><div class="agc-meta"><span>Suresh Pillai</span><span style="color:var(--ci-silver);">&bull;</span><span>May 10, 2026</span></div></div></a></div>
-      <div class="col-sm-6 col-lg-4"><a href="#" class="article-grid-card d-block text-decoration-none"><div class="agc-img-wrap"><img src="https://images.unsplash.com/photo-1556761175-4b46a572b786?auto=format&fit=crop&q=80&w=600" alt="" loading="lazy"></div><div class="agc-body"><div class="agc-cat">Sustainability</div><div class="agc-title">Green Bonds Are Booming. But Is India's ESG Reporting Ready to Back Them Up?</div><div class="agc-desc">The gap between what companies claim and what they can prove is India's next big governance crisis.</div><div class="agc-meta"><span>Kavya Nair</span><span style="color:var(--ci-silver);">&bull;</span><span>May 9, 2026</span></div></div></a></div>
-      {% endfor %}
-    </div>
-  </div>
-</section>
-
 
 <!-- =============================================
      11. STORIES IN YOUR INBOX

@@ -68,6 +68,8 @@ class Category(models.Model):
         null=True
     )
 
+    show_in_nav = models.BooleanField(default=True)
+
     def save(self, *args, **kwargs):
 
         if not self.slug:
@@ -132,6 +134,29 @@ class team(models.Model):
     name = models.CharField(max_length=100)
     designation = models.CharField(max_length=100)
     image = models.ImageField(upload_to='about_us/')
+
+    status = models.CharField(
+        max_length=100,
+        blank=True,
+        null=True,
+        default="Enabled"
+    )
+
+    display_order = models.PositiveIntegerField(
+        default=0,
+        blank=True,
+        null=True
+    )
+
+    def save(self, *args, **kwargs):
+        if not self.pk:
+            last_order = team.objects.order_by('-display_order').first()
+            self.display_order = (
+                last_order.display_order + 1
+                if last_order else 1
+            )
+        super().save(*args, **kwargs)
+
     def __str__(self):
         return self.name
 
